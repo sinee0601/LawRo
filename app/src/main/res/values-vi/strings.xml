@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LawRo</string>
+    <string name="select_language">Chọn ngôn ngữ</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">Đăng nhập</string>
+    <string name="login_subtitle">Đăng nhập SNS</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Mật khẩu</string>
+    <string name="login_button">Đăng nhập</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="signup_prompt">Chưa có tài khoản?</string>
+    <string name="signup_button">Đăng ký</string>
+    
+    <!-- Error Messages -->
+    <string name="error_invalid_email_and_password">Vui lòng kiểm tra lại ID và mật khẩu.</string>
+    <string name="error_email_not_found">Email chưa được đăng ký.</string>
+    <string name="error_password_incorrect">Mật khẩu không khớp.</string>
+
+    <!-- SignUp Screen -->
+    <string name="signup_title">Đăng ký</string>
+    <string name="name_hint">Tên</string>
+    <string name="email">Email</string>
+    <string name="select">Chọn</string>
+    <string name="verification_code_hint">Mã xác thực</string>
+    <string name="verification_code_6_digits">Mã xác thực 6 số</string>
+    <string name="send_verification_code">Gửi</string>
+    <string name="confirm_password_hint">Xác nhận mật khẩu</string>
+    <string name="signup_complete">Đăng ký hoàn tất!</string>
+    <string name="please_login">Vui lòng đăng nhập bằng ID đã đăng ký.</string>
+    
+    <!-- SignUp Error Messages -->
+    <string name="error_name_required">Vui lòng nhập tên chính xác.</string>
+    <string name="error_invalid_email">Định dạng email không chính xác.</string>
+    <string name="error_invalid_verification_code">Mã xác thực không khớp.</string>
+    <string name="error_password_too_short">Mật khẩu phải có ít nhất 8 ký tự.</string>
+    <string name="error_passwords_not_match">Mật khẩu không khớp.</string>
+
+    <string name="find_password">Tìm mật khẩu</string>
+    <string name="receive_password_reset_email">Nhận email thay đổi mật khẩu</string>
+    <string name="reset_password">Đặt lại mật khẩu</string>
+    <string name="save">Lưu</string>
+
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="confirm_new_password">Xác nhận mật khẩu mới</string>
+    <string name="password_change_complete">Thay đổi mật khẩu hoàn tất!</string>
+    <string name="login_with_new_password">Vui lòng đăng nhập bằng mật khẩu đã thay đổi.</string>
+
+    <string name="name_error">Vui lòng nhập tên.</string>
+    <string name="domain_hint">Nhập domain</string>
+    <string name="email_format_error">Định dạng email không chính xác.</string>
+    <string name="verification_code_error">Mã xác thực phải có 6 số.</string>
+    <string name="password_length_error">Mật khẩu phải có ít nhất 8 ký tự.</string>
+    <string name="password_mismatch_error">Mật khẩu không khớp.</string>
+    <string name="signup_failed">Đăng ký thất bại</string>
+    <string name="email_already_exists">Email này đã được sử dụng.</string>
+
+    <!-- Chatbot Screen -->
+    <string name="chatbot_title">Chatbot tư vấn</string>
+    <string name="chatbot_input_hint">Nhập tin nhắn</string>
+    <string name="chatbot_typing">Đang nhập...</string>
+    <string name="chatbot_error">Lỗi máy chủ: %1$s</string>
+
+    <!-- Worktime Screen -->
+    <string name="worktime_measurement">Đo thời gian làm việc</string>
+    <string name="company_name_hint">Vui lòng nhập tên công ty.</string>
+    <string name="search_failed">Tìm kiếm thất bại</string>
+    <string name="location_not_found">Không tìm thấy vị trí đã nhập.\nVui lòng nhập địa chỉ hoặc tên công ty chính xác.</string>
+    <string name="work_location">Địa điểm làm việc</string>
+    <string name="not_registered">Chưa đăng ký</string>
+    <string name="workplace">Nơi làm việc</string>
+    <string name="road_name">Tên đường</string>
+    <string name="register_workplace_question">Có muốn đăng ký làm nơi làm việc không?</string>
+    <string name="register">Đăng ký</string>
+    <string name="cancel">Hủy</string>
+    <string name="work_location_not_found">Không tìm thấy địa điểm làm việc</string>
+    <string name="search_location_first">Vui lòng tìm kiếm và đăng ký địa điểm làm việc trước.</string>
+    <string name="register_work_location">Đăng ký địa điểm làm việc</string>
+    <string name="change_work_location">Thay đổi địa điểm làm việc</string>
+    <string name="start_measurement">Bắt đầu đo</string>
+    <string name="stop_measurement">Dừng đo</string>
+    <string name="pause_measurement">Tạm dừng</string>
+    <string name="resume_measurement">Tiếp tục</string>
+    <string name="stop_not_allowed_title">Không thể dừng đo</string>
+    <string name="stop_not_allowed_message">Chỉ có thể dừng đo tại nơi làm việc.</string>
+    <string name="start_not_allowed_title">Không thể bắt đầu đo</string>
+    <string name="start_not_allowed_message">Chỉ có thể bắt đầu đo tại nơi làm việc.</string>
+    <string name="working_at_location">📍 Đang đo tại nơi làm việc</string>
+    <string name="working_outside_location">⚠️ Đang đo ngoài nơi làm việc</string>
+    <string name="simulate_leave_workplace">🚶 Di chuyển ra khỏi nơi làm việc (Mô phỏng)</string>
+    <string name="simulate_return_workplace">🏢 Trở về nơi làm việc (Mô phỏng)</string>
+    
+    <!-- Settings -->
+    <string name="worktime_records">Bản ghi thời gian làm việc</string>
+    
+    <!-- Worktime Records Screen -->
+    <string name="worktime_summary">📊 Tóm tắt thời gian làm việc</string>
+    <string name="total_work_days">Tổng số ngày làm việc</string>
+    <string name="days_unit">ngày</string>
+    <string name="total_work_hours">Tổng thời gian làm việc</string>
+    <string name="hours_unit">giờ</string>
+    <string name="daily_average">Trung bình mỗi ngày</string>
+    <string name="delete">Xóa</string>
+    <string name="gps_violation_prefix">Rời khỏi nơi làm việc: </string>
+    <string name="delete_record_title">Xóa bản ghi</string>
+    <string name="delete_record_message">Bạn có muốn xóa bản ghi làm việc %s không?</string>
+
+    <!-- Analyze Screen -->
+    <string name="analyze_title">Phân tích hợp đồng lao động</string>
+    <string name="analyze_description">Tự động phân tích hợp đồng đã tải lên\nkiểm tra vi phạm luật lao động.</string>
+    <string name="photo_upload">Tải ảnh lên</string>
+    <string name="photo_capture">Chụp ảnh</string>
+    <string name="analyzing_document">Đang phân tích tài liệu...</string>
+    <string name="uploading_and_analyzing">Đang tải lên và phân tích tài liệu...</string>
+
+    <!-- Analysis Result Screen -->
+    <string name="detailed_analysis">Phân tích chi tiết</string>
+    <string name="analysis_result">Kết quả phân tích</string>
+    <string name="view_result">Xem kết quả</string>
+    <string name="check_result">Kiểm tra kết quả</string>
+    <string name="save_result">Lưu kết quả</string>
+    <string name="chatbot_inquiry">Tư vấn chatbot</string>
+    <string name="legal_interpretation">Giải thích pháp lý</string>
+    <string name="comprehensive_analysis">Phân tích tổng hợp</string>
+    <string name="key_issues">Vấn đề chính</string>
+    <string name="save_analysis_result">Lưu kết quả phân tích</string>
+    <string name="enter_title_to_save">Vui lòng nhập tiêu đề để lưu kết quả phân tích.</string>
+    <string name="title">Tiêu đề</string>
+    <string name="title_example">Ví dụ: Hợp đồng lao động công ty A năm 2025</string>
+
+    <!-- Contract Editing Screen -->
+    <string name="edit_contract_description">Dưới đây là nội dung hợp đồng lao động được tự động nhận dạng từ ảnh.\nNếu có lỗi, vui lòng sửa trực tiếp.</string>
+    <string name="contract_saved_successfully">Hợp đồng đã được lưu thành công.</string>
+    <string name="save_failed">Lưu thất bại: </string>
+    <string name="analysis_completed">Phân tích hợp đồng hoàn tất.</string>
+    <string name="analysis_failed">Phân tích thất bại: </string>
+    <string name="login_info_missing">Thiếu thông tin đăng nhập.</string>
+    <string name="no_contract_info">Không có thông tin hợp đồng đã phân tích.</string>
+    <string name="analysis_ui_test">Test UI kết quả phân tích</string>
+
+    <!-- Contract Form Fields -->
+    <string name="employer_info">Thông tin chủ sử dụng lao động</string>
+    <string name="employee_info">Thông tin người lao động</string>
+    <string name="work_conditions">Điều kiện lao động</string>
+    <string name="job_details">Nội dung công việc</string>
+    <string name="working_hours">Thời gian làm việc</string>
+    <string name="wage_info">Thông tin lương</string>
+    <string name="accommodation_meals">Cung cấp chỗ ở và bữa ăn</string>
+    <string name="holidays_vacations">Ngày lễ và nghỉ phép</string>
+    <string name="payment_method">Phương thức thanh toán</string>
+    <string name="four_major_insurances">4 bảo hiểm chính</string>
+    <string name="other_clauses">Điều khoản khác</string>
+    <string name="signature_info">Thông tin chữ ký</string>
+    <string name="saving">Đang lưu...</string>
+    <string name="analyzing">Đang phân tích...</string>
+    <string name="edit_complete">Hoàn tất chỉnh sửa</string>
+
+    <!-- Form Field Labels -->
+    <string name="company_name">Tên công ty</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="address">Địa chỉ</string>
+    <string name="representative_name">Tên đại diện</string>
+    <string name="business_registration_number">Số đăng ký kinh doanh</string>
+    <string name="name">Tên</string>
+    <string name="birth_date">Ngày sinh</string>
+    <string name="home_address">Địa chỉ nhà</string>
+    <string name="contract_period">Thời hạn hợp đồng</string>
+    <string name="workplace_location">Nơi làm việc</string>
+    <string name="work_start_date">Ngày bắt đầu làm việc</string>
+    <string name="work_end_date">Ngày kết thúc làm việc</string>
+    <string name="probation_status">Tình trạng thử việc</string>
+    <string name="probation_period">Thời gian thử việc</string>
+    <string name="industry">Ngành nghề</string>
+    <string name="business_content">Nội dung kinh doanh</string>
+    <string name="job_content">Nội dung công việc</string>
+    <string name="start_time">Giờ đi làm</string>
+    <string name="end_time">Giờ tan làm</string>
+    <string name="overtime_hours">Giờ làm thêm</string>
+    <string name="shift_work">Làm ca</string>
+    <string name="break_time_minutes">Thời gian nghỉ (phút)</string>
+    <string name="monthly_total">Tổng lương tháng</string>
+    <string name="base_salary">Lương cơ bản</string>
+    <string name="bonus">Thưởng</string>
+    <string name="probation_salary">Lương thời gian thử việc</string>
+    <string name="extra_pay_rate">Tỷ lệ làm thêm/đêm/ngày lễ</string>
+    <string name="accommodation_provided">Có cung cấp chỗ ở</string>
+    <string name="accommodation_type">Loại chỗ ở</string>
+    <string name="employee_housing_cost">Chi phí chỗ ở người lao động</string>
+    <string name="meals_provided">Có cung cấp bữa ăn</string>
+    <string name="meal_types">Loại bữa ăn</string>
+    <string name="employee_meal_cost">Chi phí bữa ăn người lao động</string>
+    <string name="sunday">Chủ nhật</string>
+    <string name="public_holidays_paid">Ngày lễ (có lương)</string>
+    <string name="public_holidays_unpaid">Ngày lễ (không lương)</string>
+    <string name="saturday">Thứ bảy</string>
+    <string name="payment_day">Ngày trả lương</string>
+    <string name="payment_method_type">Phương thức trả lương</string>
+    <string name="employer_controls_account">Chủ sử dụng lao động quản lý tài khoản</string>
+    <string name="health_insurance">Bảo hiểm y tế</string>
+    <string name="national_pension">Bảo hiểm xã hội</string>
+    <string name="employment_insurance">Bảo hiểm thất nghiệp</string>
+    <string name="industrial_accident_insurance">Bảo hiểm tai nạn lao động</string>
+    <string name="contract_rules_compliance">Tuân thủ hợp đồng và quy tắc làm việc</string>
+    <string name="other_terms">Điều kiện khác</string>
+    <string name="employer_signature">Chữ ký chủ sử dụng lao động</string>
+    <string name="employee_signature">Chữ ký người lao động</string>
+    <string name="signature_date">Ngày ký</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    
+    <!-- Additional missing fields -->
+    <string name="shift_work_status">Tình trạng làm ca</string>
+    <string name="break_time">Thời gian nghỉ</string>
+    <string name="total_payment">Tổng thanh toán</string>
+    <string name="allowance">Phụ cấp</string>
+    <string name="accommodation_and_meal">Chỗ ở và bữa ăn</string>
+    <string name="housing_provided">Cung cấp chỗ ở</string>
+    <string name="housing_type">Loại chỗ ở</string>
+    <string name="meal_provided">Cung cấp bữa ăn</string>
+    <string name="meal_type">Loại bữa ăn</string>
+    <string name="holiday_and_vacation">Ngày lễ và nghỉ phép</string>
+    <string name="public_holiday_paid">Ngày lễ (có lương)</string>
+    <string name="public_holiday_unpaid">Ngày lễ (không lương)</string>
+    <string name="payday">Ngày trả lương</string>
+    <string name="method">Phương thức</string>
+    
+    <!-- History Screen -->
+    <string name="history_title">Lịch sử phân tích</string>
+    <string name="search_hint">Vui lòng nhập từ khóa tìm kiếm</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="filter_all">Tìm kiếm tất cả</string>
+    <string name="filter_danger">Tìm kiếm nguy hiểm</string>
+    <string name="more_filters">Bộ lọc khác</string>
+    <string name="year_suffix">năm</string>
+    <string name="analysis_date">Ngày phân tích:</string>
+    <string name="filter_options">Tùy chọn bộ lọc</string>
+    <string name="filter_all_simple">Tất cả</string>
+    <string name="filter_safe">An toàn</string>
+    <string name="filter_warning">Cảnh báo</string>
+    <string name="filter_danger_simple">Nguy hiểm</string>
+    <string name="filter_date_asc">Ngày tăng dần</string>
+    <string name="filter_date_desc">Ngày giảm dần</string>
+    <string name="confirm">Xác nhận</string>
+    
+    <!-- Contract Detail Screen -->
+    <string name="detail_record">Ghi chú chi tiết</string>
+    <string name="analysis_date_label">Ngày phân tích:</string>
+    <string name="export_pdf">Xuất PDF</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Cài đặt</string>
+    <string name="account_section">Tài khoản</string>
+    <string name="my_info">Thông tin của tôi</string>
+    <string name="change_password">Thay đổi mật khẩu</string>
+    <string name="change_language">Thay đổi ngôn ngữ</string>
+    <string name="change_theme">Thay đổi màu ứng dụng</string>
+    <string name="info_section">Thông tin</string>
+    <string name="app_description">Mô tả ứng dụng</string>
+    <string name="privacy_policy">Chính sách bảo mật</string>
+    <string name="logout">Đăng xuất</string>
+    
+    <!-- App Info Screen -->
+    <string name="app_intro_title">Giới thiệu ứng dụng</string>
+    <string name="app_intro_subtitle">Ứng dụng phân tích hợp đồng AI giúp người lao động nước ngoài hiểu hợp đồng và bảo vệ quyền lợi</string>
+    <string name="app_intro_description">Nhiều người lao động nước ngoài ở Hàn Quốc không ký hợp đồng hoặc dù có ký nhưng không hiểu nội dung, dẫn đến vi phạm nghiêm trọng quyền lợi như nợ lương, sa thải bất công, làm việc quá giờ.\n\nLawRo là ứng dụng sử dụng AI để tự động phân tích hợp đồng lao động, giúp người lao động nước ngoài hiểu nội dung hợp đồng bằng tiếng mẹ đẻ, nhận biết vi phạm và tự bảo vệ quyền lợi của mình.</string>
+    <string name="main_features">Tính năng chính</string>
+    <string name="feature_contract_analysis">Phân tích hợp đồng tự động</string>
+    <string name="feature_contract_analysis_desc">Nhận dạng hợp đồng lao động bằng OCR, kiểm tra thiếu sót các mục bắt buộc và khả năng vi phạm pháp luật</string>
+    <string name="feature_multilingual_support">Cung cấp giải thích pháp lý bằng tiếng mẹ đẻ</string>
+    <string name="feature_multilingual_support_desc">Dịch và giải thích nội dung hợp đồng bằng tiếng mẹ đẻ của người dùng để dễ hiểu</string>
+    <string name="feature_contract_history">Quản lý lịch sử hợp đồng</string>
+    <string name="feature_contract_history_desc">Lưu trữ kỹ thuật số các hợp đồng đã ký, có thể sử dụng khi có tranh chấp hoặc gia hạn hợp đồng</string>
+    <string name="feature_chatbot_consultation">Tư vấn chatbot lao động/pháp lý</string>
+    <string name="feature_chatbot_consultation_desc">Tư vấn trực tuyến về điều kiện lao động, vi phạm pháp luật và các vấn đề quan tâm khác</string>
+    <string name="feature_worktime_tracking">Ghi chép thời gian làm việc và tính lương</string>
+    <string name="feature_worktime_tracking_desc">Tự động ghi chép thời gian lao động và hỗ trợ tính toán lương chính xác bao gồm phụ cấp làm thêm giờ</string>
+    <string name="feature_multilingual_ui">Giao diện đa ngôn ngữ</string>
+    <string name="feature_multilingual_ui_desc">Cung cấp giao diện trực quan mà bất kỳ ai cũng có thể sử dụng dễ dàng dù không quen thuộc với tiếng Hàn</string>
+    <string name="developer_info">Thông tin phát triển</string>
+    <string name="development_team">Nhóm phát triển</string>
+    <string name="team_name">TABA 8th, Nhóm 3</string>
+    <string name="supported_languages">Ngôn ngữ hỗ trợ</string>
+    <string name="supported_languages_flags">🇰🇷 🇺🇸 🇯🇵 🇨🇳 🇻🇳 🇹🇭</string>
+    <string name="copyright">© 2025 TABA 8th, Nhóm 3, Bảo lưu mọi quyền.</string>
+    
+    <!-- Change Language Screen -->
+    <string name="language_change_complete">Thay đổi ngôn ngữ hoàn tất</string>
+    <string name="please_login_again">Vui lòng đăng nhập lại</string>
+    <string name="select_button">Chọn</string>
+    <string name="english_korean">Tiếng Anh</string>
+    <string name="japanese_korean">Tiếng Nhật</string>
+    <string name="chinese_korean">Tiếng Trung</string>
+    <string name="vietnamese_korean">Tiếng Việt</string>
+    <string name="thai_korean">Tiếng Thái</string>
+    <string name="korean_korean">Tiếng Hàn</string>
+    
+    <!-- My Info Screen -->
+    <string name="my_info_title">Thông tin của tôi</string>
+    <string name="loading_user_info">Đang tải thông tin người dùng...</string>
+    <string name="cannot_load_info">Không thể tải thông tin</string>
+    <string name="unknown_error">Đã xảy ra lỗi không xác định</string>
+    <string name="profile">Hồ sơ</string>
+    <string name="user_id_label">ID người dùng</string>
+    <string name="join_date">Ngày tham gia</string>
+    <string name="user_id_prefix">ID: %s</string>
+    <string name="cannot_get_profile_info">Không thể lấy thông tin hồ sơ</string>
+    <string name="server_error_occurred">Đã xảy ra lỗi máy chủ (%d)</string>
+    <string name="network_error_occurred">Đã xảy ra lỗi mạng</string>
+    
+    <!-- Common -->
+    <string name="back">Quay lại</string>
+    <string name="loading">Đang tải...</string>
+    <string name="error">Lỗi</string>
+    <string name="success">Thành công</string>
+    <string name="completed">Hoàn tất</string>
+    <string name="failed">Thất bại</string>
+
+    <!-- Home Screen -->
+    <string name="home_welcome_message">Bạn muốn sử dụng dịch vụ nào?</string>
+    <string name="home_welcome_subtitle">Vui lòng chọn chức năng mong muốn</string>
+    <string name="home_feature_contract_analysis">Phân tích\nHợp đồng</string>
+    <string name="home_feature_contract_analysis_desc">Phân tích hợp đồng lao động\nmột cách thông minh</string>
+    <string name="home_feature_record_check">Kiểm tra Hồ sơ</string>
+    <string name="home_feature_record_check_desc">Quản lý hợp đồng của tôi\nvà hồ sơ công việc</string>
+    <string name="home_feature_worktime">Đo thời gian\nLàm việc</string>
+    <string name="home_feature_worktime_desc">Quản lý chấm công\nchính xác dựa trên GPS</string>
+    <string name="home_feature_ai_chatbot">AI Chatbot</string>
+    <string name="home_feature_ai_chatbot_desc">Tư vấn pháp lý\nthông minh</string>
+    <string name="home_tips_title">💡 Mẹo hữu ích nên biết</string>
+    <string name="home_tips_content">• Vui lòng đăng ký vị trí GPS chính xác khi đo thời gian làm việc\n• Sử dụng AI chatbot chỉ để tham khảo pháp lý\n• Khuyến nghị chuyên gia xem xét kết quả phân tích hợp đồng\n• Dịch vụ do AI cung cấp không có hiệu lực pháp lý.</string>
+    <string name="settings_description">Cài đặt</string>
+
+    <!-- Risk Level (위험도) -->
+    <string name="risk_level_safe">An toàn</string>
+    <string name="risk_level_warning">Cảnh báo</string>
+    <string name="risk_level_danger">Nguy hiểm</string>
+    
+    <!-- Analysis Result Types -->
+    <string name="issues_without_problems">Điều khoản không có vấn đề</string>
+    <string name="issues_requiring_attention">Điều khoản cần chú ý</string>
+    <string name="dangerous_risk_issues">Điều khoản xác nhận rủi ro nguy hiểm</string>
+    
+    <!-- Contract -->
+    <string name="default_contract_title">Hợp đồng lao động</string>
+    
+    <!-- Privacy Policy Screen -->
+    <string name="privacy_policy_title">Chính sách bảo mật</string>
+    <string name="privacy_policy_last_updated">Cập nhật lần cuối: 20 tháng 1, 2025</string>
+    <string name="section_1_title">1. Mục đích thu thập và sử dụng thông tin cá nhân</string>
+    <string name="section_1_content">LawRo xử lý thông tin cá nhân cho các mục đích sau:\n\n• Đăng ký và quản lý thành viên\n• Cung cấp dịch vụ phân tích hợp đồng\n• Tư vấn khách hàng và xử lý khiếu nại\n• Cải thiện dịch vụ và phân tích thống kê</string>
+    <string name="section_2_title">2. Các hạng mục thông tin cá nhân thu thập</string>
+    <string name="section_2_content">• Thông tin bắt buộc: Họ tên, địa chỉ email, mật khẩu\n• Thông tin tùy chọn: Thông tin vị trí nơi làm việc\n• Thông tin tự động thu thập: Lịch sử sử dụng dịch vụ, nhật ký truy cập</string>
+    <string name="section_3_title">3. Thời gian xử lý và lưu trữ thông tin cá nhân</string>
+    <string name="section_3_content">• Cho đến khi thành viên rút khỏi hoặc thời gian lưu trữ theo quy định pháp luật\n• Hồ sơ phân tích hợp đồng: 3 năm\n• Hồ sơ thời gian làm việc: 3 năm</string>
+    <string name="section_4_title">4. Cung cấp thông tin cá nhân cho bên thứ ba</string>
+    <string name="section_4_content">Công ty về nguyên tắc không cung cấp thông tin cá nhân của người dùng ra bên ngoài. Tuy nhiên, thông tin cá nhân có thể được cung cấp theo các quy định pháp luật liên quan khi có yêu cầu từ các quy định pháp luật hoặc cơ quan điều tra.</string>
+    <string name="section_5_title">5. Ủy thác xử lý thông tin cá nhân</string>
+    <string name="section_5_content">Công ty ủy thác các công việc xử lý thông tin cá nhân như sau để cung cấp dịch vụ:\n\n• Dịch vụ phân tích AI: OpenAI\n• Dịch vụ đám mây: AWS</string>
+    <string name="section_6_title">5. Quyền của người dùng</string>
+    <string name="section_6_content">Người dùng có thể thực hiện các quyền sau bất cứ lúc nào:\n\n• Yêu cầu thông báo tình trạng xử lý thông tin cá nhân\n• Yêu cầu xem thông tin cá nhân\n• Yêu cầu sửa đổi, xóa thông tin cá nhân\n• Yêu cầu dừng xử lý thông tin cá nhân</string>
+    <string name="section_7_title">6. Người chịu trách nhiệm bảo vệ thông tin cá nhân</string>
+    <string name="section_7_content">Người chịu trách nhiệm bảo vệ thông tin cá nhân\n• Tên: TABA Khóa 8, Nhóm 3</string>
+    <string name="section_8_title">7. Thay đổi chính sách bảo mật</string>
+    <string name="section_8_content">Chính sách bảo mật này có thể được bổ sung, xóa và sửa đổi theo những thay đổi của pháp luật, chính sách hoặc công nghệ bảo mật. Các thay đổi sẽ được thông báo qua thông báo từ 7 ngày trước khi thực hiện.</string>
+
+    <!-- ContractViewModel Messages -->
+    <string name="server_connection_failed">Kết nối máy chủ thất bại: HTTP %1$s</string>
+    <string name="server_unavailable">Máy chủ không thể kết nối: %1$s</string>
+    <string name="server_failure_response">Nhận được phản hồi thất bại từ máy chủ.</string>
+    <string name="network_error">Lỗi mạng: %1$s</string>
+    <string name="contract_analysis_saved_successfully">Kết quả phân tích hợp đồng đã được lưu thành công</string>
+    <string name="analysis_complete">Phân tích hoàn tất</string>
+    <string name="analysis_failure">Phân tích thất bại</string>
+    <string name="contract_analysis_result">Kết quả phân tích hợp đồng lao động</string>
+    
+    <!-- Analysis Dummy Data -->
+    <string name="analysis_aware">Phân tích</string>
+    <string name="analysis_summary">Hợp đồng đáp ứng các yêu cầu cơ bản, nhưng cần chú ý đến việc thiếu sót các mục quan trọng như tính toán lương và thời gian nghỉ.</string>
+    <string name="highlight_wage_component_missing">Không ghi rõ thành phần lương</string>
+    <string name="highlight_break_time_unclear">Thời gian nghỉ không rõ ràng</string>
+    <string name="highlight_probation_period_missing">Không ghi rõ thời gian thử việc</string>
+    
+    <!-- Legal Interpretations -->
+    <string name="legal_interpretation_wage_component">Theo Điều 17 của Luật Tiêu chuẩn Lao động, các thành phần lương, phương pháp tính toán và phương thức thanh toán phải được ghi rõ, vi phạm có thể khiến người sử dụng lao động bị lệnh chỉnh sửa.</string>
+    <string name="legal_interpretation_break_time">Điều 54 của Luật Tiêu chuẩn Lao động quy định phải có ít nhất 30 phút nghỉ khi làm việc từ 4 giờ trở lên, thời gian này phải có thể sử dụng tự do trong giờ làm việc. Nếu không ghi rõ trong hợp đồng có thể xảy ra tranh chấp.</string>
+    <string name="legal_interpretation_probation_period">Thời gian thử việc ảnh hưởng đến việc cắt giảm lương nên phải ghi rõ, nếu bỏ sót có thể vi phạm quyền lợi của người lao động.</string>
+    
+    <!-- Deep Analysis -->
+    <string name="deep_analysis_text">Hợp đồng này nêu rõ quyền và nghĩa vụ cơ bản của người lao động, nhưng có thiếu sót ở một số mục quan trọng cần chú ý. Đặc biệt, thành phần lương không được nêu rõ, khiến người lao động không thể hiểu rõ thành phần lương thực tế sẽ nhận được. Điều này có thể gây ra tranh chấp pháp lý, đặc biệt với người lao động nước ngoài có rào cản ngôn ngữ có thể dẫn đến hiểu lầm lớn. Ngoài ra, thời gian nghỉ không được nêu rõ khiến không rõ liệu người lao động có thể nghỉ ngơi đầy đủ hay không. Điều này có thể ảnh hưởng trực tiếp đến sức khỏe của người lao động và chất lượng môi trường làm việc. Việc không ghi thời gian thử việc ảnh hưởng đến việc cắt giảm lương, nếu không ghi rõ có thể vi phạm quyền lợi của người lao động. Hợp đồng này phù hợp với mức lương tối thiểu, nhưng do những thiếu sót này, quyền lợi của người lao động có thể không được bảo vệ đầy đủ. Do đó, khi lập hợp đồng cần sử dụng mẫu hợp đồng lao động tiêu chuẩn và ghi cụ thể phản ánh điều kiện lao động thực tế cho từng mục. Đặc biệt việc ghi song ngữ và giải thích bằng hình ảnh cho người nước ngoài sẽ giúp ngăn ngừa tranh chấp pháp lý.</string>
+    
+    <!-- Dummy Analysis Results -->
+    <string name="dummy_analysis_result_1">Thông qua chế độ nghỉ phép và lương của người lao động, người sử dụng lao động đang thực hiện vai trò liên quan đến luật lao động</string>
+    <string name="dummy_analysis_result_2">Hợp đồng này có thể cung cấp mối quan hệ hợp tác có lợi như một hợp đồng lao động chung</string>
+    <string name="dummy_analysis_result_3">Việc áp dụng hàng ngày của ban quản lý cho thấy sự sai lệch đáng kể trong số liệu nhân sự về thời gian làm việc</string>
+    
+    <!-- Contract titles and dates -->
+    <string name="dummy_contract_title">Hợp đồng lao động 2025</string>
+    <string name="dummy_analysis_date">2025.02.01</string>
+    
+    <!-- Chatbot Auto Query Messages -->
+    <string name="analysis_major_issues">🚨 Các vấn đề chính được phát hiện:</string>
+    <string name="specific_questions_about_issues">💼 Câu hỏi cụ thể về từng vấn đề:</string>
+    <string name="issue_number_format">【Vấn đề số %d】 %s</string>
+    <string name="ask_for_specific_damage_solution">→ Xin hãy cho biết về những tổn hại cụ thể và phương pháp giải quyết cho vấn đề này.</string>
+    <string name="request_practical_advice">Tôi mong nhận được lời khuyên chi tiết và thực tế. Cảm ơn!</string>
+
+    <!-- Kết quả phân tích - Go Gildong -->
+    <string name="go_gildong_summary">Hợp đồng lao động có nhiều vấn đề bao gồm thời gian thử việc và lương không được ghi rõ, thời gian nghỉ giải lao không được đề cập. Tuy nhiên, hợp đồng tuân thủ mức lương tối thiểu và các điều kiện làm việc cơ bản đã được nêu rõ nên cần chú ý.</string>
+    <string name="go_gildong_highlight_1">Thời gian thử việc và lương không được ghi rõ</string>
+    <string name="go_gildong_highlight_2">Thời gian nghỉ giải lao không được ghi rõ</string>
+    <string name="go_gildong_highlight_3">Loại chỗ ở và chi phí ăn uống cho lao động nước ngoài không được ghi rõ</string>
+    <string name="go_gildong_legal_issue_1">Nghĩa vụ ghi rõ thời gian thử việc và lương</string>
+    <string name="go_gildong_legal_interpretation_1">Theo Điều 17 Luật Tiêu chuẩn Lao động, thời gian thử việc và cơ cấu lương, phương pháp tính toán phải được ghi rõ.</string>
+    <string name="go_gildong_legal_issue_2">Đảm bảo thời gian nghỉ giải lao</string>
+    <string name="go_gildong_legal_interpretation_2">Theo Điều 54 Luật Tiêu chuẩn Lao động, phải cung cấp ít nhất 30 phút nghỉ giải lao cho 4 giờ làm việc.</string>
+    <string name="go_gildong_legal_issue_3">Nghĩa vụ hỗ trợ lao động nước ngoài</string>
+    <string name="go_gildong_legal_interpretation_3">Theo Luật về Việc làm của Lao động nước ngoài, điều kiện chỗ ở và ăn uống phải được ghi rõ.</string>
+    <string name="go_gildong_deep_analysis">Hợp đồng này đáp ứng hầu hết các yêu cầu cơ bản của Luật Tiêu chuẩn Lao động, nhưng cần chú ý do một số thiếu sót quan trọng.\n\nViệc thiếu ghi thời gian thử việc là vấn đề quan trọng liên quan đến việc giảm lương. Theo Điều 17 Luật Tiêu chuẩn Lao động, thời gian thử việc phải được ghi rõ trong hợp đồng lao động, và việc thiếu sót này có thể khiến người lao động làm việc trong điều kiện khác với mong đợi.\n\nViệc thiếu ghi thời gian nghỉ giải lao ảnh hưởng trực tiếp đến việc bảo vệ quyền lợi của người lao động. Điều 54 Luật Tiêu chuẩn Lao động yêu cầu đảm bảo ít nhất 30 phút nghỉ giải lao cho 4 giờ làm việc trở lên, và nếu không ghi rõ điều này có thể dẫn đến không đủ thời gian nghỉ ngơi trong công việc thực tế.\n\nĐối với lao động nước ngoài, loại chỗ ở và điều kiện chi phí ăn uống là các điều kiện làm việc quan trọng. Theo Luật về Việc làm của Lao động nước ngoài, các điều kiện này phải được ghi rõ, và việc thiếu sót có thể gây ra tranh chấp.\n\nMay mắn là tiêu chuẩn lương tối thiểu được tuân thủ nên không có vi phạm pháp lý nghiêm trọng, nhưng các thiếu sót trên cần được bổ sung để tạo ra hợp đồng hoàn thiện hơn.</string>
+    
+    <!-- Kết quả phân tích - Kwak Deoksik -->
+    <string name="kwak_deoksik_summary">Hợp đồng lao động có khung cơ bản nhưng có thể có vấn đề với việc bảo vệ quyền lợi người lao động do thời gian thử việc và điều kiện trả lương không rõ ràng.</string>
+    <string name="kwak_deoksik_highlight_1">Thời gian thử việc không được ghi rõ</string>
+    <string name="kwak_deoksik_highlight_2">Phương thức trả lương không rõ ràng</string>
+    <string name="kwak_deoksik_highlight_3">Điều kiện nghỉ phép có lương hàng năm không được ghi</string>
+    <string name="kwak_deoksik_legal_issue_1">Quy định về thời gian thử việc</string>
+    <string name="kwak_deoksik_legal_interpretation_1">Theo Điều 2-2 Luật Tiêu chuẩn Lao động, thời gian thử việc không được vượt quá 3 tháng và phải được ghi rõ trong hợp đồng.</string>
+    <string name="kwak_deoksik_legal_issue_2">Phương thức trả lương</string>
+    <string name="kwak_deoksik_legal_interpretation_2">Theo Điều 43 Luật Tiêu chuẩn Lao động, lương phải được trả đầy đủ trực tiếp cho người lao động bằng tiền và phương thức trả phải được ghi rõ.</string>
+    <string name="kwak_deoksik_legal_issue_3">Nghỉ phép có lương hàng năm</string>
+    <string name="kwak_deoksik_legal_interpretation_3">Theo Điều 60 Luật Tiêu chuẩn Lao động, phải cấp 15 ngày nghỉ phép có lương cho người lao động đi làm 80% trở lên trong một năm.</string>
+    <string name="kwak_deoksik_deep_analysis">Hợp đồng này tuân theo cấu trúc cơ bản của Luật Tiêu chuẩn Lao động, nhưng cần chú ý do một số phần không rõ ràng trong các mục quan trọng cho việc bảo vệ quyền lợi người lao động.\n\nViệc không ghi rõ thời gian thử việc là vấn đề nghiêm trọng. Theo Điều 2-2 Luật Tiêu chuẩn Lao động, thời gian thử việc được giới hạn tối đa 3 tháng, và có thể giảm lương trong thời gian này nên phải được ghi rõ trong hợp đồng. Nếu thời gian thử việc không được ghi rõ, người lao động có thể bị giảm lương ngoài dự kiến.\n\nPhương thức trả lương không rõ ràng cũng là vấn đề. Điều 43 Luật Tiêu chuẩn Lao động quy định trả lương đầy đủ trực tiếp cho người lao động bằng tiền, và phương thức trả lương không rõ ràng có thể gây rủi ro nợ lương hoặc khấu trừ bất hợp lý.\n\nViệc không ghi điều kiện nghỉ phép có lương hàng năm ảnh hưởng đến việc đảm bảo quyền nghỉ ngơi của người lao động. Nghỉ phép có lương hàng năm theo Điều 60 Luật Tiêu chuẩn Lao động là quyền cơ bản của người lao động, nên nếu không ghi rõ có thể không sử dụng được nghỉ phép phù hợp trong công việc thực tế.\n\nNhìn chung, hợp đồng này không vi phạm nghiêm trọng tiêu chuẩn pháp lý, nhưng cần bổ sung các mục trên để bảo vệ người lao động.</string>
+    
+    <!-- Kết quả phân tích - Ok Dupal -->
+    <string name="ok_dupal_summary">Hợp đồng lao động có nhiều vi phạm pháp lý nghiêm trọng bao gồm vi phạm lương tối thiểu, thời gian làm việc quá mức và thời gian thử việc không được ghi, cần sửa chữa ngay lập tức.</string>
+    <string name="ok_dupal_highlight_1">Dưới mức lương tối thiểu (8.500 won/giờ)</string>
+    <string name="ok_dupal_highlight_2">Thời gian làm việc quá mức 13 giờ/ngày</string>
+    <string name="ok_dupal_highlight_3">Thời gian thử việc không được ghi</string>
+    <string name="ok_dupal_legal_issue_1">Vi phạm Luật Lương tối thiểu</string>
+    <string name="ok_dupal_legal_interpretation_1">Theo Luật Lương tối thiểu, phải trả lương tối thiểu năm 2024 từ 9.860 won trở lên, nhưng hợp đồng ghi 8.500 won là vi phạm pháp lý.</string>
+    <string name="ok_dupal_legal_issue_2">Vi phạm giới hạn thời gian làm việc</string>
+    <string name="ok_dupal_legal_interpretation_2">Theo Điều 50 Luật Tiêu chuẩn Lao động, không được vượt quá 8 giờ/ngày và 40 giờ/tuần, nhưng làm 13 giờ là vi phạm nghiêm trọng.</string>
+    <string name="ok_dupal_legal_issue_3">Thời gian thử việc không được ghi rõ</string>
+    <string name="ok_dupal_legal_interpretation_3">Theo Điều 2-2 Luật Tiêu chuẩn Lao động, thời gian thử việc phải được ghi rõ và không được vượt quá 3 tháng.</string>
+    <string name="ok_dupal_deep_analysis">Hợp đồng này vi phạm nghiêm trọng Luật Tiêu chuẩn Lao động và ở mức độ nguy hiểm cần sửa chữa ngay lập tức.\n\nVấn đề nghiêm trọng nhất là vi phạm lương tối thiểu. Việc ghi 8.500 won so với lương tối thiểu năm 2024 là 9.860 won là vi phạm rõ ràng Luật Lương tối thiểu, chủ sử dụng lao động có thể bị phạt tù tối đa 3 năm hoặc phạt tiền tối đa 20 triệu won. Người lao động có thể yêu cầu bồi thường thiệt hại cho phần lương chưa được trả.\n\nThời gian làm việc quá mức 13 giờ/ngày cũng là vấn đề rất nghiêm trọng. Điều 50 Luật Tiêu chuẩn Lao động quy định 8 giờ/ngày và 40 giờ/tuần là thời gian làm việc cơ bản, và kể cả làm thêm giờ cũng không được vượt quá 52 giờ/tuần. Làm việc 13 giờ vi phạm lớn điều này và có thể gây rủi ro nghiêm trọng cho sức khỏe và an toàn của người lao động.\n\nViệc không ghi thời gian thử việc là vấn đề quan trọng liên quan đến việc giảm lương. Theo Điều 2-2 Luật Tiêu chuẩn Lao động, thời gian thử việc phải được ghi rõ và không được vượt quá 3 tháng.\n\nNhững vi phạm này có thể gây thiệt hại đặc biệt nghiêm trọng cho lao động nước ngoài và cần báo cáo với cơ quan lao động hoặc hành động pháp lý. Phải sửa chữa ngay lập tức điều kiện hợp đồng theo tiêu chuẩn pháp lý.</string>
+
+</resources>

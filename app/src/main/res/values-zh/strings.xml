@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LawRo</string>
+    <string name="select_language">选择语言</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">登录</string>
+    <string name="login_subtitle">SNS登录</string>
+    <string name="email_hint">邮箱</string>
+    <string name="password_hint">密码</string>
+    <string name="login_button">登录</string>
+    <string name="forgot_password">忘记密码？</string>
+    <string name="signup_prompt">没有账号？</string>
+    <string name="signup_button">注册</string>
+    
+    <!-- Error Messages -->
+    <string name="error_invalid_email_and_password">请重新确认用户名和密码。</string>
+    <string name="error_email_not_found">未注册的邮箱。</string>
+    <string name="error_password_incorrect">密码不匹配。</string>
+
+    <!-- SignUp Screen -->
+    <string name="signup_title">注册</string>
+    <string name="name_hint">姓名</string>
+    <string name="email">邮箱</string>
+    <string name="select">选择</string>
+    <string name="verification_code_hint">验证码</string>
+    <string name="verification_code_6_digits">6位验证码</string>
+    <string name="send_verification_code">发送</string>
+    <string name="confirm_password_hint">确认密码</string>
+    <string name="signup_complete">注册完成！</string>
+    <string name="please_login">请用注册的账号登录。</string>
+    
+    <!-- SignUp Error Messages -->
+    <string name="error_name_required">请输入正确的姓名。</string>
+    <string name="error_invalid_email">邮箱格式不正确。</string>
+    <string name="error_invalid_verification_code">验证码不匹配。</string>
+    <string name="error_password_too_short">密码至少需要8位字符。</string>
+    <string name="error_passwords_not_match">密码不匹配。</string>
+
+    <string name="find_password">找回密码</string>
+    <string name="receive_password_reset_email">接收密码更改邮件</string>
+    <string name="reset_password">重置密码</string>
+    <string name="save">保存</string>
+
+    <string name="new_password">新密码</string>
+    <string name="confirm_new_password">确认新密码</string>
+    <string name="password_change_complete">密码更改完成！</string>
+    <string name="login_with_new_password">请用更改后的密码登录。</string>
+
+    <string name="name_error">请输入姓名。</string>
+    <string name="domain_hint">输入域名</string>
+    <string name="email_format_error">邮箱格式不正确。</string>
+    <string name="verification_code_error">验证码必须是6位数字。</string>
+    <string name="password_length_error">密码必须至少8位字符。</string>
+    <string name="password_mismatch_error">密码不匹配。</string>
+    <string name="signup_failed">注册失败</string>
+    <string name="email_already_exists">该邮箱已被使用。</string>
+
+    <!-- Chatbot Screen -->
+    <string name="chatbot_title">咨询聊天机器人</string>
+    <string name="chatbot_input_hint">请输入消息</string>
+    <string name="chatbot_typing">输入中...</string>
+    <string name="chatbot_error">服务器错误：%1$s</string>
+
+    <!-- Worktime Screen -->
+    <string name="worktime_measurement">工作时间测量</string>
+    <string name="company_name_hint">请输入公司名称。</string>
+    <string name="search_failed">搜索失败</string>
+    <string name="location_not_found">找不到输入的位置。\n请输入准确的地址或公司名称。</string>
+    <string name="work_location">工作地点</string>
+    <string name="not_registered">未注册</string>
+    <string name="workplace">工作场所</string>
+    <string name="road_name">道路名</string>
+    <string name="register_workplace_question">是否注册为工作场所？</string>
+    <string name="register">注册</string>
+    <string name="cancel">取消</string>
+    <string name="work_location_not_found">找不到工作地点</string>
+    <string name="search_location_first">请先搜索并注册工作地点。</string>
+    <string name="register_work_location">注册工作地点</string>
+    <string name="change_work_location">更改工作地点</string>
+    <string name="start_measurement">开始测量</string>
+    <string name="stop_measurement">停止测量</string>
+    <string name="pause_measurement">暂停</string>
+    <string name="resume_measurement">继续</string>
+    <string name="stop_not_allowed_title">无法停止测量</string>
+    <string name="stop_not_allowed_message">只能在工作场所停止测量。</string>
+    <string name="start_not_allowed_title">无法开始测量</string>
+    <string name="start_not_allowed_message">只能在工作场所开始测量。</string>
+    <string name="working_at_location">📍 正在工作场所测量</string>
+    <string name="working_outside_location">⚠️ 正在工作场所外测量</string>
+    <string name="simulate_leave_workplace">🚶 离开工作场所（模拟）</string>
+    <string name="simulate_return_workplace">🏢 返回工作场所（模拟）</string>
+    
+    <!-- Settings -->
+    <string name="worktime_records">工作时间记录</string>
+    
+    <!-- Worktime Records Screen -->
+    <string name="worktime_summary">📊 工作时间摘要</string>
+    <string name="total_work_days">总工作日</string>
+    <string name="days_unit">天</string>
+    <string name="total_work_hours">总工作时间</string>
+    <string name="hours_unit">小时</string>
+    <string name="daily_average">日平均</string>
+    <string name="delete">删除</string>
+    <string name="gps_violation_prefix">脱离工作场所：</string>
+    <string name="delete_record_title">删除记录</string>
+    <string name="delete_record_message">是否删除%s工作记录？</string>
+
+    <!-- Analyze Screen -->
+    <string name="analyze_title">劳动合同分析</string>
+    <string name="analyze_description">自动分析上传的合同\n检查是否违反劳动标准法。</string>
+    <string name="photo_upload">上传照片</string>
+    <string name="photo_capture">拍照</string>
+    <string name="analyzing_document">正在分析文档...</string>
+    <string name="uploading_and_analyzing">正在上传和分析文档...</string>
+
+    <!-- Analysis Result Screen -->
+    <string name="detailed_analysis">详细分析</string>
+    <string name="analysis_result">分析结果</string>
+    <string name="view_result">查看结果</string>
+    <string name="check_result">确认结果</string>
+    <string name="save_result">保存结果</string>
+    <string name="chatbot_inquiry">聊天机器人咨询</string>
+    <string name="legal_interpretation">法律解释</string>
+    <string name="comprehensive_analysis">综合分析</string>
+    <string name="key_issues">主要问题</string>
+    <string name="save_analysis_result">保存分析结果</string>
+    <string name="enter_title_to_save">请输入要保存分析结果的标题。</string>
+    <string name="title">标题</string>
+    <string name="title_example">例：2025年A公司劳动合同</string>
+
+    <!-- Contract Editing Screen -->
+    <string name="edit_contract_description">以下是从照片中自动识别的劳动合同内容。\n如有错误请直接修改。</string>
+    <string name="contract_saved_successfully">合同保存成功。</string>
+    <string name="save_failed">保存失败：</string>
+    <string name="analysis_completed">合同分析完成。</string>
+    <string name="analysis_failed">分析失败：</string>
+    <string name="login_info_missing">缺少登录信息。</string>
+    <string name="no_contract_info">没有分析的合同信息。</string>
+    <string name="analysis_ui_test">分析结果UI测试</string>
+
+    <!-- Contract Form Fields -->
+    <string name="employer_info">雇主信息</string>
+    <string name="employee_info">劳动者信息</string>
+    <string name="work_conditions">劳动条件</string>
+    <string name="job_details">工作内容</string>
+    <string name="working_hours">工作时间</string>
+    <string name="wage_info">工资信息</string>
+    <string name="accommodation_meals">住宿和用餐提供</string>
+    <string name="holidays_vacations">节假日和休假</string>
+    <string name="payment_method">支付方式</string>
+    <string name="four_major_insurances">四大保险</string>
+    <string name="other_clauses">其他条款</string>
+    <string name="signature_info">签名信息</string>
+    <string name="saving">保存中...</string>
+    <string name="analyzing">分析中...</string>
+    <string name="edit_complete">修改完成</string>
+
+    <!-- Form Field Labels -->
+    <string name="company_name">公司名称</string>
+    <string name="phone_number">电话号码</string>
+    <string name="address">地址</string>
+    <string name="representative_name">代表姓名</string>
+    <string name="business_registration_number">营业执照号码</string>
+    <string name="name">姓名</string>
+    <string name="birth_date">出生日期</string>
+    <string name="home_address">家庭住址</string>
+    <string name="contract_period">合同期间</string>
+    <string name="workplace_location">工作地点</string>
+    <string name="work_start_date">工作开始日期</string>
+    <string name="work_end_date">工作结束日期</string>
+    <string name="probation_status">试用期状况</string>
+    <string name="probation_period">试用期</string>
+    <string name="industry">行业</string>
+    <string name="business_content">业务内容</string>
+    <string name="job_content">工作内容</string>
+    <string name="start_time">上班时间</string>
+    <string name="end_time">下班时间</string>
+    <string name="overtime_hours">加班时间</string>
+    <string name="shift_work">轮班工作</string>
+    <string name="break_time_minutes">休息时间（分钟）</string>
+    <string name="monthly_total">月总额</string>
+    <string name="base_salary">基本工资</string>
+    <string name="bonus">奖金</string>
+    <string name="probation_salary">试用期工资</string>
+    <string name="extra_pay_rate">加班/夜班/节假日加班费率</string>
+    <string name="accommodation_provided">是否提供住宿</string>
+    <string name="accommodation_type">住宿类型</string>
+    <string name="employee_housing_cost">劳动者住宿费用</string>
+    <string name="meals_provided">是否提供用餐</string>
+    <string name="meal_types">用餐种类</string>
+    <string name="employee_meal_cost">劳动者用餐费用</string>
+    <string name="sunday">星期日</string>
+    <string name="public_holidays_paid">公共节假日（带薪）</string>
+    <string name="public_holidays_unpaid">公共节假日（无薪）</string>
+    <string name="saturday">星期六</string>
+    <string name="payment_day">发薪日</string>
+    <string name="payment_method_type">支付方式</string>
+    <string name="employer_controls_account">雇主是否管理账户</string>
+    <string name="health_insurance">健康保险</string>
+    <string name="national_pension">国民年金</string>
+    <string name="employment_insurance">雇佣保险</string>
+    <string name="industrial_accident_insurance">工伤保险</string>
+    
+    <!-- Chatbot Auto Query Messages -->
+    <string name="analysis_major_issues">🚨 发现的主要问题：</string>
+    <string name="specific_questions_about_issues">💼 针对各问题的具体询问：</string>
+    <string name="issue_number_format">【第%d个问题】 %s</string>
+    <string name="ask_for_specific_damage_solution">→ 请告诉我这个问题造成的具体损害和解决方法。</string>
+    <string name="request_practical_advice">请给予详细实用的建议。谢谢！</string>
+    <string name="contract_rules_compliance">合同和就业规则遵守</string>
+    <string name="other_terms">其他条件</string>
+    <string name="employer_signature">雇主签名</string>
+    <string name="employee_signature">劳动者签名</string>
+    <string name="signature_date">签名日期</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    
+    <!-- Additional missing fields -->
+    <string name="shift_work_status">轮班工作状况</string>
+    <string name="break_time">休息时间</string>
+    <string name="total_payment">总支付额</string>
+    <string name="allowance">津贴</string>
+    <string name="accommodation_and_meal">住宿和用餐</string>
+    <string name="housing_provided">提供住宿</string>
+    <string name="housing_type">住宿类型</string>
+    <string name="meal_provided">提供用餐</string>
+    <string name="meal_type">用餐类型</string>
+    <string name="holiday_and_vacation">节假日和休假</string>
+    <string name="public_holiday_paid">公共节假日（带薪）</string>
+    <string name="public_holiday_unpaid">公共节假日（无薪）</string>
+    <string name="payday">发薪日</string>
+    <string name="method">方法</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">设置</string>
+    <string name="account_section">账户</string>
+    <string name="my_info">我的信息</string>
+    <string name="change_password">更改密码</string>
+    <string name="change_language">更改语言</string>
+    <string name="change_theme">更改应用颜色</string>
+    <string name="info_section">信息</string>
+    <string name="app_description">应用说明</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="logout">退出登录</string>
+    
+    <!-- App Info Screen -->
+    <string name="app_intro_title">应用介绍</string>
+    <string name="app_intro_subtitle">帮助外国劳动者理解合同和保护权益的AI合同分析应用</string>
+    <string name="app_intro_description">在韩国工作的外国劳动者中，相当数量的人不签订合同，或者即使签订了也无法理解内容，因此遭受工资拖欠、不当解雇、长时间劳动等严重的权益侵害。\n\nLawRo是一款利用AI自动分析劳动合同的应用，帮助外国劳动者用母语理解自己的合同内容，识别违规行为，自主保护自己的权益。</string>
+    <string name="main_features">主要功能</string>
+    <string name="feature_contract_analysis">合同自动分析</string>
+    <string name="feature_contract_analysis_desc">通过OCR识别劳动合同，检查必需项目遗漏情况和法律违规可能性</string>
+    <string name="feature_multilingual_support">母语法律解释提供</string>
+    <string name="feature_multilingual_support_desc">将合同内容翻译成用户母语，便于理解和说明</string>
+    <string name="feature_contract_history">合同历史管理</string>
+    <string name="feature_contract_history_desc">数字化保存签订的合同，可用于纠纷或合同续签</string>
+    <string name="feature_chatbot_consultation">劳动/法律聊天机器人咨询</string>
+    <string name="feature_chatbot_consultation_desc">实时咨询劳动条件、法律违规等疑问</string>
+    <string name="feature_worktime_tracking">工作时间记录和工资计算</string>
+    <string name="feature_worktime_tracking_desc">自动记录劳动时间，支持准确的工资计算，包括加班费</string>
+    <string name="feature_multilingual_ui">多语言支持UI</string>
+    <string name="feature_multilingual_ui_desc">即使不熟悉韩语，任何人都可以轻松使用的直观界面</string>
+    <string name="developer_info">开发信息</string>
+    <string name="development_team">开发团队</string>
+    <string name="team_name">TABA 8th，团队3</string>
+    <string name="supported_languages">支持语言</string>
+    <string name="supported_languages_flags">🇰🇷 🇺🇸 🇯🇵 🇨🇳 🇻🇳 🇹🇭</string>
+    <string name="copyright">© 2025 TABA 8th，团队3，保留所有权利。</string>
+    
+    <!-- Change Language Screen -->
+    <string name="language_change_complete">语言更改完成</string>
+    <string name="please_login_again">请重新登录</string>
+    <string name="select_button">选择</string>
+    <string name="english_korean">英语</string>
+    <string name="japanese_korean">日语</string>
+    <string name="chinese_korean">中文</string>
+    <string name="vietnamese_korean">越南语</string>
+    <string name="thai_korean">泰语</string>
+    <string name="korean_korean">韩语</string>
+    
+    <!-- My Info Screen -->
+    <string name="my_info_title">我的信息</string>
+    <string name="loading_user_info">正在加载用户信息...</string>
+    <string name="cannot_load_info">无法加载信息</string>
+    <string name="unknown_error">发生未知错误</string>
+    <string name="profile">个人资料</string>
+    <string name="user_id_label">用户ID</string>
+    <string name="join_date">加入日期</string>
+    <string name="user_id_prefix">ID：%s</string>
+    <string name="cannot_get_profile_info">无法获取个人资料信息</string>
+    <string name="server_error_occurred">发生服务器错误（%d）</string>
+    <string name="network_error_occurred">发生网络错误</string>
+    
+    <!-- Common -->
+    <string name="back">返回</string>
+    <string name="loading">加载中...</string>
+    <string name="error">错误</string>
+    <string name="success">成功</string>
+    <string name="completed">完成</string>
+    <string name="failed">失败</string>
+
+    <!-- History Screen -->
+    <string name="history_title">过去分析记录</string>
+    <string name="search_hint">请输入搜索词</string>
+    <string name="search">搜索</string>
+    <string name="filter_all">全部搜索</string>
+    <string name="filter_danger">危险搜索</string>
+    <string name="more_filters">更多筛选</string>
+    <string name="year_suffix">年</string>
+    <string name="analysis_date">分析日期:</string>
+    <string name="filter_options">筛选选项</string>
+    <string name="filter_all_simple">全部</string>
+    <string name="filter_safe">安全</string>
+    <string name="filter_warning">警告</string>
+    <string name="filter_danger_simple">危险</string>
+    <string name="filter_date_asc">日期升序</string>
+    <string name="filter_date_desc">日期降序</string>
+    <string name="confirm">确认</string>
+    
+    <!-- Contract Detail Screen -->
+    <string name="detail_record">详细记录</string>
+    <string name="analysis_date_label">分析日期:</string>
+    <string name="export_pdf">导出PDF</string>
+
+    <!-- Home Screen -->
+    <string name="home_welcome_message">您想使用哪种服务？</string>
+    <string name="home_welcome_subtitle">请选择您需要的功能</string>
+    <string name="home_feature_contract_analysis">合同\n分析</string>
+    <string name="home_feature_contract_analysis_desc">智能分析\n劳动合同</string>
+    <string name="home_feature_record_check">记录查看</string>
+    <string name="home_feature_record_check_desc">管理我的合同\n和工作记录</string>
+    <string name="home_feature_worktime">工作时间\n测量</string>
+    <string name="home_feature_worktime_desc">基于GPS的\n精确考勤管理</string>
+    <string name="home_feature_ai_chatbot">AI 聊天机器人</string>
+    <string name="home_feature_ai_chatbot_desc">智能\n法律咨询</string>
+    <string name="home_tips_title">💡 实用小贴士</string>
+    <string name="home_tips_content">• 测量工作时间时请准确注册GPS位置\n• AI聊天机器人仅供法律参考使用\n• 建议专家审查合同分析结果\n• AI提供的服务不具备法律效力。</string>
+    <string name="settings_description">设置</string>
+
+    <!-- Risk Level (위험도) -->
+    <string name="risk_level_safe">安全</string>
+    <string name="risk_level_warning">警告</string>
+    <string name="risk_level_danger">危险</string>
+    
+    <!-- Analysis Result Types -->
+    <string name="issues_without_problems">无问题条款</string>
+    <string name="issues_requiring_attention">需要注意的条款</string>
+    <string name="dangerous_risk_issues">危险因素确认条款</string>
+    
+    <!-- Contract -->
+    <string name="default_contract_title">勞動合同</string>
+    
+    <!-- Privacy Policy Screen -->
+    <string name="privacy_policy_title">隱私政策</string>
+    <string name="privacy_policy_last_updated">最後更新：2025年6月20日</string>
+    <string name="section_1_title">1. 個人資料收集及使用目的</string>
+    <string name="section_1_content">LawRo為以下目的處理個人資料：\n\n• 會員註冊及管理\n• 合約分析服務提供\n• 客戶諮詢及投訴處理\n• 服務改善及統計分析</string>
+    <string name="section_2_title">2. 收集的個人資料項目</string>
+    <string name="section_2_content">• 必要資料：姓名、電子郵件地址、密碼\n• 選擇性資料：工作地點位置資訊\n• 自動收集資料：服務使用記錄、存取日誌</string>
+    <string name="section_3_title">3. 個人資料處理及保存期間</string>
+    <string name="section_3_content">• 直到會員退出或法令規定的保存期間\n• 合約分析記錄：3年\n• 工作時間記錄：3年</string>
+    <string name="section_4_title">4. 個人資料第三方提供</string>
+    <string name="section_4_content">公司原則上不會將用戶的個人資料提供給外部。但在法令規定或調查機關要求的情況下，可能會依照相關法令提供個人資料。</string>
+    <string name="section_5_title">5. 個人資料處理委託</string>
+    <string name="section_5_content">公司為提供服務，將個人資料處理業務委託如下：\n\n• AI分析服務：OpenAI\n• 雲端服務：AWS</string>
+    <string name="section_6_title">5. 用戶權利</string>
+    <string name="section_6_content">用戶隨時可以行使以下權利：\n\n• 要求通知個人資料處理狀況\n• 要求查閱個人資料\n• 要求更正、刪除個人資料\n• 要求停止個人資料處理</string>
+    <string name="section_7_title">6. 個人資料保護負責人</string>
+    <string name="section_7_content">個人資料保護負責人\n• 姓名：TABA 8期 第3組</string>
+    <string name="section_8_title">7. 隱私政策變更</string>
+    <string name="section_8_content">本隱私政策如因法令、政策或安全技術變更而有內容增刪及修改時，將於變更事項實施前7日起透過公告通知。</string>
+
+    <!-- ContractViewModel Messages -->
+    <string name="server_connection_failed">服务器连接失败: HTTP %1$s</string>
+    <string name="server_unavailable">服务器连接不可用: %1$s</string>
+    <string name="server_failure_response">收到服务器失败响应。</string>
+    <string name="network_error">网络错误: %1$s</string>
+    <string name="contract_analysis_saved_successfully">合同分析结果已成功保存</string>
+    <string name="analysis_complete">分析完成</string>
+    <string name="analysis_failure">分析失败</string>
+    <string name="contract_analysis_result">劳动合同分析结果</string>
+    
+    <!-- Analysis Dummy Data -->
+    <string name="analysis_aware">分析</string>
+    <string name="analysis_summary">合同满足基本要求，但在工资计算和休息时间等重要项目上存在缺失，需要注意。</string>
+    <string name="highlight_wage_component_missing">工资构成项目未填写</string>
+    <string name="highlight_break_time_unclear">休息时间不明确</string>
+    <string name="highlight_probation_period_missing">试用期未填写</string>
+    
+    <!-- Legal Interpretations -->
+    <string name="legal_interpretation_wage_component">根据劳动基准法第17条，工资的构成项目、计算方法、支付方法必须明确记载，违反者雇主可能成为整改命令的对象。</string>
+    <string name="legal_interpretation_break_time">劳动基准法第54条规定，工作4小时以上必须给予30分钟以上的休息时间，该时间必须在工作时间内自由使用。合同中没有明确记载可能发生纠纷。</string>
+    <string name="legal_interpretation_probation_period">试用期影响工资扣减，因此必须明确记载，遗漏可能侵犯劳动者权利。</string>
+    
+    <!-- Deep Analysis -->
+    <string name="deep_analysis_text">该合同明确了劳动者的基本权利和义务，但在几个重要项目上存在遗漏，需要注意。特别是工资构成项目未明确，这使得劳动者无法清楚了解实际收到的工资构成。这可能成为法律纠纷的原因，特别是对于外国劳动者来说，语言障碍可能导致误解的风险很大。此外，休息时间未明确，劳动者是否能够充分休息不明确。这可能直接影响劳动者的健康和工作环境质量。试用期的遗漏影响工资扣减，如果不明确记载可能侵犯劳动者权利。该合同符合最低工资标准，但由于这些遗漏事项，劳动者的权利可能得不到充分保护。因此，在制作合同时需要使用标准劳动合同格式，并对各项目进行反映实际劳动条件的具体记载。特别是为外国人提供多语言并记和视觉说明，将有助于预防法律纠纷。</string>
+    
+    <!-- Dummy Analysis Results -->
+    <string name="dummy_analysis_result_1">通过劳动者的休假制度和工资等，雇主正在履行与劳动基准法相关的角色</string>
+    <string name="dummy_analysis_result_2">本合同作为一般劳动合同可以在友好关系中获得有利权利</string>
+    <string name="dummy_analysis_result_3">管理层在日常应用中，在工作时间方面的误差人事数值较大</string>
+    
+    <!-- Contract titles and dates -->
+    <string name="dummy_contract_title">2025年劳动合同</string>
+    <string name="dummy_analysis_date">2025.02.01</string>
+
+    <!-- 分析结果 - 高吉东 -->
+    <string name="go_gildong_summary">劳动合同存在试用期及工资未记载、休息时间未记载等多个问题，但遵守最低工资且基本劳动条件已明示，需要注意。</string>
+    <string name="go_gildong_highlight_1">试用期及工资未记载</string>
+    <string name="go_gildong_highlight_2">休息时间未记载</string>
+    <string name="go_gildong_highlight_3">外国劳动者的住宿类型及餐费未记载</string>
+    <string name="go_gildong_legal_issue_1">试用期及工资明示义务</string>
+    <string name="go_gildong_legal_interpretation_1">根据劳动基准法第17条，试用期及工资构成、计算方法必须明确记载。</string>
+    <string name="go_gildong_legal_issue_2">休息时间保障</string>
+    <string name="go_gildong_legal_interpretation_2">根据劳动基准法第54条，工作4小时时必须给予30分钟以上的休息时间。</string>
+    <string name="go_gildong_legal_issue_3">外国劳动者支援义务</string>
+    <string name="go_gildong_legal_interpretation_3">根据外国人劳动者雇佣等相关法律，必须明示住宿及饮食条件。</string>
+    <string name="go_gildong_deep_analysis">该合同基本满足劳动基准法的基本要求，但由于几个重要的遗漏事项需要注意。\n\n试用期的未记载是与工资减额相关的重要事项。根据劳动基准法第17条，试用期应在劳动合同中明示，遗漏此项可能导致劳动者在与预期不同的条件下工作。\n\n休息时间的未记载直接影响劳动者权益保护。劳动基准法第54条规定工作4小时以上时应保障30分钟以上的休息时间，不明示此项可能导致实际工作中无法保障充分的休息。\n\n对于外国劳动者，住宿类型和餐费条件属于重要的劳动条件。根据外国人劳动者雇佣等相关法律，需要明确记载这些条件，遗漏时可能成为争议的原因。\n\n幸运的是遵守了最低工资标准，因此没有严重的法律违反，但需要补充上述遗漏事项以制作更完整的合同。</string>
+    
+    <!-- 分析结果 - 郭德植 -->
+    <string name="kwak_deoksik_summary">劳动合同具备基本框架，但试用期和工资支付条件不明确，可能存在劳动者权益保护问题。</string>
+    <string name="kwak_deoksik_highlight_1">试用期未明示</string>
+    <string name="kwak_deoksik_highlight_2">工资支付方法不明确</string>
+    <string name="kwak_deoksik_highlight_3">年休带薪假期条件未记载</string>
+    <string name="kwak_deoksik_legal_issue_1">试用期相关规定</string>
+    <string name="kwak_deoksik_legal_interpretation_1">根据劳动基准法第2条之2，试用期不得超过3个月，且必须在合同中明示。</string>
+    <string name="kwak_deoksik_legal_issue_2">工资支付方法</string>
+    <string name="kwak_deoksik_legal_interpretation_2">根据劳动基准法第43条，工资应以货币直接全额支付给劳动者，支付方法必须明确记载。</string>
+    <string name="kwak_deoksik_legal_issue_3">年休带薪假期</string>
+    <string name="kwak_deoksik_legal_interpretation_3">根据劳动基准法第60条，应给予一年内出勤80%以上的劳动者15天带薪假期。</string>
+    <string name="kwak_deoksik_deep_analysis">该合同遵循劳动基准法的基本结构，但在劳动者权益保护的几个重要项目中存在不明确的部分，需要注意。\n\n试用期的未明示是严重问题。根据劳动基准法第2条之2，试用期最长限制为3个月，期间可以减薪，因此必须在合同中明示。如果试用期未明示，劳动者可能遭受意外的减薪。\n\n工资支付方法的不明确性也成为问题。劳动基准法第43条规定以货币直接全额支付给劳动者，支付方法不明确可能存在拖欠工资或不当扣除的风险。\n\n年休带薪假期条件的未记载影响劳动者休息权保障。根据劳动基准法第60条的年休带薪假期是劳动者的基本权利，不明示此项可能在实际工作中无法使用适当的假期。\n\n总体而言，该合同没有严重违反法律标准，但为了保护劳动者需要补充上述项目。</string>
+    
+    <!-- 分析结果 - 玉斗八 -->
+    <string name="ok_dupal_summary">劳动合同发现最低工资违反、过度劳动时间、试用期未记载等多项严重法律违反事项，需要立即修正。</string>
+    <string name="ok_dupal_highlight_1">低于最低工资（时薪8,500韩元）</string>
+    <string name="ok_dupal_highlight_2">一日13小时的过度劳动时间</string>
+    <string name="ok_dupal_highlight_3">试用期未记载</string>
+    <string name="ok_dupal_legal_issue_1">最低工资法违反</string>
+    <string name="ok_dupal_legal_interpretation_1">根据最低工资法，应支付2024年最低工资9,860韩元以上，但合同明示8,500韩元属于法律违反。</string>
+    <string name="ok_dupal_legal_issue_2">劳动时间上限违反</string>
+    <string name="ok_dupal_legal_interpretation_2">根据劳动基准法第50条，不得超过一日8小时、一周40小时，但13小时劳动是严重违反。</string>
+    <string name="ok_dupal_legal_issue_3">试用期未明示</string>
+    <string name="ok_dupal_legal_interpretation_3">根据劳动基准法第2条之2，试用期必须明示，且不得超过最多3个月。</string>
+    <string name="ok_dupal_deep_analysis">该合同严重违反劳动基准法，处于需要立即修正的危险水平。\n\n最严重的问题是最低工资违反。与2024年最低工资9,860韩元相比明示8,500韩元是明显的最低工资法违反，雇主可能面临最多3年以下有期徒刑或2千万韩元以下罚金。劳动者可以就未支付工资要求损害赔偿。\n\n一日13小时的过度劳动时间也是非常严重的问题。劳动基准法第50条规定一日8小时、一周40小时为基本劳动时间，即使包含延长劳动也不得超过一周52小时。13小时劳动严重违反此规定，可能对劳动者的健康和安全造成严重风险。\n\n试用期的未记载是与减薪相关的重要事项。根据劳动基准法第2条之2，试用期必须明示，且不得超过3个月。\n\n这些违反事项可能对外国劳动者造成特别严重的损害，需要向劳动部举报或采取法律措施。必须立即将合同条件修正为符合法律标准。</string>
+
+</resources> 

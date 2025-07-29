@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LawRo</string>
+    <string name="select_language">言語選択</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">ログイン</string>
+    <string name="login_subtitle">SNSログイン</string>
+    <string name="email_hint">メールアドレス</string>
+    <string name="password_hint">パスワード</string>
+    <string name="login_button">ログイン</string>
+    <string name="forgot_password">パスワードをお忘れですか？</string>
+    <string name="signup_prompt">アカウントをお持ちでないですか？</string>
+    <string name="signup_button">会員登録</string>
+    
+    <!-- Error Messages -->
+    <string name="error_invalid_email_and_password">IDとパスワードを再度確認してください。</string>
+    <string name="error_email_not_found">登録されていないメールアドレスです。</string>
+    <string name="error_password_incorrect">パスワードが一致しません。</string>
+
+    <!-- SignUp Screen -->
+    <string name="signup_title">会員登録</string>
+    <string name="name_hint">名前</string>
+    <string name="email">メールアドレス</string>
+    <string name="select">選択</string>
+    <string name="verification_code_hint">認証番号</string>
+    <string name="verification_code_6_digits">認証番号6桁</string>
+    <string name="send_verification_code">送信</string>
+    <string name="confirm_password_hint">パスワード確認</string>
+    <string name="signup_complete">会員登録完了！</string>
+    <string name="please_login">登録されたIDでログインしてください。</string>
+    
+    <!-- SignUp Error Messages -->
+    <string name="error_name_required">正しい名前を入力してください。</string>
+    <string name="error_invalid_email">メールアドレス形式が正しくありません。</string>
+    <string name="error_invalid_verification_code">認証番号が一致しません。</string>
+    <string name="error_password_too_short">パスワードは8文字以上である必要があります。</string>
+    <string name="error_passwords_not_match">パスワードが一致しません。</string>
+
+    <string name="find_password">パスワード検索</string>
+    <string name="receive_password_reset_email">パスワード変更メールを受信</string>
+    <string name="reset_password">パスワード再設定</string>
+    <string name="save">保存</string>
+
+    <string name="new_password">新しいパスワード</string>
+    <string name="confirm_new_password">新しいパスワード確認</string>
+    <string name="password_change_complete">パスワード変更完了！</string>
+    <string name="login_with_new_password">変更されたパスワードでログインしてください。</string>
+
+    <string name="name_error">名前を入力してください。</string>
+    <string name="domain_hint">ドメイン入力</string>
+    <string name="email_format_error">正しいメールアドレス形式ではありません。</string>
+    <string name="verification_code_error">認証番号は6桁である必要があります。</string>
+    <string name="password_length_error">パスワードは8文字以上である必要があります。</string>
+    <string name="password_mismatch_error">パスワードが一致しません。</string>
+    <string name="signup_failed">会員登録失敗</string>
+    <string name="email_already_exists">すでに使用されているメールアドレスです。</string>
+
+    <!-- Chatbot Screen -->
+    <string name="chatbot_title">相談チャットボット</string>
+    <string name="chatbot_input_hint">メッセージを入力してください</string>
+    <string name="chatbot_typing">入力中...</string>
+    <string name="chatbot_error">サーバーエラーが発生しました: %1$s</string>
+
+    <!-- Worktime Screen -->
+    <string name="worktime_measurement">勤務時間測定</string>
+    <string name="company_name_hint">会社名を入力してください。</string>
+    <string name="search_failed">検索失敗</string>
+    <string name="location_not_found">入力された場所が見つかりません。\n正確な住所または会社名を入力してください。</string>
+    <string name="work_location">勤務場所</string>
+    <string name="not_registered">登録されていません</string>
+    <string name="workplace">勤務地</string>
+    <string name="road_name">道路名</string>
+    <string name="register_workplace_question">勤務地として登録しますか？</string>
+    <string name="register">登録</string>
+    <string name="cancel">キャンセル</string>
+    <string name="work_location_not_found">勤務場所が見つかりません</string>
+    <string name="search_location_first">まず勤務場所を検索して登録してください。</string>
+    <string name="register_work_location">勤務場所登録</string>
+    <string name="change_work_location">勤務場所変更</string>
+    <string name="start_measurement">測定開始</string>
+    <string name="stop_measurement">測定停止</string>
+    <string name="pause_measurement">一時停止</string>
+    <string name="resume_measurement">再開</string>
+    <string name="stop_not_allowed_title">測定停止不可</string>
+    <string name="stop_not_allowed_message">勤務地でのみ測定を停止できます。</string>
+    <string name="start_not_allowed_title">測定開始不可</string>
+    <string name="start_not_allowed_message">勤務地でのみ測定を開始できます。</string>
+    <string name="working_at_location">📍 勤務地で測定中</string>
+    <string name="working_outside_location">⚠️ 勤務地外で測定中</string>
+    <string name="simulate_leave_workplace">🚶 勤務地外へ移動（シミュレーション）</string>
+    <string name="simulate_return_workplace">🏢 勤務地へ復帰（シミュレーション）</string>
+    
+    <!-- Settings -->
+    <string name="worktime_records">勤務時間記録</string>
+    
+    <!-- Worktime Records Screen -->
+    <string name="worktime_summary">📊 勤務時間要約</string>
+    <string name="total_work_days">総勤務日</string>
+    <string name="days_unit">日</string>
+    <string name="total_work_hours">総勤務時間</string>
+    <string name="hours_unit">時間</string>
+    <string name="daily_average">日平均</string>
+    <string name="completed">完了</string>
+    <string name="delete">削除</string>
+    <string name="gps_violation_prefix">勤務地逸脱: </string>
+    <string name="delete_record_title">記録削除</string>
+    <string name="delete_record_message">%s 勤務記録を削除しますか？</string>
+
+    <!-- Analyze Screen -->
+    <string name="analyze_title">労働契約書分析</string>
+    <string name="analyze_description">アップロードされた契約書を自動的に分析して\n労働基準法違反の有無を確認します。</string>
+    <string name="photo_upload">写真アップロード</string>
+    <string name="photo_capture">写真撮影</string>
+    <string name="analyzing_document">文書を分析中です...</string>
+    <string name="uploading_and_analyzing">アップロードおよび分析中です...</string>
+
+    <!-- Analysis Result Screen -->
+    <string name="detailed_analysis">詳細分析</string>
+    <string name="analysis_result">分析結果</string>
+    <string name="view_result">結果確認</string>
+    <string name="check_result">結果確認</string>
+    <string name="save_result">結果保存</string>
+    <string name="chatbot_inquiry">チャットボット問い合わせ</string>
+    <string name="legal_interpretation">法的解釈</string>
+    <string name="comprehensive_analysis">総合分析</string>
+    <string name="key_issues">主要問題点</string>
+    <string name="save_analysis_result">分析結果保存</string>
+    <string name="enter_title_to_save">分析結果を保存するタイトルを入力してください。</string>
+    <string name="title">タイトル</string>
+    <string name="title_example">例：2025年A会社労働契約書</string>
+
+    <!-- Contract Editing Screen -->
+    <string name="edit_contract_description">以下は写真から自動的に認識された労働契約書の内容です。\n間違った部分があれば直接修正してください。</string>
+    <string name="contract_saved_successfully">契約書が正常に保存されました。</string>
+    <string name="save_failed">保存失敗: </string>
+    <string name="analysis_completed">契約書分析が完了しました。</string>
+    <string name="analysis_failed">分析失敗: </string>
+    <string name="login_info_missing">ログイン情報がありません。</string>
+    <string name="no_contract_info">分析された契約情報がありません。</string>
+    <string name="analysis_ui_test">分析結果UIテスト</string>
+
+    <!-- Contract Form Fields -->
+    <string name="employer_info">事業主情報</string>
+    <string name="employee_info">労働者情報</string>
+    <string name="work_conditions">労働条件</string>
+    <string name="job_details">業務内容</string>
+    <string name="working_hours">勤務時間</string>
+    <string name="wage_info">賃金情報</string>
+    <string name="accommodation_meals">宿泊および食事提供</string>
+    <string name="holidays_vacations">休日および休暇</string>
+    <string name="payment_method">支給方式</string>
+    <string name="four_major_insurances">4大保険</string>
+    <string name="other_clauses">その他条項</string>
+    <string name="signature_info">署名情報</string>
+    <string name="saving">保存中...</string>
+    <string name="analyzing">分析中...</string>
+    <string name="edit_complete">修正完了</string>
+
+    <!-- Form Field Labels -->
+    <string name="company_name">会社名</string>
+    <string name="phone_number">電話番号</string>
+    <string name="address">所在地</string>
+    <string name="representative_name">代表者名</string>
+    <string name="business_registration_number">事業者登録番号</string>
+    <string name="name">名前</string>
+    <string name="birth_date">生年月日</string>
+    <string name="home_address">住所</string>
+    <string name="contract_period">契約期間</string>
+    <string name="workplace_location">勤務地</string>
+    <string name="work_start_date">勤務開始日</string>
+    <string name="work_end_date">勤務終了日</string>
+    <string name="probation_status">試用の有無</string>
+    <string name="probation_period">試用期間</string>
+    <string name="industry">業種</string>
+    <string name="business_content">事業内容</string>
+    <string name="job_content">職務内容</string>
+    <string name="start_time">出勤時間</string>
+    <string name="end_time">退勤時間</string>
+    <string name="overtime_hours">延長労働時間</string>
+    <string name="shift_work">交代勤務の有無</string>
+    <string name="break_time_minutes">休憩時間（分）</string>
+    <string name="monthly_total">総支給額</string>
+    <string name="base_salary">基本給</string>
+    <string name="bonus">賞与金</string>
+    <string name="probation_salary">試用期間給与</string>
+    <string name="extra_pay_rate">延長/夜間/休日加算率</string>
+    <string name="accommodation_provided">宿泊提供の有無</string>
+    <string name="accommodation_type">宿泊タイプ</string>
+    <string name="employee_housing_cost">労働者宿泊費用</string>
+    <string name="meals_provided">食事提供の有無</string>
+    <string name="meal_types">食事種類</string>
+    <string name="employee_meal_cost">労働者食事費用</string>
+    <string name="sunday">日曜日</string>
+    <string name="public_holidays_paid">祝日（有給）</string>
+    <string name="public_holidays_unpaid">祝日（無給）</string>
+    <string name="saturday">土曜日</string>
+    <string name="payment_day">支給日</string>
+    <string name="payment_method_type">支給方法</string>
+    <string name="employer_controls_account">事業主口座管理の有無</string>
+    <string name="health_insurance">健康保険</string>
+    <string name="national_pension">国民年金</string>
+    <string name="employment_insurance">雇用保険</string>
+    <string name="industrial_accident_insurance">労災保険</string>
+    
+    <!-- Chatbot Auto Query Messages -->
+    <string name="analysis_major_issues">🚨 発見された主要な問題点：</string>
+    <string name="specific_questions_about_issues">💼 各問題点について具体的にお聞きします：</string>
+    <string name="issue_number_format">【%d番の問題】 %s</string>
+    <string name="ask_for_specific_damage_solution">→ この問題による具体的な被害と解決方法を教えてください。</string>
+    <string name="request_practical_advice">詳細で実用的なアドバイスをお願いします。ありがとうございます！</string>
+    <string name="contract_rules_compliance">契約および就業規則遵守</string>
+    <string name="other_terms">その他条件</string>
+    <string name="employer_signature">事業主署名</string>
+    <string name="employee_signature">労働者署名</string>
+    <string name="signature_date">署名日付</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    
+    <!-- Additional missing fields -->
+    <string name="shift_work_status">交代勤務の有無</string>
+    <string name="break_time">休憩時間</string>
+    <string name="total_payment">総支給額</string>
+    <string name="allowance">手当</string>
+    <string name="accommodation_and_meal">宿泊および食事</string>
+    <string name="housing_provided">宿泊提供</string>
+    <string name="housing_type">宿泊タイプ</string>
+    <string name="meal_provided">食事提供</string>
+    <string name="meal_type">食事タイプ</string>
+    <string name="holiday_and_vacation">祝日および休暇</string>
+    <string name="public_holiday_paid">祝日（有給）</string>
+    <string name="public_holiday_unpaid">祝日（無給）</string>
+    <string name="payday">給料日</string>
+    <string name="method">方法</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">設定</string>
+    <string name="account_section">アカウント</string>
+    <string name="my_info">マイ情報</string>
+    <string name="change_password">パスワード変更</string>
+    <string name="change_language">言語変更</string>
+    <string name="change_theme">アプリカラー変更</string>
+    <string name="info_section">情報</string>
+    <string name="app_description">アプリ説明</string>
+    <string name="privacy_policy">個人情報処理方針</string>
+    <string name="logout">ログアウト</string>
+    
+    <!-- App Info Screen -->
+    <string name="app_intro_title">アプリ紹介</string>
+    <string name="app_intro_subtitle">外国人労働者の契約理解と権利保護のためのAI契約書分析アプリ</string>
+    <string name="app_intro_description">韓国で働く外国人労働者の多くが契約書を作成しないか、作成しても内容を理解できずに賃金未払い、不当解雇、長時間労働などの深刻な権利侵害を受けています。\n\nLawRoはAIを活用して労働契約書を自動分析し、外国人労働者が自分の契約内容を母国語で理解し、違反事項を認識して自ら権利を守ることができるよう支援するアプリです。</string>
+    <string name="main_features">主要機能</string>
+    <string name="feature_contract_analysis">契約書自動分析</string>
+    <string name="feature_contract_analysis_desc">OCRで労働契約書を認識し、必須項目の欠落の有無および法律違反の可能性を確認</string>
+    <string name="feature_multilingual_support">母国語法律解釈提供</string>
+    <string name="feature_multilingual_support_desc">契約内容をユーザーの母国語で簡単に理解できるよう翻訳および説明</string>
+    <string name="feature_contract_history">契約履歴管理</string>
+    <string name="feature_contract_history_desc">締結された契約書をデジタルで保存、紛争や契約更新時に活用可能</string>
+    <string name="feature_chatbot_consultation">労働/法律チャットボット相談</string>
+    <string name="feature_chatbot_consultation_desc">労働条件・法律違反など気になる点をリアルタイムで相談</string>
+    <string name="feature_worktime_tracking">勤務時間記録および給与計算</string>
+    <string name="feature_worktime_tracking_desc">労働時間を自動的に記録し、超過勤務手当など正確な給与計算支援</string>
+    <string name="feature_multilingual_ui">多言語対応UI</string>
+    <string name="feature_multilingual_ui_desc">韓国語に慣れていなくても誰でも簡単に使用できる直感的なインターフェースを提供</string>
+    <string name="developer_info">開発情報</string>
+    <string name="development_team">開発チーム</string>
+    <string name="team_name">TABA 8th、チーム3</string>
+    <string name="supported_languages">対応言語</string>
+    <string name="supported_languages_flags">🇰🇷 🇺🇸 🇯🇵 🇨🇳 🇻🇳 🇹🇭</string>
+    <string name="copyright">© 2025 TABA 8th、チーム3、All rights reserved。</string>
+    
+    <!-- Change Language Screen -->
+    <string name="language_change_complete">言語変更完了</string>
+    <string name="please_login_again">再度ログインしてください</string>
+    <string name="select_button">選択</string>
+    <string name="english_korean">英語</string>
+    <string name="japanese_korean">日本語</string>
+    <string name="chinese_korean">中国語</string>
+    <string name="vietnamese_korean">ベトナム語</string>
+    <string name="thai_korean">タイ語</string>
+    <string name="korean_korean">韓国語</string>
+    
+    <!-- My Info Screen -->
+    <string name="my_info_title">マイ情報</string>
+    <string name="loading_user_info">ユーザー情報を読み込み中...</string>
+    <string name="cannot_load_info">情報を読み込めません</string>
+    <string name="unknown_error">不明なエラーが発生しました</string>
+    <string name="profile">プロフィール</string>
+    <string name="user_id_label">ユーザーID</string>
+    <string name="join_date">加入日</string>
+    <string name="user_id_prefix">ID：%s</string>
+    <string name="cannot_get_profile_info">プロフィール情報を取得できません</string>
+    <string name="server_error_occurred">サーバーエラーが発生しました（%d）</string>
+    <string name="network_error_occurred">ネットワークエラーが発生しました</string>
+    
+    <!-- Common -->
+    <string name="back">戻る</string>
+    <string name="loading">読み込み中...</string>
+    <string name="error">エラー</string>
+    <string name="success">成功</string>
+    <string name="failed">失敗</string>
+
+    <!-- History Screen -->
+    <string name="history_title">過去の分析記録</string>
+    <string name="search_hint">検索語を入力してください</string>
+    <string name="search">検索</string>
+    <string name="filter_all">全体検索</string>
+    <string name="filter_danger">危険検索</string>
+    <string name="more_filters">その他のフィルター</string>
+    <string name="year_suffix">年</string>
+    <string name="analysis_date">分析日付:</string>
+    <string name="filter_options">フィルターオプション</string>
+    <string name="filter_all_simple">全体</string>
+    <string name="filter_safe">安全</string>
+    <string name="filter_warning">注意</string>
+    <string name="filter_danger_simple">危険</string>
+    <string name="filter_date_asc">日付昇順</string>
+    <string name="filter_date_desc">日付降順</string>
+    <string name="confirm">確認</string>
+    
+    <!-- Contract Detail Screen -->
+    <string name="detail_record">詳細記録</string>
+    <string name="analysis_date_label">分析日:</string>
+    <string name="export_pdf">PDF出力</string>
+
+    <!-- Home Screen -->
+    <string name="home_welcome_message">どのサービスをご利用になりますか？</string>
+    <string name="home_welcome_subtitle">お希望の機能をお選びください</string>
+    <string name="home_feature_contract_analysis">契約書\n分析</string>
+    <string name="home_feature_contract_analysis_desc">雇用契約書を\nスマートに分析</string>
+    <string name="home_feature_record_check">記録確認</string>
+    <string name="home_feature_record_check_desc">私の契約書と\n勤務記録管理</string>
+    <string name="home_feature_worktime">勤務時間\n測定</string>
+    <string name="home_feature_worktime_desc">GPS基盤\n正確な出退勤管理</string>
+    <string name="home_feature_ai_chatbot">AIチャットボット</string>
+    <string name="home_feature_ai_chatbot_desc">法律相談を\nスマートに</string>
+    <string name="home_tips_title">💡 覚えておくと良いヒント</string>
+    <string name="home_tips_content">• 勤務時間測定時はGPS位置を正確に登録してください\n• AIチャットボットは法律参考用としてのみ使用してください\n• 契約書分析結果は専門家レビューを推奨します\n• AIが提供するサービスは法的効力がありません。</string>
+    <string name="settings_description">設定</string>
+
+    <!-- Risk Level (위험도) -->
+    <string name="risk_level_safe">安全</string>
+    <string name="risk_level_warning">注意</string>
+    <string name="risk_level_danger">危険</string>
+    
+    <!-- Analysis Result Types -->
+    <string name="issues_without_problems">問題のない条項</string>
+    <string name="issues_requiring_attention">注意が必要な条項</string>
+    <string name="dangerous_risk_issues">危険要素確認条項</string>
+    
+    <!-- Contract -->
+    <string name="default_contract_title">雇用契約書</string>
+    
+    <!-- Privacy Policy Screen -->
+    <string name="privacy_policy_title">個人情報保護方針</string>
+    <string name="privacy_policy_last_updated">最終更新：2025年1月20日</string>
+    <string name="section_1_title">1. 個人情報の収集および利用目的</string>
+    <string name="section_1_content">LawRoは以下の目的のために個人情報を処理します。\n\n• 会員登録および管理\n• 契約書分析サービスの提供\n• 顧客相談および苦情処理\n• サービス改善および統計分析</string>
+    <string name="section_2_title">2. 収集する個人情報の項目</string>
+    <string name="section_2_content">• 必須情報：氏名、メールアドレス、パスワード\n• 選択情報：勤務地位置情報\n• 自動収集情報：サービス利用記録、アクセスログ</string>
+    <string name="section_3_title">3. 個人情報の処理および保有期間</string>
+    <string name="section_3_content">• 会員退会まで、または法令で定められた保有期間\n• 契約書分析記録：3年\n• 勤務時間記録：3年</string>
+    <string name="section_4_title">4. 個人情報の第三者提供</string>
+    <string name="section_4_content">当社は原則として利用者の個人情報を外部に提供しません。ただし、法令の規定により、または捜査機関の要求がある場合には、関連法令に従って個人情報を提供することがあります。</string>
+    <string name="section_5_title">5. 個人情報処理の委託</string>
+    <string name="section_5_content">当社はサービス提供のため、以下のように個人情報処理業務を委託しています。\n\n• AI分析サービス：OpenAI\n• クラウドサービス：AWS</string>
+    <string name="section_6_title">5. 利用者の権利</string>
+    <string name="section_6_content">利用者はいつでも以下の権利を行使できます。\n\n• 個人情報処理現況の通知要求\n• 個人情報の閲覧要求\n• 個人情報の訂正・削除要求\n• 個人情報処理の停止要求</string>
+    <string name="section_7_title">6. 個人情報保護責任者</string>
+    <string name="section_7_content">個人情報保護責任者\n• 氏名：TABA 8期 チーム3</string>
+    <string name="section_8_title">7. 個人情報保護方針の変更</string>
+    <string name="section_8_content">この個人情報保護方針は、法令・政策またはセキュリティ技術の変更により内容の追加・削除および修正がある場合、変更事項の施行7日前から公知事項を通じて告知します。</string>
+
+    <!-- ContractViewModel Messages -->
+    <string name="server_connection_failed">サーバー接続失敗: HTTP %1$s</string>
+    <string name="server_unavailable">サーバー接続不可: %1$s</string>
+    <string name="server_failure_response">サーバーから失敗応答を受信しました。</string>
+    <string name="network_error">ネットワークエラー: %1$s</string>
+    <string name="contract_analysis_saved_successfully">契約書分析結果が正常に保存されました</string>
+    <string name="analysis_complete">分析完了</string>
+    <string name="analysis_failure">分析失敗</string>
+    <string name="contract_analysis_result">労働契約書分析結果</string>
+    
+    <!-- Analysis Dummy Data -->
+    <string name="analysis_aware">分析</string>
+    <string name="analysis_summary">契約書は基本要件は満たしていますが、賃金計算及び休憩時間等重要な項目で欠落があり注意が必要です。</string>
+    <string name="highlight_wage_component_missing">賃金構成項目未記載</string>
+    <string name="highlight_break_time_unclear">休憩時間不明確</string>
+    <string name="highlight_probation_period_missing">試用期間未記載</string>
+    
+    <!-- Legal Interpretations -->
+    <string name="legal_interpretation_wage_component">労働基準法第17条により賃金の構成項目、計算方法、支給方法は明確に記載されなければならず、これに違反した場合事業主は是正命令の対象となる可能性があります。</string>
+    <string name="legal_interpretation_break_time">労働基準法第54条は4時間以上勤務時30分以上の休憩時間を付与しなければならず、この時間は労働時間中に自由に使用できなければなりません。契約書に明確な記載がないと紛争発生の可能性があります。</string>
+    <string name="legal_interpretation_probation_period">試用期間は賃金減額に影響を与えるため明確に記載されなければならず、これを欠落すると労働者の権利が侵害される可能性があります。</string>
+    
+    <!-- Deep Analysis -->
+    <string name="deep_analysis_text">この契約書は労働者の基本的な権利と義務を明示していますが、いくつかの重要な項目で欠落があり注意が必要です。特に、賃金の構成項目が明示されておらず、これは労働者が実際に受け取る賃金の構成を明確に把握できなくします。これは法的紛争の原因となる可能性があり、特に外国人労働者の場合言語障壁による誤解が発生するリスクが大きいです。また、休憩時間が明示されていないため労働者が十分な休息を取ることができるかどうかが不明確です。これは労働者の健康と労働環境の質に直接的な影響を与える可能性があります。試用期間の未記載は賃金減額に影響を与えるため、これを明確に記載しないと労働者の権利が侵害される可能性があります。この契約書は最低賃金に適合していますが、このような欠落事項により労働者の権利が十分に保護されない可能性があります。したがって、契約書作成時には標準労働契約書様式を活用し、各項目について実際の労働条件を反映した具体的記載が必要です。特に外国人のための多言語併記、視覚的説明が並行されれば法的紛争予防に役立つでしょう。</string>
+    
+    <!-- Dummy Analysis Results -->
+    <string name="dummy_analysis_result_1">労働者の休暇制度や給与などを通じて労働基準法に関して事業主が役割を決めて言語化しています</string>
+    <string name="dummy_analysis_result_2">本契約書は一般労働契約として良好な関係に有利な権利を持つことができます</string>
+    <string name="dummy_analysis_result_3">経営陣の日常業務適用において時間程度の業務では誤差人事数値が大きくなります</string>
+    
+    <!-- Contract titles and dates -->
+    <string name="dummy_contract_title">2025年労働契約書</string>
+    <string name="dummy_analysis_date">2025.02.01</string>
+
+    <!-- 分析結果 - コ・ギルドン -->
+    <string name="go_gildong_summary">労働契約書は試用期間および賃金の未記載、休憩時間の未記載など複数の問題がありますが、最低賃金を遵守し基本的な労働条件は明示されているため注意が必要なレベルです。</string>
+    <string name="go_gildong_highlight_1">試用期間および賃金の未記載</string>
+    <string name="go_gildong_highlight_2">休憩時間の未記載</string>
+    <string name="go_gildong_highlight_3">外国人労働者の宿舎タイプおよび食費の未記載</string>
+    <string name="go_gildong_legal_issue_1">試用期間および賃金明示義務</string>
+    <string name="go_gildong_legal_interpretation_1">労働基準法第17条により、試用期間および賃金の構成、計算方法を明確に記載する必要があります。</string>
+    <string name="go_gildong_legal_issue_2">休憩時間保障</string>
+    <string name="go_gildong_legal_interpretation_2">労働基準法第54条により、4時間勤務時30分以上の休憩時間を付与する必要があります。</string>
+    <string name="go_gildong_legal_issue_3">外国人労働者支援義務</string>
+    <string name="go_gildong_legal_interpretation_3">外国人労働者の雇用等に関する法律により、宿舎および食事条件を明示する必要があります。</string>
+    <string name="go_gildong_deep_analysis">この契約書は労働基準法の基本要件はほぼ満たしていますが、いくつかの重要な欠落事項があり注意が必要です。\n\n試用期間の未記載は賃金減額に関連する重要な事項です。労働基準法第17条により試用期間は労働契約書に明示されるべきで、これを欠落すると労働者が予想と異なる条件で勤務する可能性があります。\n\n休憩時間の未記載は労働者の権益保護に直接的な影響を与えます。労働基準法第54条は4時間以上勤務時30分以上の休憩時間を保障するよう定めており、これを明示しないと実際の業務で十分な休息が保障されない可能性があります。\n\n外国人労働者の場合、宿舎タイプと食費条件が重要な労働条件に該当します。外国人労働者の雇用等に関する法律によりこれらの条件を明確に記載する必要があり、欠落時は紛争の原因となる可能性があります。\n\n幸いにも最低賃金基準は遵守しているため深刻な法的違反はありませんが、上記の欠落事項を補完してより完全な契約書にする必要があります。</string>
+    
+    <!-- 分析結果 - クァク・ドクシク -->
+    <string name="kwak_deoksik_summary">労働契約書は基本的な枠組みは備えていますが、試用期間と賃金支給条件が不明確で労働者の権益保護に問題がある可能性があります。</string>
+    <string name="kwak_deoksik_highlight_1">試用期間未明示</string>
+    <string name="kwak_deoksik_highlight_2">賃金支給方法不明確</string>
+    <string name="kwak_deoksik_highlight_3">年次有給休暇条件未記載</string>
+    <string name="kwak_deoksik_legal_issue_1">試用期間関連規定</string>
+    <string name="kwak_deoksik_legal_interpretation_1">労働基準法第2条の2により、試用期間は3カ月を超過できず、契約書に明示される必要があります。</string>
+    <string name="kwak_deoksik_legal_issue_2">賃金支給方法</string>
+    <string name="kwak_deoksik_legal_interpretation_2">労働基準法第43条により、賃金は通貨で直接労働者に全額支給する必要があり、支給方法を明確に記載する必要があります。</string>
+    <string name="kwak_deoksik_legal_issue_3">年次有給休暇</string>
+    <string name="kwak_deoksik_legal_interpretation_3">労働基準法第60条により、1年間80%以上出勤した労働者に15日の有給休暇を付与する必要があります。</string>
+    <string name="kwak_deoksik_deep_analysis">この契約書は労働基準法の基本構造は従っていますが、労働者の権益保護に重要ないくつかの項目で不明確な部分があり注意が必要です。\n\n試用期間の未明示は深刻な問題です。労働基準法第2条の2により試用期間は最大3カ月に制限され、この期間中は賃金減額が可能なため契約書に必ず明示される必要があります。試用期間が明示されないと労働者が予想外の賃金減額を受ける可能性があります。\n\n賃金支給方法の不明確性も問題となります。労働基準法第43条は賃金を通貨で直接労働者に全額支給するよう規定しており、支給方法が明確でないと賃金未払いや不当な控除が発生するリスクがあります。\n\n年次有給休暇条件の未記載は労働者の休息権保障に影響を与えます。労働基準法第60条による年次有給休暇は労働者の基本権利なので、これを明示しないと実際の業務で適切な休暇を使用できない可能性があります。\n\n全般的にこの契約書は法的基準を大きく違反してはいませんが、労働者保護のため上記項目を補完する必要があります。</string>
+    
+    <!-- 分析結果 - オク・ドゥパル -->
+    <string name="ok_dupal_summary">労働契約書は最低賃金違反、過度な労働時間、試用期間未記載など深刻な法的違反事項が多数発見され、即座に修正が必要です。</string>
+    <string name="ok_dupal_highlight_1">最低賃金未達（時給8,500ウォン）</string>
+    <string name="ok_dupal_highlight_2">1日13時間の過度な労働時間</string>
+    <string name="ok_dupal_highlight_3">試用期間未記載</string>
+    <string name="ok_dupal_legal_issue_1">最低賃金法違反</string>
+    <string name="ok_dupal_legal_interpretation_1">最低賃金法により2024年最低賃金9,860ウォン以上支給する必要がありますが、契約上8,500ウォンと明示され法的違反です。</string>
+    <string name="ok_dupal_legal_issue_2">労働時間上限違反</string>
+    <string name="ok_dupal_legal_interpretation_2">労働基準法第50条により1日8時間、1週40時間を超過できませんが、13時間労働は深刻な違反です。</string>
+    <string name="ok_dupal_legal_issue_3">試用期間未明示</string>
+    <string name="ok_dupal_legal_interpretation_3">労働基準法第2条の2により試用期間は必ず明示される必要があり、最大3カ月を超過できません。</string>
+    <string name="ok_dupal_deep_analysis">この契約書は労働基準法を深刻に違反しており、即座に修正が必要な危険なレベルです。\n\n最も深刻な問題は最低賃金違反です。2024年最低賃金9,860ウォンに比べ8,500ウォンと明示されたのは明白な最低賃金法違反で、事業主は最大3年以下の懲役または2千万ウォン以下の罰金に処される可能性があります。労働者は未支給賃金に対する損害賠償を請求できます。\n\n1日13時間の過度な労働時間も非常に深刻な問題です。労働基準法第50条は1日8時間、1週40時間を基本労働時間と定めており、延長労働を含めても1週52時間を超過できません。13時間労働はこれを大きく違反するもので、労働者の健康と安全に深刻なリスクをもたらす可能性があります。\n\n試用期間の未記載は賃金減額に関連する重要な事項です。労働基準法第2条の2により試用期間は必ず明示される必要があり、3カ月を超過できません。\n\nこれらの違反事項は外国人労働者に特に深刻な被害を与える可能性があり、労働部申告や法的措置が必要なレベルです。即座に契約条件を法的基準に合わせて修正する必要があります。</string>
+
+</resources> 

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LawRo</string>
+    <string name="select_language">Select Language</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">Login</string>
+    <string name="login_subtitle">Sign in to SNS</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="signup_prompt">Don\'t have an account?</string>
+    <string name="signup_button">Sign up</string>
+    
+    <!-- Error Messages -->
+    <string name="error_invalid_email_and_password">Please check your ID and password again.</string>
+    <string name="error_email_not_found">Email not found.</string>
+    <string name="error_password_incorrect">Password is incorrect.</string>
+
+    <!-- SignUp Screen -->
+    <string name="signup_title">Sign Up</string>
+    <string name="name_hint">Name</string>
+    <string name="email">Email</string>
+    <string name="select">Select</string>
+    <string name="verification_code_hint">Verification Code</string>
+    <string name="verification_code_6_digits">6-digit verification code</string>
+    <string name="send_verification_code">Send</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="signup_complete">Registration Complete!</string>
+    <string name="please_login">Please login with your registered ID.</string>
+    
+    <!-- SignUp Error Messages -->
+    <string name="error_name_required">Please enter a valid name.</string>
+    <string name="error_invalid_email">Invalid email format.</string>
+    <string name="error_invalid_verification_code">Verification code does not match.</string>
+    <string name="error_password_too_short">Password must be at least 8 characters.</string>
+    <string name="error_passwords_not_match">Passwords do not match.</string>
+
+    <!-- FindPassword Screen -->
+    <string name="find_password">Find Password</string>
+    <string name="receive_password_reset_email">Receive Password Reset Email</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="save">Save</string>
+
+    <!-- New Password -->
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="password_change_complete">Password Change Complete!</string>
+    <string name="login_with_new_password">Please login with your new password.</string>
+
+    <string name="name_error">Please enter your name.</string>
+    <string name="domain_hint">Enter domain</string>
+    <string name="email_format_error">Invalid email format.</string>
+    <string name="verification_code_error">Verification code must be 6 digits.</string>
+    <string name="password_length_error">Password must be at least 8 characters.</string>
+    <string name="password_mismatch_error">Passwords do not match.</string>
+    <string name="signup_failed">Sign Up Failed</string>
+    <string name="email_already_exists">This email is already in use.</string>
+
+    <!-- Chatbot Screen -->
+    <string name="chatbot_title">Consultation Chatbot</string>
+    <string name="chatbot_input_hint">Type your message</string>
+    <string name="chatbot_typing">Typing...</string>
+    <string name="chatbot_error">Server error occurred: %1$s</string>
+
+    <!-- Worktime Screen -->
+    <string name="worktime_measurement">Work Time Measurement</string>
+    <string name="company_name_hint">Please enter company name.</string>
+    <string name="search_failed">Search Failed</string>
+    <string name="location_not_found">Unable to find the entered location.\nPlease enter an accurate address or company name.</string>
+    <string name="work_location">Work Location</string>
+    <string name="not_registered">Not Registered</string>
+    <string name="workplace">Workplace</string>
+    <string name="road_name">Road Name</string>
+    <string name="register_workplace_question">Would you like to register as workplace?</string>
+    <string name="register">Register</string>
+    <string name="cancel">Cancel</string>
+    <string name="work_location_not_found">Work Location Not Found</string>
+    <string name="search_location_first">Please search and register work location first.</string>
+    <string name="register_work_location">Register Work Location</string>
+    <string name="change_work_location">Change Work Location</string>
+    <string name="start_measurement">Start</string>
+    <string name="stop_measurement">Stop</string>
+    <string name="pause_measurement">Pause</string>
+    <string name="resume_measurement">Resume</string>
+    <string name="stop_not_allowed_title">Stop Not Allowed</string>
+    <string name="stop_not_allowed_message">You can only stop measurement at workplace.</string>
+    <string name="working_at_location">📍 Working at workplace</string>
+    <string name="working_outside_location">⚠️ Working outside workplace</string>
+    <string name="simulate_leave_workplace">🚶 Leave workplace (Simulation)</string>
+    <string name="simulate_return_workplace">🏢 Return to workplace (Simulation)</string>
+
+    <!-- Analyze Screen -->
+    <string name="analyze_title">Employment Contract Analysis</string>
+    <string name="analyze_description">Automatically analyze uploaded contracts to\ncheck for violations of labor standards law.</string>
+    <string name="photo_upload">Upload Photo</string>
+    <string name="photo_capture">Take Photo</string>
+    <string name="analyzing_document">Analyzing document...</string>
+    <string name="uploading_and_analyzing">Uploading and analyzing document...</string>
+
+    <!-- Analysis Result Screen -->
+    <string name="detailed_analysis">Detailed Analysis</string>
+    <string name="analysis_result">Analysis Result</string>
+    <string name="view_result">View Result</string>
+    <string name="check_result">Check Result</string>
+    <string name="save_result">Save Result</string>
+    <string name="chatbot_inquiry">Chatbot Inquiry</string>
+    <string name="legal_interpretation">Legal Interpretation</string>
+    <string name="comprehensive_analysis">Comprehensive Analysis</string>
+    <string name="key_issues">Key Issues</string>
+    <string name="save_analysis_result">Save Analysis Result</string>
+    <string name="enter_title_to_save">Please enter a title to save the analysis result.</string>
+    <string name="title">Title</string>
+    <string name="title_example">Example: 2025 Company A Employment Contract</string>
+
+    <!-- Contract Editing Screen -->
+    <string name="edit_contract_description">Below is the employment contract content automatically recognized from the photo.\nPlease correct any errors.</string>
+    <string name="contract_saved_successfully">Contract saved successfully.</string>
+    <string name="save_failed">Save failed: </string>
+    <string name="analysis_completed">Contract analysis completed.</string>
+    <string name="analysis_failed">Analysis failed: </string>
+    <string name="login_info_missing">Login information is missing.</string>
+    <string name="no_contract_info">No analyzed contract information.</string>
+    <string name="analysis_ui_test">Analysis UI Test</string>
+
+    <!-- Contract Form Fields -->
+    <string name="employer_info">Employer Information</string>
+    <string name="employee_info">Employee Information</string>
+    <string name="work_conditions">Work Conditions</string>
+    <string name="job_details">Job Details</string>
+    <string name="working_hours">Working Hours</string>
+    <string name="wage_info">Wage Information</string>
+    <string name="accommodation_meals">Accommodation &amp; Meals</string>
+    <string name="holidays_vacations">Holidays &amp; Vacations</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="four_major_insurances">Four Major Insurances</string>
+    <string name="other_clauses">Other Clauses</string>
+    <string name="signature_info">Signature Information</string>
+    <string name="saving">Saving...</string>
+    <string name="analyzing">Analyzing...</string>
+    <string name="edit_complete">Edit Complete</string>
+
+    <!-- Form Field Labels -->
+    <string name="company_name">Company Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="representative_name">Representative Name</string>
+    <string name="business_registration_number">Business Registration Number</string>
+    <string name="name">Name</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="home_address">Home Address</string>
+    <string name="contract_period">Contract Period</string>
+    <string name="workplace_location">Workplace</string>
+    <string name="work_start_date">Work Start Date</string>
+    <string name="work_end_date">Work End Date</string>
+    <string name="probation_status">Probation Status</string>
+    <string name="probation_period">Probation Period</string>
+    <string name="industry">Industry</string>
+    <string name="business_content">Business Content</string>
+    <string name="job_content">Job Content</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="overtime_hours">Overtime Hours</string>
+    <string name="shift_work">Shift Work</string>
+    <string name="break_time_minutes">Break Time (minutes)</string>
+    <string name="monthly_total">Monthly Total</string>
+    <string name="base_salary">Base Salary</string>
+    <string name="bonus">Bonus</string>
+    <string name="probation_salary">Probation Salary</string>
+    <string name="extra_pay_rate">Extra Pay Rate</string>
+    <string name="accommodation_provided">Accommodation Provided</string>
+    <string name="accommodation_type">Accommodation Type</string>
+    <string name="employee_housing_cost">Employee Housing Cost</string>
+    <string name="meals_provided">Meals Provided</string>
+    <string name="meal_types">Meal Types</string>
+    <string name="employee_meal_cost">Employee Meal Cost</string>
+    <string name="sunday">Sunday</string>
+    <string name="public_holidays_paid">Public Holidays (Paid)</string>
+    <string name="public_holidays_unpaid">Public Holidays (Unpaid)</string>
+    <string name="saturday">Saturday</string>
+    <string name="payment_day">Payment Day</string>
+    <string name="payment_method_type">Payment Method</string>
+    <string name="employer_controls_account">Employer Controls Account</string>
+    <string name="health_insurance">Health Insurance</string>
+    <string name="national_pension">National Pension</string>
+    <string name="employment_insurance">Employment Insurance</string>
+    <string name="industrial_accident_insurance">Industrial Accident Insurance</string>
+    <string name="contract_rules_compliance">Contract &amp; Rules Compliance</string>
+    <string name="other_terms">Other Terms</string>
+    <string name="employer_signature">Employer Signature</string>
+    <string name="employee_signature">Employee Signature</string>
+    <string name="signature_date">Signature Date</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    
+    <!-- Additional missing fields -->
+    <string name="shift_work_status">Shift Work Status</string>
+    <string name="break_time">Break Time</string>
+    <string name="total_payment">Total Payment</string>
+    <string name="allowance">Allowance</string>
+    <string name="accommodation_and_meal">Accommodation &amp; Meals</string>
+    <string name="housing_provided">Housing Provided</string>
+    <string name="housing_type">Housing Type</string>
+    <string name="meal_provided">Meal Provided</string>
+    <string name="meal_type">Meal Type</string>
+    <string name="holiday_and_vacation">Holidays &amp; Vacations</string>
+    <string name="public_holiday_paid">Public Holiday (Paid)</string>
+    <string name="public_holiday_unpaid">Public Holiday (Unpaid)</string>
+    <string name="payday">Payday</string>
+    <string name="method">Method</string>
+
+    <!-- History Screen -->
+    <string name="history_title">Analysis History</string>
+    <string name="search_hint">Enter search terms</string>
+    <string name="search">Search</string>
+    <string name="filter_all">All</string>
+    <string name="filter_danger">Danger</string>
+    <string name="more_filters">More Filters</string>
+    <string name="year_suffix"></string>
+    <string name="analysis_date">Analysis Date:</string>
+    <string name="filter_options">Filter Options</string>
+    <string name="filter_all_simple">All</string>
+    <string name="filter_safe">Safe</string>
+    <string name="filter_warning">Warning</string>
+    <string name="filter_danger_simple">Danger</string>
+    <string name="filter_date_asc">Date Ascending</string>
+    <string name="filter_date_desc">Date Descending</string>
+    <string name="confirm">Confirm</string>
+    
+    <!-- Contract Detail Screen -->
+    <string name="detail_record">Detail Record</string>
+    <string name="back">Back</string>
+    <string name="analysis_date_label">Analysis Date:</string>
+    <string name="export_pdf">Export PDF</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="account_section">Account</string>
+    <string name="my_info">My Info</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_language">Change Language</string>
+    <string name="info_section">Information</string>
+    <string name="app_description">App Description</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="logout">Logout</string>
+    
+    <!-- App Info Screen -->
+    <string name="app_intro_title">App Introduction</string>
+    <string name="app_intro_subtitle">AI Contract Analysis App for Foreign Workers\' Contract Understanding and Rights Protection</string>
+    <string name="app_intro_description">Many foreign workers in Korea either do not create employment contracts or, even when they do, cannot understand the content, leading to serious rights violations such as unpaid wages, unfair dismissal, and long working hours.\n\nLawRo is an app that uses AI to automatically analyze employment contracts, helping foreign workers understand their contract content in their native language, recognize violations, and protect their rights on their own.</string>
+    <string name="main_features">Main Features</string>
+    <string name="feature_contract_analysis">Automatic Contract Analysis</string>
+    <string name="feature_contract_analysis_desc">OCR recognition of employment contracts to check for missing essential items and potential legal violations</string>
+    <string name="feature_multilingual_support">Native Language Legal Interpretation</string>
+    <string name="feature_multilingual_support_desc">Translation and explanation of contract content in user\'s native language for easy understanding</string>
+    <string name="feature_contract_history">Contract History Management</string>
+    <string name="feature_contract_history_desc">Digital storage of concluded contracts, available for disputes or contract renewals</string>
+    <string name="feature_chatbot_consultation">Labor/Legal Chatbot Consultation</string>
+    <string name="feature_chatbot_consultation_desc">Real-time consultation for questions about working conditions and legal violations</string>
+    <string name="feature_worktime_tracking">Work Time Tracking and Salary Calculation</string>
+    <string name="feature_worktime_tracking_desc">Automatic recording of working hours and support for accurate salary calculations including overtime pay</string>
+    <string name="feature_multilingual_ui">Multilingual UI Support</string>
+    <string name="feature_multilingual_ui_desc">Intuitive interface that anyone can easily use, even if not familiar with Korean</string>
+    <string name="developer_info">Developer Information</string>
+    <string name="development_team">Development Team</string>
+    <string name="team_name">TABA 8th, Team 3</string>
+    <string name="supported_languages">Supported Languages</string>
+    <string name="supported_languages_flags">🇰🇷 🇺🇸 🇯🇵 🇨🇳 🇻🇳 🇹🇭</string>
+    <string name="copyright">© 2025 TABA 8th, Team 3, All rights reserved.</string>
+    
+    <!-- Change Language Screen -->
+    <string name="language_change_complete">Language Change Complete</string>
+    <string name="please_login_again">Please log in again</string>
+    <string name="select_button">Select</string>
+    <string name="english_korean">English</string>
+    <string name="japanese_korean">Japanese</string>
+    <string name="chinese_korean">Chinese</string>
+    <string name="vietnamese_korean">Vietnamese</string>
+    <string name="thai_korean">Thai</string>
+    <string name="korean_korean">Korean</string>
+    
+    <!-- My Info Screen -->
+    <string name="my_info_title">My Info</string>
+    <string name="loading_user_info">Loading user information...</string>
+    <string name="cannot_load_info">Cannot load information</string>
+    <string name="unknown_error">An unknown error occurred</string>
+    <string name="profile">Profile</string>
+    <string name="user_id_label">User ID</string>
+    <string name="join_date">Join Date</string>
+    <string name="user_id_prefix">ID: %s</string>
+    <string name="cannot_get_profile_info">Cannot get profile information</string>
+    <string name="server_error_occurred">Server error occurred (%d)</string>
+    <string name="network_error_occurred">Network error occurred</string>
+    
+    <!-- Common -->
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="completed">Completed</string>
+    <string name="failed">Failed</string>
+
+    <!-- Risk Level -->
+    <string name="risk_level_safe">Safe</string>
+    <string name="risk_level_warning">Warning</string>
+    <string name="risk_level_danger">Danger</string>
+    
+    <!-- Analysis Result Types -->
+    <string name="issues_without_problems">Clauses Without Issues</string>
+    <string name="issues_requiring_attention">Clauses Requiring Attention</string>
+    <string name="dangerous_risk_issues">Dangerous Risk Clauses</string>
+
+
+
+    <!-- Analysis Results - Go Gildong -->
+    <string name="go_gildong_summary">The employment contract has several issues including unspecified probationary period and wages, and no break time mentioned. However, it complies with minimum wage and basic working conditions are specified, requiring attention.</string>
+    <string name="go_gildong_highlight_1">Probationary period and wages not specified</string>
+    <string name="go_gildong_highlight_2">Break time not specified</string>
+    <string name="go_gildong_highlight_3">Foreign worker accommodation type and meal costs not specified</string>
+    <string name="go_gildong_legal_issue_1">Obligation to specify probationary period and wages</string>
+    <string name="go_gildong_legal_interpretation_1">According to Labor Standards Act Article 17, probationary period and wage composition and calculation method must be clearly specified.</string>
+    <string name="go_gildong_legal_issue_2">Break time guarantee</string>
+    <string name="go_gildong_legal_interpretation_2">According to Labor Standards Act Article 54, at least 30 minutes of break time must be provided for 4 hours of work.</string>
+    <string name="go_gildong_legal_issue_3">Foreign worker support obligations</string>
+    <string name="go_gildong_legal_interpretation_3">According to the Act on Foreign Workers Employment, accommodation and meal conditions must be specified.</string>
+    <string name="go_gildong_deep_analysis">This contract meets most basic requirements of the Labor Standards Act, but attention is needed due to several important omissions.\n\nThe omission of probationary period is an important matter related to wage deduction. According to Labor Standards Act Article 17, the probationary period must be specified in the employment contract, and omitting this may result in workers working under different conditions than expected.\n\nThe omission of break time directly affects the protection of workers\' rights. Labor Standards Act Article 54 requires guaranteeing at least 30 minutes of break time for 4 or more hours of work, and failure to specify this may result in insufficient rest during actual work.\n\nFor foreign workers, accommodation type and meal cost conditions are important working conditions. According to the Act on Foreign Workers Employment, these conditions must be clearly specified, and omission can cause disputes.\n\nFortunately, minimum wage standards are met, so there are no serious legal violations, but the above omissions need to be addressed to create a more complete contract.</string>
+    
+    <!-- Analysis Results - Kwak Deoksik -->
+    <string name="kwak_deoksik_summary">The employment contract has a basic framework but may have issues with worker rights protection due to unclear probationary period and wage payment conditions.</string>
+    <string name="kwak_deoksik_highlight_1">Probationary period not specified</string>
+    <string name="kwak_deoksik_highlight_2">Wage payment method unclear</string>
+    <string name="kwak_deoksik_highlight_3">Annual paid leave conditions not specified</string>
+    <string name="kwak_deoksik_legal_issue_1">Probationary period regulations</string>
+    <string name="kwak_deoksik_legal_interpretation_1">According to Labor Standards Act Article 2-2, probationary period cannot exceed 3 months and must be specified in the contract.</string>
+    <string name="kwak_deoksik_legal_issue_2">Wage payment method</string>
+    <string name="kwak_deoksik_legal_interpretation_2">According to Labor Standards Act Article 43, wages must be paid in full and directly to workers in currency, and payment method must be clearly specified.</string>
+    <string name="kwak_deoksik_legal_issue_3">Annual paid leave</string>
+    <string name="kwak_deoksik_legal_interpretation_3">According to Labor Standards Act Article 60, 15 days of paid leave must be granted to workers who attended 80% or more for one year.</string>
+    <string name="kwak_deoksik_deep_analysis">This contract follows the basic structure of the Labor Standards Act, but attention is needed due to unclear parts in several items important for worker rights protection.\n\nThe non-specification of probationary period is a serious problem. According to Labor Standards Act Article 2-2, probationary period is limited to a maximum of 3 months, and wage reduction is possible during this period, so it must be specified in the contract. If probationary period is not specified, workers may face unexpected wage reduction.\n\nUnclear wage payment method is also problematic. Labor Standards Act Article 43 stipulates paying wages in full and directly to workers in currency, and unclear payment method risks wage arrears or improper deductions.\n\nNon-specification of annual paid leave conditions affects workers\' right to rest. Annual paid leave under Labor Standards Act Article 60 is a basic right of workers, so failure to specify this may prevent proper vacation use in actual work.\n\nOverall, this contract does not seriously violate legal standards, but the above items need to be supplemented for worker protection.</string>
+    
+    <!-- Analysis Results - Ok Dupal -->
+    <string name="ok_dupal_summary">The employment contract has multiple serious legal violations including minimum wage violation, excessive working hours, and unspecified probationary period requiring immediate correction.</string>
+    <string name="ok_dupal_highlight_1">Below minimum wage (8,500 won per hour)</string>
+    <string name="ok_dupal_highlight_2">Excessive 13-hour daily working hours</string>
+    <string name="ok_dupal_highlight_3">Probationary period not specified</string>
+    <string name="ok_dupal_legal_issue_1">Minimum Wage Act violation</string>
+    <string name="ok_dupal_legal_interpretation_1">According to the Minimum Wage Act, 2024 minimum wage of 9,860 won or more must be paid, but the contract specifies 8,500 won, which is a legal violation.</string>
+    <string name="ok_dupal_legal_issue_2">Working hours limit violation</string>
+    <string name="ok_dupal_legal_interpretation_2">According to Labor Standards Act Article 50, daily 8 hours and weekly 40 hours cannot be exceeded, but 13-hour work is a serious violation.</string>
+    <string name="ok_dupal_legal_issue_3">Probationary period not specified</string>
+    <string name="ok_dupal_legal_interpretation_3">According to Labor Standards Act Article 2-2, probationary period must be specified and cannot exceed 3 months maximum.</string>
+    <string name="ok_dupal_deep_analysis">This contract seriously violates the Labor Standards Act and is at a dangerous level requiring immediate correction.\n\nThe most serious problem is minimum wage violation. Specifying 8,500 won compared to the 2024 minimum wage of 9,860 won is a clear violation of the Minimum Wage Act, and employers can face up to 3 years imprisonment or fines up to 20 million won. Workers can claim damages for unpaid wages.\n\nExcessive 13-hour daily working hours is also a very serious problem. Labor Standards Act Article 50 sets 8 hours daily and 40 hours weekly as basic working hours, and cannot exceed 52 hours weekly including extended work. 13-hour work greatly violates this and can pose serious risks to worker health and safety.\n\nNon-specification of probationary period is an important matter related to wage reduction. According to Labor Standards Act Article 2-2, probationary period must be specified and cannot exceed 3 months.\n\nThese violations can cause particularly serious harm to foreign workers and require labor office reporting or legal action. Contract conditions must be immediately corrected to meet legal standards.</string>
+
+</resources> 

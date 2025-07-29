@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LawRo</string>
+    <string name="select_language">เลือกภาษา</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">เข้าสู่ระบบ</string>
+    <string name="login_subtitle">เข้าสู่ระบบ SNS</string>
+    <string name="email_hint">อีเมล</string>
+    <string name="password_hint">รหัสผ่าน</string>
+    <string name="login_button">เข้าสู่ระบบ</string>
+    <string name="forgot_password">ลืมรหัสผ่าน?</string>
+    <string name="signup_prompt">ยังไม่มีบัญชี?</string>
+    <string name="signup_button">สมัครสมาชิก</string>
+    
+    <!-- Error Messages -->
+    <string name="error_invalid_email_and_password">กรุณาตรวจสอบ ID และรหัสผ่านอีกครั้ง</string>
+    <string name="error_email_not_found">อีเมลที่ไม่ได้ลงทะเบียน</string>
+    <string name="error_password_incorrect">รหัสผ่านไม่ตรงกัน</string>
+
+    <!-- SignUp Screen -->
+    <string name="signup_title">สมัครสมาชิก</string>
+    <string name="name_hint">ชื่อ</string>
+    <string name="email">อีเมล</string>
+    <string name="select">เลือก</string>
+    <string name="verification_code_hint">รหัสยืนยัน</string>
+    <string name="verification_code_6_digits">รหัสยืนยัน 6 หลัก</string>
+    <string name="send_verification_code">ส่ง</string>
+    <string name="confirm_password_hint">ยืนยันรหัสผ่าน</string>
+    <string name="signup_complete">สมัครสมาชิกเสร็จสิ้น!</string>
+    <string name="please_login">กรุณาเข้าสู่ระบบด้วย ID ที่ลงทะเบียน</string>
+    
+    <!-- SignUp Error Messages -->
+    <string name="error_name_required">กรุณาใส่ชื่อที่ถูกต้อง</string>
+    <string name="error_invalid_email">รูปแบบอีเมลไม่ถูกต้อง</string>
+    <string name="error_invalid_verification_code">รหัสยืนยันไม่ตรงกัน</string>
+    <string name="error_password_too_short">รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร</string>
+    <string name="error_passwords_not_match">รหัสผ่านไม่ตรงกัน</string>
+
+    <string name="find_password">ค้นหารหัสผ่าน</string>
+    <string name="receive_password_reset_email">รับอีเมลเปลี่ยนรหัสผ่าน</string>
+    <string name="reset_password">รีเซ็ตรหัสผ่าน</string>
+    <string name="save">บันทึก</string>
+
+    <string name="new_password">รหัสผ่านใหม่</string>
+    <string name="confirm_new_password">ยืนยันรหัสผ่านใหม่</string>
+    <string name="password_change_complete">เปลี่ยนรหัสผ่านเสร็จสิ้น!</string>
+    <string name="login_with_new_password">กรุณาเข้าสู่ระบบด้วยรหัสผ่านที่เปลี่ยนแล้ว</string>
+
+    <string name="name_error">กรุณาใส่ชื่อ</string>
+    <string name="domain_hint">ใส่โดเมน</string>
+    <string name="email_format_error">รูปแบบอีเมลไม่ถูกต้อง</string>
+    <string name="verification_code_error">รหัสยืนยันต้องเป็นตัวเลข 6 หลัก</string>
+    <string name="password_length_error">รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร</string>
+    <string name="password_mismatch_error">รหัสผ่านไม่ตรงกัน</string>
+    <string name="signup_failed">สมัครสมาชิกล้มเหลว</string>
+    <string name="email_already_exists">อีเมลนี้ถูกใช้แล้ว</string>
+
+    <!-- Chatbot Screen -->
+    <string name="chatbot_title">แชทบอทให้คำปรึกษา</string>
+    <string name="chatbot_input_hint">ใส่ข้อความ</string>
+    <string name="chatbot_typing">กำลังพิมพ์...</string>
+    <string name="chatbot_error">เกิดข้อผิดพลาดเซิร์ฟเวอร์: %1$s</string>
+
+    <!-- Worktime Screen -->
+    <string name="worktime_measurement">วัดเวลาทำงาน</string>
+    <string name="company_name_hint">กรุณาใส่ชื่อบริษัท</string>
+    <string name="search_failed">ค้นหาล้มเหลว</string>
+    <string name="location_not_found">ไม่พบตำแหน่งที่ใส่\nกรุณาใส่ที่อยู่หรือชื่อบริษัทที่ถูกต้อง</string>
+    <string name="work_location">สถานที่ทำงาน</string>
+    <string name="not_registered">ไม่ได้ลงทะเบียน</string>
+    <string name="workplace">สถานที่ทำงาน</string>
+    <string name="road_name">ชื่อถนน</string>
+    <string name="register_workplace_question">ต้องการลงทะเบียนเป็นสถานที่ทำงานหรือไม่?</string>
+    <string name="register">ลงทะเบียน</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="work_location_not_found">ไม่พบสถานที่ทำงาน</string>
+    <string name="search_location_first">กรุณาค้นหาและลงทะเบียนสถานที่ทำงานก่อน</string>
+    <string name="register_work_location">ลงทะเบียนสถานที่ทำงาน</string>
+    <string name="change_work_location">เปลี่ยนสถานที่ทำงาน</string>
+    <string name="start_measurement">เริ่มวัด</string>
+    <string name="stop_measurement">หยุดวัด</string>
+    <string name="pause_measurement">หยุดชั่วคราว</string>
+    <string name="resume_measurement">ดำเนินต่อ</string>
+    <string name="stop_not_allowed_title">ไม่สามารถหยุดวัดได้</string>
+    <string name="stop_not_allowed_message">สามารถหยุดวัดได้เฉพาะที่สถานที่ทำงานเท่านั้น</string>
+    <string name="start_not_allowed_title">ไม่สามารถเริ่มวัดได้</string>
+    <string name="start_not_allowed_message">สามารถเริ่มวัดได้เฉพาะที่สถานที่ทำงานเท่านั้น</string>
+    <string name="working_at_location">📍 กำลังวัดที่สถานที่ทำงาน</string>
+    <string name="working_outside_location">⚠️ กำลังวัดนอกสถานที่ทำงาน</string>
+    <string name="simulate_leave_workplace">🚶 ออกจากสถานที่ทำงาน (จำลอง)</string>
+    <string name="simulate_return_workplace">🏢 กลับสถานที่ทำงาน (จำลอง)</string>
+    
+    <!-- Settings -->
+    <string name="worktime_records">บันทึกเวลาทำงาน</string>
+    
+    <!-- Worktime Records Screen -->
+    <string name="worktime_summary">📊 สรุปเวลาทำงาน</string>
+    <string name="total_work_days">จำนวนวันทำงานรวม</string>
+    <string name="days_unit">วัน</string>
+    <string name="total_work_hours">เวลาทำงานรวม</string>
+    <string name="hours_unit">ชั่วโมง</string>
+    <string name="daily_average">เฉลี่ยต่อวัน</string>
+    <string name="delete">ลบ</string>
+    <string name="gps_violation_prefix">ออกจากสถานที่ทำงาน: </string>
+    <string name="delete_record_title">ลบบันทึก</string>
+    <string name="delete_record_message">ต้องการลบบันทึกการทำงาน %s หรือไม่?</string>
+
+    <!-- Analyze Screen -->
+    <string name="analyze_title">วิเคราะห์สัญญาแรงงาน</string>
+    <string name="analyze_description">วิเคราะห์สัญญาที่อัปโหลดโดยอัตโนมัติ\nตรวจสอบการละเมิดกฎหมายแรงงาน</string>
+    <string name="photo_upload">อัปโหลดรูปภาพ</string>
+    <string name="photo_capture">ถ่ายรูป</string>
+    <string name="analyzing_document">กำลังวิเคราะห์เอกสาร...</string>
+    <string name="uploading_and_analyzing">กำลังอัปโหลดและวิเคราะห์เอกสาร...</string>
+
+    <!-- Analysis Result Screen -->
+    <string name="detailed_analysis">วิเคราะห์โดยละเอียด</string>
+    <string name="analysis_result">ผลการวิเคราะห์</string>
+    <string name="view_result">ดูผลลัพธ์</string>
+    <string name="check_result">ตรวจสอบผลลัพธ์</string>
+    <string name="save_result">บันทึกผลลัพธ์</string>
+    <string name="chatbot_inquiry">ปรึกษาแชทบอท</string>
+    <string name="legal_interpretation">คำอธิบายทางกฎหมาย</string>
+    <string name="comprehensive_analysis">การวิเคราะห์ครอบคลุม</string>
+    <string name="key_issues">ประเด็นหลัก</string>
+    <string name="save_analysis_result">บันทึกผลการวิเคราะห์</string>
+    <string name="enter_title_to_save">กรุณาใส่ชื่อเรื่องเพื่อบันทึกผลการวิเคราะห์</string>
+    <string name="title">ชื่อเรื่อง</string>
+    <string name="title_example">ตัวอย่าง: สัญญาแรงงานบริษัท A ปี 2025</string>
+
+    <!-- Contract Editing Screen -->
+    <string name="edit_contract_description">ต่อไปนี้คือเนื้อหาสัญญาแรงงานที่รับรู้โดยอัตโนมัติจากรูปภาพ\nหากมีข้อผิดพลาด กรุณาแก้ไขโดยตรง</string>
+    <string name="contract_saved_successfully">บันทึกสัญญาเรียบร้อยแล้ว</string>
+    <string name="save_failed">บันทึกล้มเหลว: </string>
+    <string name="analysis_completed">การวิเคราะห์เสร็จสิ้น</string>
+    <string name="analysis_failure">การวิเคราะห์ล้มเหลว</string>
+    <string name="contract_analysis_result">ผลการวิเคราะห์สัญญาแรงงาน</string>
+    
+    <!-- Analysis Dummy Data -->
+    <string name="analysis_aware">วิเคราะห์</string>
+    <string name="analysis_summary">สัญญาตอบสนองความต้องการพื้นฐาน แต่ต้องใส่ใจในรายการสำคัญที่ขาดหายไป เช่น การคำนวณค่าจ้างและเวลาพัก</string>
+    
+    <!-- Chatbot Auto Query Messages -->
+    <string name="analysis_major_issues">🚨 ปัญหาสำคัญที่พบ:</string>
+    <string name="specific_questions_about_issues">💼 คำถามเฉพาะเจาะจงเกี่ยวกับแต่ละปัญหา:</string>
+    <string name="issue_number_format">【ปัญหาที่ %d】 %s</string>
+    <string name="ask_for_specific_damage_solution">→ กรุณาบอกเกี่ยวกับความเสียหายที่เฉพาะเจาะจงและวิธีการแก้ไขปัญหานี้</string>
+    <string name="request_practical_advice">ขอคำแนะนำที่ละเอียดและปฏิบัติได้จริง ขอบคุณค่ะ!</string>
+    <string name="highlight_wage_component_missing">ไม่ได้ระบุองค์ประกอบค่าจ้าง</string>
+    <string name="highlight_break_time_unclear">เวลาพักไม่ชัดเจน</string>
+    <string name="highlight_probation_period_missing">ไม่ได้ระบุระยะเวลาทดลองงาน</string>
+    
+    <!-- Legal Interpretations -->
+    <string name="legal_interpretation_wage_component">ตามกฎหมายมาตรฐานแรงงานข้อที่ 17 องค์ประกอบของค่าจ้าง วิธีการคำนวณ และวิธีการจ่ายต้องระบุอย่างชัดเจน หากละเมิดนายจ้างอาจถูกสั่งแก้ไข</string>
+    <string name="legal_interpretation_break_time">กฎหมายมาตรฐานแรงงานข้อที่ 54 กำหนดให้มีเวลาพักอย่างน้อย 30 นาทีสำหรับการทำงาน 4 ชั่วโมงขึ้นไป และเวลานี้ต้องสามารถใช้ได้อย่างเสรีในระหว่างเวลาทำงาน หากไม่ระบุอย่างชัดเจนในสัญญาอาจเกิดข้อพิพาท</string>
+    <string name="legal_interpretation_probation_period">ระยะเวลาทดลองงานส่งผลต่อการหักค่าจ้าง ดังนั้นต้องระบุอย่างชัดเจน หากละเว้นอาจละเมิดสิทธิของแรงงาน</string>
+    
+    <!-- Deep Analysis -->
+    <string name="deep_analysis_text">สัญญานี้ระบุสิทธิและหน้าที่พื้นฐานของแรงงาน แต่มีการละเว้นในรายการสำคัญหลายข้อที่ต้องใส่ใจ โดยเฉพาะองค์ประกอบของค่าจ้างไม่ได้ระบุ ทำให้แรงงานไม่สามารถเข้าใจองค์ประกอบของค่าจ้างที่จะได้รับจริงอย่างชัดเจน สิ่งนี้อาจเป็นสาเหตุของข้อพิพาททางกฎหมาย โดยเฉพาะสำหรับแรงงานต่างชาติที่อุปสรรคทางภาษาอาจทำให้เกิดความเข้าใจผิดได้มาก นอกจากนี้ เวลาพักไม่ได้ระบุ ทำให้ไม่ชัดเจนว่าแรงงานจะสามารถพักผ่อนอย่างเพียงพอหรือไม่ สิ่งนี้อาจส่งผลโดยตรงต่อสุขภาพของแรงงานและคุณภาพของสภาพแวดล้อมการทำงาน การไม่ระบุระยะเวลาทดลองงานส่งผลต่อการหักค่าจ้าง หากไม่ระบุอย่างชัดเจนอาจละเมิดสิทธิของแรงงาน สัญญานี้สอดคล้องกับค่าจ้างขั้นต่ำ แต่เนื่องจากการละเว้นเหล่านี้ สิทธิของแรงงานอาจไม่ได้รับการปกป้องอย่างเพียงพอ ดังนั้นในการจัดทำสัญญาจำเป็นต้องใช้แบบฟอร์มสัญญาแรงงานมาตรฐานและระบุรายละเอียดที่สะท้อนเงื่อนไขการทำงานจริงสำหรับแต่ละรายการ โดยเฉพาะการระบุหลายภาษาและคำอธิบายเชิงภาพสำหรับชาวต่างชาติจะช่วยป้องกันข้อพิพาททางกฎหมาย</string>
+    
+    <!-- Dummy Analysis Results -->
+    <string name="dummy_analysis_result_1">ผ่านระบบการลาและเงินเดือนของลูกจ้าง นายจ้างกำลังปฏิบัติหน้าที่เกี่ยวกับกฎหมายแรงงาน</string>
+    <string name="dummy_analysis_result_2">สัญญานี้สามารถให้ความสัมพันธ์ที่เป็นประโยชน์ในฐานะสัญญาแรงงานทั่วไป</string>
+    <string name="dummy_analysis_result_3">การใช้งานประจำวันของฝ่ายบริหารแสดงความคลาดเคลื่อนที่สำคัญในตัวเลขบุคลากรด้านเวลาทำงาน</string>
+    
+    <!-- Contract titles and dates -->
+    <string name="dummy_contract_title">สัญญาแรงงาน 2025</string>
+    <string name="dummy_analysis_date">2025.02.01</string>
+
+    <!-- ผลการวิเคราะห์ - โค กิลดง -->
+    <string name="go_gildong_summary">สัญญาจ้างงานมีปัญหาหลายประการ รวมถึงระยะเวลาทดลองงานและค่าจ้างไม่ได้ระบุ เวลาพักผ่อนไม่ได้ระบุ แต่ปฏิบัติตามค่าจ้างขั้นต่ำและเงื่อนไขการทำงานพื้นฐานได้ระบุไว้ จึงต้องให้ความระมัดระวัง</string>
+    <string name="go_gildong_highlight_1">ระยะเวลาทดลองงานและค่าจ้างไม่ได้ระบุ</string>
+    <string name="go_gildong_highlight_2">เวลาพักผ่อนไม่ได้ระบุ</string>
+    <string name="go_gildong_highlight_3">ประเภทที่พักและค่าอาหารสำหรับแรงงานต่างชาติไม่ได้ระบุ</string>
+    <string name="go_gildong_legal_issue_1">ภาระผูกพันในการระบุระยะเวลาทดลองงานและค่าจ้าง</string>
+    <string name="go_gildong_legal_interpretation_1">ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 17 ต้องระบุระยะเวลาทดลองงานและองค์ประกอบค่าจ้าง วิธีการคำนวณให้ชัดเจน</string>
+    <string name="go_gildong_legal_issue_2">การรับประกันเวลาพักผ่อน</string>
+    <string name="go_gildong_legal_interpretation_2">ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 54 ต้องให้เวลาพักผ่อนอย่างน้อย 30 นาทีสำหรับการทำงาน 4 ชั่วโมง</string>
+    <string name="go_gildong_legal_issue_3">ภาระผูกพันในการสนับสนุนแรงงานต่างชาติ</string>
+    <string name="go_gildong_legal_interpretation_3">ตามพระราชบัญญัติการจ้างงานแรงงานต่างชาติ ต้องระบุเงื่อนไขที่พักและอาหาร</string>
+    <string name="go_gildong_deep_analysis">สัญญานี้ตอบสนองข้อกำหนดพื้นฐานส่วนใหญ่ของพระราชบัญญัติมาตรฐานแรงงาน แต่ต้องให้ความระมัดระวังเนื่องจากมีรายการที่ขาดหายไปที่สำคัญหลายประการ\n\nการไม่ระบุระยะเวลาทดลองงานเป็นเรื่องสำคัญที่เกี่ยวข้องกับการหักค่าจ้าง ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 17 ระยะเวลาทดลองงานต้องระบุไว้ในสัญญาจ้างงาน และการละเลยสิ่งนี้อาจทำให้แรงงานทำงานภายใต้เงื่อนไขที่แตกต่างจากที่คาดไว้\n\nการไม่ระบุเวลาพักผ่อนส่งผลกระทบโดยตรงต่อการปกป้องสิทธิของแรงงาน พระราชบัญญัติมาตรฐานแรงงานมาตรา 54 กำหนดให้มีเวลาพักผ่อนอย่างน้อย 30 นาทีสำหรับการทำงาน 4 ชั่วโมงขึ้นไป และการไม่ระบุสิ่งนี้อาจทำให้การพักผ่อนที่เพียงพอไม่ได้รับการรับประกันในงานที่แท้จริง\n\nสำหรับแรงงานต่างชาติ ประเภทที่พักและเงื่อนไขค่าอาหารถือเป็นเงื่อนไขการทำงานที่สำคัญ ตามพระราชบัญญัติการจ้างงานแรงงานต่างชาติ เงื่อนไขเหล่านี้ต้องระบุให้ชัดเจน และการละเลยอาจเป็นสาเหตุของข้อพิพาท\n\nโชคดีที่ปฏิบัติตามมาตรฐานค่าจ้างขั้นต่ำ จึงไม่มีการละเมิดกฎหมายที่ร้ายแรง แต่ต้องเสริมรายการที่ขาดหายไปข้างต้นเพื่อสร้างสัญญาที่สมบูรณ์ยิ่งขึ้น</string>
+    
+    <!-- ผลการวิเคราะห์ - ควัก ดกซิก -->
+    <string name="kwak_deoksik_summary">สัญญาจ้างงานมีกรอบพื้นฐาน แต่อาจมีปัญหาในการปกป้องสิทธิของแรงงานเนื่องจากระยะเวลาทดลองงานและเงื่อนไขการจ่ายค่าจ้างไม่ชัดเจน</string>
+    <string name="kwak_deoksik_highlight_1">ระยะเวลาทดลองงานไม่ได้ระบุ</string>
+    <string name="kwak_deoksik_highlight_2">วิธีการจ่ายค่าจ้างไม่ชัดเจน</string>
+    <string name="kwak_deoksik_highlight_3">เงื่อนไขการลาป่วยประจำปีแบบได้ค่าจ้างไม่ได้ระบุ</string>
+    <string name="kwak_deoksik_legal_issue_1">กฎระเบียบเกี่ยวกับระยะเวลาทดลองงาน</string>
+    <string name="kwak_deoksik_legal_interpretation_1">ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 2-2 ระยะเวลาทดลองงานต้องไม่เกิน 3 เดือน และต้องระบุไว้ในสัญญา</string>
+    <string name="kwak_deoksik_legal_issue_2">วิธีการจ่ายค่าจ้าง</string>
+    <string name="kwak_deoksik_legal_interpretation_2">ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 43 ค่าจ้างต้องจ่ายเป็นเงินสดโดยตรงให้แรงงานเต็มจำนวน และวิธีการจ่ายต้องระบุให้ชัดเจน</string>
+    <string name="kwak_deoksik_legal_issue_3">การลาประจำปีแบบได้ค่าจ้าง</string>
+    <string name="kwak_deoksik_legal_interpretation_3">ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 60 ต้องให้การลาป่วย 15 วันแบบได้ค่าจ้างแก่แรงงานที่เข้าทำงาน 80% ขึ้นไปในหนึ่งปี</string>
+    <string name="kwak_deoksik_deep_analysis">สัญญานี้ปฏิบัติตามโครงสร้างพื้นฐานของพระราชบัญญัติมาตรฐานแรงงาน แต่ต้องให้ความระมัดระวังเนื่องจากมีส่วนที่ไม่ชัดเจนในหลายรายการที่สำคัญสำหรับการปกป้องสิทธิของแรงงาน\n\nการไม่ระบุระยะเวลาทดลองงานเป็นปัญหาร้ายแรง ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 2-2 ระยะเวลาทดลองงานจำกัดสูงสุด 3 เดือน และสามารถหักค่าจ้างได้ในช่วงนี้ จึงต้องระบุไว้ในสัญญา หากไม่ระบุระยะเวลาทดลองงาน แรงงานอาจได้รับการหักค่าจ้างที่ไม่คาดคิด\n\nความไม่ชัดเจนของวิธีการจ่ายค่าจ้างก็เป็นปัญหาเช่นกัน พระราชบัญญัติมาตรฐานแรงงานมาตรา 43 กำหนดให้จ่ายค่าจ้างเป็นเงินสดโดยตรงให้แรงงานเต็มจำนวน และวิธีการจ่ายที่ไม่ชัดเจนอาจมีความเสี่ยงของการค้างชำระค่าจ้างหรือการหักเงินที่ไม่เหมาะสม\n\nการไม่ระบุเงื่อนไขการลาประจำปีแบบได้ค่าจ้างส่งผลกระทบต่อการรับประกันสิทธิการพักผ่อนของแรงงาน การลาประจำปีแบบได้ค่าจ้างตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 60 เป็นสิทธิพื้นฐานของแรงงาน ดังนั้นการไม่ระบุสิ่งนี้อาจป้องกันการใช้วันหยุดที่เหมาะสมในงานจริง\n\nโดยรวมแล้ว สัญญานี้ไม่ได้ละเมิดมาตรฐานทางกฎหมายอย่างร้ายแรง แต่รายการข้างต้นจำเป็นต้องเสริมเพื่อปกป้องแรงงาน</string>
+
+    <!-- ผลการวิเคราะห์ - โอก ดูพาล -->
+    <string name="ok_dupal_summary">สัญญาจ้างงานพบการละเมิดกฎหมายร้ายแรงหลายประการ รวมถึงการละเมิดค่าจ้างขั้นต่ำ ชั่วโมงทำงานที่เกินขอบเขต และระยะเวลาทดลองงานไม่ได้ระบุ ต้องแก้ไขทันที</string>
+    <string name="ok_dupal_highlight_1">ต่ำกว่าค่าจ้างขั้นต่ำ (8,500 วอนต่อชั่วโมง)</string>
+    <string name="ok_dupal_highlight_2">ชั่วโมงทำงานที่เกินขอบเขต 13 ชั่วโมงต่อวัน</string>
+    <string name="ok_dupal_highlight_3">ระยะเวลาทดลองงานไม่ได้ระบุ</string>
+    <string name="ok_dupal_legal_issue_1">การละเมิดพระราชบัญญัติค่าจ้างขั้นต่ำ</string>
+    <string name="ok_dupal_legal_interpretation_1">ตามพระราชบัญญัติค่าจ้างขั้นต่ำ ต้องจ่าย 9,860 วอนขึ้นไปสำหรับค่าจ้างขั้นต่ำปี 2024 แต่สัญญาระบุ 8,500 วอน ซึ่งเป็นการละเมิดกฎหมาย</string>
+    <string name="ok_dupal_legal_issue_2">การละเมิดขีดจำกัดชั่วโมงทำงาน</string>
+    <string name="ok_dupal_legal_interpretation_2">ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 50 ต้องไม่เกิน 8 ชั่วโมงต่อวันและ 40 ชั่วโมงต่อสัปดาห์ แต่การทำงาน 13 ชั่วโมงเป็นการละเมิดร้ายแรง</string>
+    <string name="ok_dupal_legal_issue_3">ระยะเวลาทดลองงานไม่ได้ระบุ</string>
+    <string name="ok_dupal_legal_interpretation_3">ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 2-2 ระยะเวลาทดลองงานต้องระบุ และต้องไม่เกินสูงสุด 3 เดือน</string>
+    <string name="ok_dupal_deep_analysis">สัญญานี้ละเมิดพระราชบัญญัติมาตรฐานแรงงานอย่างร้ายแรง และอยู่ในระดับอันตรายที่ต้องแก้ไขทันที\n\nปัญหาที่ร้ายแรงที่สุดคือการละเมิดค่าจ้างขั้นต่ำ การระบุ 8,500 วอนเมื่อเทียบกับค่าจ้างขั้นต่ำปี 2024 ที่ 9,860 วอนเป็นการละเมิดพระราชบัญญัติค่าจ้างขั้นต่ำอย่างชัดเจน และนายจ้างอาจถูกจำคุกสูงสุด 3 ปีหรือปรับสูงสุด 20 ล้านวอน แรงงานสามารถเรียกร้องค่าเสียหายสำหรับค่าจ้างที่ไม่ได้จ่าย\n\nชั่วโมงทำงานที่เกินขอบเขต 13 ชั่วโมงต่อวันก็เป็นปัญหาร้ายแรงมาก พระราชบัญญัติมาตรฐานแรงงานมาตรา 50 กำหนด 8 ชั่วโมงต่อวันและ 40 ชั่วโมงต่อสัปดาห์เป็นชั่วโมงทำงานพื้นฐาน และแม้รวมการทำงานล่วงเวลาแล้วก็ต้องไม่เกิน 52 ชั่วโมงต่อสัปดาห์ การทำงาน 13 ชั่วโมงละเมิดสิ่งนี้อย่างมาก และอาจก่อให้เกิดความเสี่ยงร้ายแรงต่อสุขภาพและความปลอดภัยของแรงงาน\n\nการไม่ระบุระยะเวลาทดลองงานเป็นเรื่องสำคัญที่เกี่ยวข้องกับการหักค่าจ้าง ตามพระราชบัญญัติมาตรฐานแรงงานมาตรา 2-2 ระยะเวลาทดลองงานต้องระบุ และต้องไม่เกิน 3 เดือน\n\nการละเมิดเหล่านี้อาจก่อให้เกิดอันตรายอย่างร้ายแรงเป็นพิเศษต่อแรงงานต่างชาติ และต้องรายงานต่อกรมแรงงานหรือดำเนินการทางกฎหมาย เงื่อนไขสัญญาต้องแก้ไขทันทีให้เป็นไปตามมาตรฐานทางกฎหมาย</string>
+
+</resources> 

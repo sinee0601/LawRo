@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LawRo</string>
+    <string name="select_language">选择语言</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">登录</string>
+    <string name="login_subtitle">SNS登录</string>
+    <string name="email_hint">邮箱</string>
+    <string name="password_hint">密码</string>
+    <string name="login_button">登录</string>
+    <string name="forgot_password">忘记密码？</string>
+    <string name="signup_prompt">还没有账号？</string>
+    <string name="signup_button">注册</string>
+    
+    <!-- Error Messages -->
+    <string name="error_invalid_email_and_password">请检查您的账号和密码。</string>
+    <string name="error_email_not_found">未找到该邮箱。</string>
+    <string name="error_password_incorrect">密码不正确。</string>
+
+    <!-- SignUp Screen -->
+    <string name="signup_title">注册</string>
+    <string name="name_hint">姓名</string>
+    <string name="verification_code_hint">验证码</string>
+    <string name="send_verification_code">发送验证码</string>
+    <string name="confirm_password_hint">确认密码</string>
+    <string name="signup_complete">注册成功！</string>
+    <string name="please_login">请使用注册账号登录。</string>
+    
+    <!-- SignUp Error Messages -->
+    <string name="error_name_required">请输入有效的姓名。</string>
+    <string name="error_invalid_email">邮箱格式无效。</string>
+    <string name="error_invalid_verification_code">验证码不匹配。</string>
+    <string name="error_password_too_short">密码长度必须至少为8个字符。</string>
+    <string name="error_passwords_not_match">两次输入的密码不一致。</string>
+
+    <string name="find_password">找回密码</string>
+    <string name="receive_password_reset_email">接收密码重置邮件</string>
+    <string name="reset_password">重置密码</string>
+    <string name="save">保存</string>
+
+    <string name="new_password">新密码</string>
+    <string name="confirm_new_password">确认新密码</string>
+    <string name="password_change_complete">密码修改完成！</string>
+    <string name="login_with_new_password">请使用新密码登录。</string>
+
+    <!-- Risk Level -->
+    <string name="risk_level_safe">安全</string>
+    <string name="risk_level_warning">注意</string>
+    <string name="risk_level_danger">危险</string>
+    
+    <!-- Analysis Result Types -->
+    <string name="issues_without_problems">无问题条款</string>
+    <string name="issues_requiring_attention">需要注意的条款</string>
+    <string name="dangerous_risk_issues">危险要素确认条款</string>
+
+    <!-- Worktime Screen -->
+    <string name="start_not_allowed_title">无法开始测量</string>
+    <string name="start_not_allowed_message">只能在工作场所开始测量。</string>
+    
+    <!-- Settings -->
+    <string name="change_theme">更改主题</string>
+    <string name="worktime_records">工作时间记录</string>
+    
+    <!-- Worktime Records Screen -->
+    <string name="worktime_summary">📊 工作时间摘要</string>
+    <string name="total_work_days">总工作日数</string>
+    <string name="days_unit">天</string>
+    <string name="total_work_hours">总工作时间</string>
+    <string name="hours_unit">小时</string>
+    <string name="daily_average">日平均</string>
+    <string name="completed">完成</string>
+    <string name="delete">删除</string>
+    <string name="gps_violation_prefix">脱离工作场所：</string>
+    <string name="delete_record_title">删除记录</string>
+    <string name="delete_record_message">是否删除%s的工作记录？</string>
+    
+    <!-- Contract -->
+    <string name="default_contract_title">劳动合同</string>
+    
+    <!-- Privacy Policy Screen -->
+    <string name="privacy_policy_title">隐私政策</string>
+    <string name="privacy_policy_last_updated">最后更新：2025年1月20日</string>
+    <string name="section_1_title">1. 个人信息收集及使用目的</string>
+    <string name="section_1_content">LawRo为以下目的处理个人信息：\n\n• 会员注册及管理\n• 合同分析服务提供\n• 客户咨询及投诉处理\n• 服务改善及统计分析</string>
+    <string name="section_2_title">2. 收集的个人信息项目</string>
+    <string name="section_2_content">• 必要信息：姓名、电子邮件地址、密码\n• 选择性信息：工作地点位置信息\n• 自动收集信息：服务使用记录、访问日志</string>
+    <string name="section_3_title">3. 个人信息处理及保存期间</string>
+    <string name="section_3_content">• 直到会员退出或法令规定的保存期间\n• 合同分析记录：3年\n• 工作时间记录：3年</string>
+    <string name="section_4_title">4. 个人信息第三方提供</string>
+    <string name="section_4_content">公司原则上不会将用户的个人信息提供给外部。但在法令规定或调查机关要求的情况下，可能会依照相关法令提供个人信息。</string>
+    <string name="section_5_title">5. 个人信息处理委托</string>
+    <string name="section_5_content">公司为提供服务，将个人信息处理业务委托如下：\n\n• AI分析服务：OpenAI\n• 云端服务：AWS</string>
+    <string name="section_6_title">5. 用户权利</string>
+    <string name="section_6_content">用户随时可以行使以下权利：\n\n• 要求通知个人信息处理状况\n• 要求查阅个人信息\n• 要求更正、删除个人信息\n• 要求停止个人信息处理</string>
+    <string name="section_7_title">6. 个人信息保护负责人</string>
+    <string name="section_7_content">个人信息保护负责人\n• 姓名：TABA 8期 第3组</string>
+    <string name="section_8_title">7. 隐私政策变更</string>
+    <string name="section_8_content">本隐私政策如因法令、政策或安全技术变更而有内容增删及修改时，将于变更事项实施前7日起通过公告通知。</string>
+
+</resources> 
