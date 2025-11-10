@@ -1,0 +1,14 @@
+# 공통 의존성 (기본 패키지)
+-r ../requirements-base.txt
+
+# Chatbot Service 전용 패키지
+
+# LangChain 및 AI 관련
+langchain>=0.1.0
+langchain-upstage>=0.1.0
+langchain-chroma>=0.1.0
+langchain-community>=0.0.20
+langchain-core>=0.1.0
+
+# 벡터 데이터베이스
+chromadb>=0.4.0

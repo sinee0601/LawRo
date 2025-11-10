@@ -1,0 +1,17 @@
+# 공통 의존성 (기본 패키지)
+-r ../requirements-base.txt
+
+# Main Service 전용 패키지
+
+# 이메일 검증
+pydantic[email]
+
+# 인증 및 보안
+PyJWT>=2.6.0
+passlib[bcrypt]>=1.7.4
+
+# MySQL 데이터베이스
+sqlalchemy>=2.0.0
+pymysql>=1.0.0
+alembic>=1.10.0
+cryptography>=40.0.0 
