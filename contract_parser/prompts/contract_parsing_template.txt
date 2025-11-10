@@ -1,0 +1,110 @@
+다음은 표준근로계약서의 OCR 추출 텍스트입니다. 내용을 분석하여 아래 항목들을 가능한 한 상세하게 JSON 형식으로 추출하세요.
+문서에 포함된 표현이 다르더라도 아래 기준에 따라 정확히 매핑해주세요:
+
+- "임금" 항목은 다음과 같은 키워드와 관련 있습니다: "임금", "급여", "보수", "월급", "지급금액"
+- 없거나 불명확한 항목은 "미기재"로 표시해주세요.
+필수 항목:  
+- 사용자 정보: 업체명, 전화번호, 소재지, 대표자명(사용자 이름), 사업자등록번호  
+- 근로자 정보: 이름, 생년월일, 본국 주소  
+- 근로계약기간: 신규/재입국자 계약 기간, 사업장 변경 기간, 수습기간 여부 및 기간  
+- 근로장소  
+- 업무내용: 업종, 사업내용, 직무내용  
+- 근로시간: 시작 시각, 종료 시각, 시간외 근로 시간, 교대제 여부  
+- 휴게시간  
+- 휴일 및 휴가: 휴일 종류, 유급/무급 여부  
+- 임금: 월 통상임금, 기본급, 수당 내역, 상여금, 수습기간 임금, 연장/야간/휴일 가산임금 여부  
+- 임금 지급일 및 지급 방법 (직접지급 또는 통장 입금 여부)  
+- 숙식 제공 여부 및 상세내역 (숙박시설 유형, 식사 제공 여부, 근로자 부담금액)  
+ 
+
+아래 형식으로 출력하세요:
+
+{
+  "employer": {
+    "company_name": "...",
+    "phone_number": "...",
+    "address": "...",
+    "representative_name": "...",
+    "business_registration_number": "..."
+  },
+  "employee": {
+    "name": "...",
+    "date_of_birth": "...",
+    "home_country_address": "..."
+  },
+  "contract_period": {
+    "new_contract_months": "...",
+    "workplace_change_period": {
+      "start_date": "...",
+      "end_date": "..."
+    },
+    "probation_period": {
+      "is_used": true,
+      "months": "..."
+    }
+  },
+  "workplace": "...",
+  "job_details": {
+    "industry": "...",
+    "business_content": "...",
+    "job_description": "..."
+  },
+  "working_hours": {
+    "start_time": "...",
+    "end_time": "...",
+    "overtime_hours": "...",
+    "shift_work": "..."
+  },
+  "daily_break_minutes": "...",
+  "holidays_and_leaves": {
+    "sunday": true,
+    "legal_holidays": {
+      "paid": true,
+      "unpaid": false
+    },
+    "saturday": "매주/격주/없음"
+  },
+  "wages": {
+    "monthly_total_wage": "...",
+    "base_pay": "...",
+    "allowances": [
+      {"item": "...", "amount": "..."},
+      {"item": "...", "amount": "..."}
+    ],
+    "bonus": "...",
+    "probation_period_wage": "...",
+    "overtime_night_holiday_rate": "50%"
+  },
+  "wage_payment": {
+    "payment_date": "...",
+    "payment_method": "직접지급/계좌이체",
+    "employer_account_control": false
+  },
+  "accommodation_meals": {
+    "accommodation_provided": true,
+    "accommodation_types": ["주택", "고시원", "오피스텔"],
+    "employee_accommodation_fee": "...",
+    "meals_provided": true,
+    "provided_meals": ["조식", "중식", "석식"],
+    "employee_meal_fee": "..."
+  },
+  "four_major_insurances": {
+    "health_insurance": true,
+    "national_pension": true,
+    "employment_insurance": true,
+    "industrial_accident_insurance": true
+  },
+  "contract_and_rules_compliance": true,
+  "other_terms": "...",
+  "signature_date": {
+    "employer_signature": "...",
+    "employee_signature": "...",
+    "date": "YYYY-MM-DD"
+  }
+}
+
+OCR 추출 텍스트:
+{{html_content}}
+
+중요: 위 텍스트는 계약서에서 OCR로 추출한 내용입니다. 실제 계약서 내용을 분석하여 JSON으로 변환해주세요. 
+만약 텍스트가 불완전하거나 읽기 어려운 부분이 있다면 "미기재"로 표시하고, 가능한 정보만 추출해주세요.

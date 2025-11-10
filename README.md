@@ -6,10 +6,10 @@ LawRo는 법률 상담 및 계약서 분석을 위한 마이크로서비스 기�
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   main-docker   │    │ chatbot-docker  │    │contract_analyzer│
+│   main-docker   │    │ chatbot-docker  │    │contract_parser  |
 │   (Port 8000)   │────│   (Port 8001)   │    │   (Port 8002)   │
 │                 │    │                 │    │                 │
-│ - 사용자 관리    │    │ - 챗봇 서비스    │    │ - 계약서 분석    │
+│ - 사용자 관리    │    │ - 챗봇 서비스    │    │ - 계약서 파싱    │
 │ - 인증/JWT      │    │ - RAG 체인      │    │ - OCR 처리      │
 │ - API 게이트웨이 │    │ - 세션 관리      │    │ - 문서 분석     │
 │ - Firestore DB  │    │ - LLM 통합      │    │ - S3 연동       │
@@ -96,6 +96,9 @@ docker-compose up main-api
 docker-compose up chatbot
 docker-compose up contract
 ```
+cd frontend
+npm install
+npm start
 
 ### 개별 서비스 실행
 
