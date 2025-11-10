@@ -4,6 +4,9 @@ chroma_db/*.bin
 OCR/.env
 OCR/__pycache__/*
 OCR/chroma_db/*
+md/*
+CLAUDE.md
+GEMINI.md
 
 *.png
 *.jpg
