@@ -9,7 +9,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
   const [error, setError] = useState(null);
   const scriptLoadedRef = useRef(false);
 
-  // 1단계: 네이버 지도 API 로드
+  // 1단계: 네이버 지도 API 로드 (공식 문서 콜백 방식)
   useEffect(() => {
     // 이미 로드된 경우 스킵
     if (window.naver && window.naver.maps) {
@@ -33,7 +33,13 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
 
     scriptLoadedRef.current = true;
 
-    // 인증 실패 처리
+    // 전역 콜백 함수: API 로드 완료 시 자동 호출
+    window.initNaverMap = function () {
+      console.log('✅ 네이버 지도 API 로드 완료 (callback)');
+      setIsLoaded(true);
+    };
+
+    // 인증 실패 처리 (공식 문서: 클라이언트 아이디 인증 실패 확인)
     window.navermap_authFailure = function () {
       console.error('❌ 네이버 지도 API 인증 실패');
       setError('네이버 지도 API 인증에 실패했습니다. Client ID를 확인하세요.');
@@ -43,13 +49,9 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
 
     const script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${ncpKeyId}`;
+    // callback 파라미터로 자동 콜백 등록 (공식 권장)
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${ncpKeyId}&callback=initNaverMap`;
     script.async = true;
-
-    script.onload = () => {
-      console.log('✅ 네이버 지도 API 로드 완료');
-      setIsLoaded(true);
-    };
 
     script.onerror = (err) => {
       console.error('❌ 지도 API 로드 실패:', err);
