@@ -1,4 +1,6 @@
 .env
+.env.example
+legacy/chatbot_service/chroma_db/*
 chroma_db/*
 chroma_db/*.bin
 OCR/.env
@@ -7,14 +9,16 @@ OCR/chroma_db/*
 md/*
 CLAUDE.md
 GEMINI.md
+env.example
 
 *.png
 *.jpg
 *.jpeg
 *.gif
 *.bmp
-*.tiff
+*.tiffgi
 *.ico
+*.sqlite3
 
 # Python
 __pycache__/
@@ -94,11 +98,13 @@ coverage.xml
 # 모델 및 체크포인트
 *.pkl
 *.pickle
-models/
 checkpoints/
 *.h5
 *.hdf5
 *.model
+# 실제 모델 directory (ML weights) - source code models/ directory는 포함
+**/checkpoints/
+**/weights/
 
 # 문서 생성
 docs/_build/

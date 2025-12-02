@@ -106,7 +106,7 @@ async def analyze_with_chatbot(
             use_saved_data=request.use_saved_data
         )
 
-        logger.info(f"Analysis complete: contract={request.contract_id}, source={result['data_source']}")
+        logger.info(f"Analysis complete: contract={request.contract_id}, source={result['data_source']}, saved={result.get('saved_to_firestore', False)}")
 
         return AnalyzeWithChatbotResponse(
             message=result["message"],
@@ -114,6 +114,7 @@ async def analyze_with_chatbot(
             chatbot_analysis=result.get("chatbot_analysis"),
             session_id=result.get("session_id"),
             data_source=result["data_source"],
+            saved_to_firestore=result.get("saved_to_firestore", False),
             processing_info=result.get("processing_info")
         )
 
@@ -152,6 +153,90 @@ async def get_chatbot_status():
             status="error",
             available=False,
             message=f"Failed to check chatbot status: {str(e)}"
+        )
+
+
+@router.get("/api/analysis-history/{user_id}")
+async def get_analysis_history(
+    user_id: str,
+    current_user: dict = Depends(get_current_user_optional)
+):
+    """
+    Get analysis history for a user
+
+    Returns list of all contract analyses saved in Firestore
+    """
+    logger.info(f"Fetching analysis history for user {user_id}")
+
+    try:
+        # Get analyses from Firestore
+        from ..database import get_firebase, Collections
+        firebase = get_firebase()
+
+        # Query analyses for this user (without order_by to avoid index issues)
+        query = firebase.db.collection(Collections.CONTRACT_ANALYSIS).where(
+            "user_id", "==", user_id
+        )
+
+        docs = query.stream()
+        analyses = []
+
+        for doc in docs:
+            data = doc.to_dict()
+            data["id"] = doc.id
+            analyses.append(data)
+
+        # Sort by created_at in Python instead of Firestore
+        analyses.sort(
+            key=lambda x: x.get("created_at", ""),
+            reverse=True
+        )
+
+        logger.info(f"Retrieved {len(analyses)} analyses for user {user_id}")
+
+        return {
+            "message": "분석 내역 조회 성공",
+            "analyses": analyses,
+            "count": len(analyses)
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to get analysis history: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"분석 내역 조회 실패: {str(e)}"
+        )
+
+
+@router.delete("/api/analysis/{analysis_id}")
+async def delete_analysis(
+    analysis_id: str,
+    current_user: dict = Depends(get_current_user_optional)
+):
+    """
+    Delete a specific analysis from Firestore
+    """
+    logger.info(f"Deleting analysis {analysis_id}")
+
+    try:
+        from ..database import get_firebase, Collections
+        firebase = get_firebase()
+
+        # Delete document
+        firebase.db.collection(Collections.CONTRACT_ANALYSIS).document(analysis_id).delete()
+
+        logger.info(f"Analysis deleted: {analysis_id}")
+
+        return {
+            "message": "분석 내역이 삭제되었습니다",
+            "analysis_id": analysis_id
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to delete analysis: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"삭제 실패: {str(e)}"
         )
 
 

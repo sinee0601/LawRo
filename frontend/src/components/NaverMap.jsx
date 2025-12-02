@@ -7,69 +7,99 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
   const markerInstance = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const scriptLoadedRef = useRef(false);
 
-  // 네이버 지도 API 로드
+  // 1단계: 네이버 지도 API 로드
   useEffect(() => {
-    const loadNaverMapAPI = () => {
-      const ncpKeyId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID;
+    // 이미 로드된 경우 스킵
+    if (window.naver && window.naver.maps) {
+      console.log('✅ 네이버 지도 API 이미 로드됨');
+      setIsLoaded(true);
+      return;
+    }
 
-      if (!ncpKeyId || ncpKeyId === 'YOUR_NAVER_MAP_CLIENT_ID') {
-        setError('네이버 지도 Client ID가 설정되지 않았습니다');
-        return;
-      }
+    // 이미 로드 중이면 스킵
+    if (scriptLoadedRef.current) {
+      return;
+    }
 
-      // 이미 로드된 경우 스킵
-      if (window.naver && window.naver.maps) {
-        setIsLoaded(true);
-        return;
-      }
+    const ncpKeyId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID;
 
-      // 인증 실패 처리
-      window.navermap_authFailure = function () {
-        setError('네이버 지도 API 인증에 실패했습니다. Client ID를 확인하세요.');
-      };
+    if (!ncpKeyId || ncpKeyId === 'YOUR_NAVER_MAP_CLIENT_ID') {
+      setError('네이버 지도 Client ID가 설정되지 않았습니다');
+      console.error('❌ VITE_NAVER_MAP_CLIENT_ID가 없습니다');
+      return;
+    }
 
-      const script = document.createElement('script');
-      script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${ncpKeyId}`;
-      script.async = false; // 동기 로드로 변경
-      script.defer = false;
-      script.type = 'text/javascript';
+    scriptLoadedRef.current = true;
 
-      script.onload = () => {
-        // 약간의 지연을 주어 naver 객체가 준비되도록 함
-        setTimeout(() => {
-          if (window.naver && window.naver.maps) {
-            console.log('✅ 네이버 지도 API 로드 완료');
-            setIsLoaded(true);
-            initializeMap();
-          } else {
-            console.error('❌ naver.maps 객체를 찾을 수 없습니다');
-            setError('지도 API 초기화 실패');
-          }
-        }, 100);
-      };
-
-      script.onerror = (err) => {
-        console.error('❌ 지도 API 로드 실패:', err);
-        setError('네이버 지도 API 로드 실패');
-      };
-
-      document.head.appendChild(script);
-
-      return () => {
-        // Cleanup
-        if (document.head.contains(script)) {
-          try {
-            document.head.removeChild(script);
-          } catch (e) {
-            console.warn('스크립트 제거 실패');
-          }
-        }
-      };
+    // 인증 실패 처리
+    window.navermap_authFailure = function () {
+      console.error('❌ 네이버 지도 API 인증 실패');
+      setError('네이버 지도 API 인증에 실패했습니다. Client ID를 확인하세요.');
     };
 
-    loadNaverMapAPI();
+    console.log('📍 네이버 지도 API 로드 시작...');
+
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${ncpKeyId}`;
+    script.async = true;
+
+    script.onload = () => {
+      console.log('✅ 네이버 지도 API 로드 완료');
+      setIsLoaded(true);
+    };
+
+    script.onerror = (err) => {
+      console.error('❌ 지도 API 로드 실패:', err);
+      setError('네이버 지도 API 로드 실패');
+      scriptLoadedRef.current = false;
+    };
+
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup
+      if (document.head.contains(script)) {
+        try {
+          document.head.removeChild(script);
+        } catch (e) {
+          console.warn('스크립트 제거 실패');
+        }
+      }
+    };
   }, []);
+
+  // 2단계: API 로드 완료 후 지도 초기화
+  useEffect(() => {
+    // API가 아직 로드되지 않았으면 스킵
+    if (!isLoaded) {
+      console.log('⏳ API 로드 대기 중...');
+      return;
+    }
+
+    // DOM 컨테이너가 없으면 스킵
+    if (!mapElement.current) {
+      console.log('⏳ DOM 컨테이너 대기 중...');
+      return;
+    }
+
+    // window.naver.maps가 없으면 스킵
+    if (!window.naver || !window.naver.maps) {
+      console.log('⏳ window.naver.maps 대기 중...');
+      return;
+    }
+
+    // 이미 초기화되었으면 스킵
+    if (mapInstance.current) {
+      console.log('✅ 지도가 이미 초기화되었습니다');
+      return;
+    }
+
+    console.log('🚀 지도 초기화 조건 충족, 초기화 시작...');
+    initializeMap();
+  }, [isLoaded]);
 
   // 지도 초기화
   const initializeMap = () => {

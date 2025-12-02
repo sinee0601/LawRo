@@ -90,6 +90,8 @@ class Collections:
     CHAT_MESSAGES = "chat_messages"
     CONTRACT_SESSIONS = "contract_sessions"
     CONTRACT_ANALYSIS = "contract_analysis"
+    WORKPLACE = "workplace_locations"
+    WORK_RECORDS = "work_records"
 
 
 def get_db():

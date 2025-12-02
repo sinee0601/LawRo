@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FileText, BarChart3, MessageCircle, Clock, Settings } from 'lucide-react';
+import { FileText, History, MessageCircle, Clock, Settings } from 'lucide-react';
 
 export default function BottomNav() {
   const navigate = useNavigate();
@@ -7,7 +7,7 @@ export default function BottomNav() {
 
   const navItems = [
     { path: '/contract', icon: FileText, label: '계약서' },
-    { path: '/statistics', icon: BarChart3, label: '통계' },
+    { path: '/analysis-history', icon: History, label: '분석 내역' },
     { path: '/chat', icon: MessageCircle, label: '챗봇' },
     { path: '/work-time', icon: Clock, label: '근무시간' },
     { path: '/settings', icon: Settings, label: '설정' },

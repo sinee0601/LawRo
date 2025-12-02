@@ -37,8 +37,10 @@ class ContractService:
         try:
             self.firebase = get_firebase()
             self.db = self.firebase.db
+            logger.info("✓ Firestore initialized successfully - contract analyses will be saved")
         except Exception as e:
-            logger.warning(f"Firestore initialization failed: {e}")
+            logger.warning(f"✗ Firestore initialization failed: {e}")
+            logger.warning("Contract analyses will NOT be saved to Firestore - check firebase-credentials.json")
             self.use_firestore = False
 
     def upload_contract_files(
@@ -109,6 +111,7 @@ class ContractService:
                     "structured_result": saved_data.get("analysis_result", {}),
                     "chatbot_analysis": saved_data.get("chatbot_analysis"),
                     "data_source": "saved_db",
+                    "saved_to_firestore": True,
                     "processing_info": {
                         "source": "firestore",
                         "timestamp": saved_data.get("created_at")
@@ -144,8 +147,9 @@ class ContractService:
             )
 
         # Save to Firestore
+        saved_to_firestore = False
         if self.use_firestore:
-            self._save_analysis(
+            saved_to_firestore = self._save_analysis(
                 user_id,
                 contract_id,
                 structured_result,
@@ -159,6 +163,7 @@ class ContractService:
             "chatbot_analysis": chatbot_analysis,
             "session_id": session_id,
             "data_source": "fresh_ocr",
+            "saved_to_firestore": saved_to_firestore,
             "processing_info": {
                 "pages_processed": len(file_paths),
                 "language": user_language,
@@ -545,15 +550,22 @@ class ContractService:
         structured_result: Dict[str, Any],
         chatbot_analysis: Optional[Dict],
         language: str
-    ):
-        """Save analysis to Firestore"""
+    ) -> bool:
+        """Save analysis to Firestore
+
+        Returns:
+            bool: True if saved successfully, False otherwise
+        """
         if not self.use_firestore:
-            return
+            logger.warning("Firebase not initialized - analysis will not be saved")
+            return False
 
         try:
+            logger.info(f"Starting to save analysis for contract {contract_id}, user {user_id}")
+
             doc_ref = self.db.collection(Collections.CONTRACT_ANALYSIS).document()
 
-            doc_ref.set({
+            save_data = {
                 "user_id": user_id,
                 "contract_id": contract_id,
                 "analysis_result": structured_result,
@@ -561,12 +573,16 @@ class ContractService:
                 "language": language,
                 "created_at": datetime.now(),
                 "updated_at": datetime.now()
-            })
+            }
 
-            logger.info(f"Analysis saved to Firestore: {contract_id}")
+            doc_ref.set(save_data)
+
+            logger.info(f"✓ Analysis successfully saved to Firestore: {contract_id} (Document ID: {doc_ref.id})")
+            return True
 
         except Exception as e:
-            logger.error(f"Failed to save analysis: {e}")
+            logger.error(f"✗ Failed to save analysis to Firestore: {e}", exc_info=True)
+            return False
 
     def get_health_status(self) -> Dict[str, Any]:
         """Get service health status"""

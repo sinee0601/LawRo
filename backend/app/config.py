@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "LawRo Unified Backend"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
+    ENVIRONMENT: str = "development"  # development, production
     HOST: str = "0.0.0.0"
     PORT: int = 8000
 

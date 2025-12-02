@@ -12,7 +12,7 @@ import time
 
 from .config import settings
 from .database import get_firebase
-from .routers import auth, chat, contract
+from .routers import auth, chat, contract, worktime
 from .services.chat_service import ChatService
 
 # Configure logging
@@ -121,6 +121,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(chat.router, prefix="/chat", tags=["Chatbot"])
 app.include_router(contract.router, prefix="/contract", tags=["Contract Analysis"])
+app.include_router(worktime.router, tags=["Work Time Tracking"])
 
 
 # Root endpoint

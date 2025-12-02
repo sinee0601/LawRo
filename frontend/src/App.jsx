@@ -7,7 +7,7 @@ import SignupPage from './pages/SignupPage';
 import ChatPage from './pages/ChatPage';
 import ContractPage from './pages/ContractPage';
 import SettingsPage from './pages/SettingsPage';
-import StatisticsPage from './pages/StatisticsPage';
+import AnalysisHistoryPage from './pages/AnalysisHistoryPage';
 import WorkTimePage from './pages/WorkTimePage';
 import ProfilePage from './pages/ProfilePage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
@@ -76,10 +76,10 @@ function App() {
           }
         />
         <Route
-          path="/statistics"
+          path="/analysis-history"
           element={
             <ProtectedRoute>
-              <StatisticsPage />
+              <AnalysisHistoryPage />
             </ProtectedRoute>
           }
         />
