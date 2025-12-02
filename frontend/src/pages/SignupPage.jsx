@@ -11,7 +11,17 @@ export default function SignupPage() {
     password: '',
     confirmPassword: '',
     full_name: '',
+    preferred_language: 'korean',
   });
+
+  const languages = [
+    { code: 'korean', name: '한국어', flag: '🇰🇷' },
+    { code: 'english', name: 'English', flag: '🇺🇸' },
+    { code: 'chinese', name: '中文', flag: '🇨🇳' },
+    { code: 'vietnamese', name: 'Tiếng Việt', flag: '🇻🇳' },
+    { code: 'japanese', name: '日本語', flag: '🇯🇵' },
+    { code: 'thai', name: 'ไทย', flag: '🇹🇭' },
+  ];
 
   const [validationError, setValidationError] = useState('');
 
@@ -44,6 +54,7 @@ export default function SignupPage() {
         email: formData.email,
         password: formData.password,
         full_name: formData.full_name,
+        preferred_language: formData.preferred_language,
       });
       alert('회원가입이 완료되었습니다. 로그인해주세요.');
       navigate('/login');
@@ -89,6 +100,29 @@ export default function SignupPage() {
                 placeholder="이름"
                 required
               />
+            </div>
+
+            <div>
+              <label htmlFor="preferred_language" className="block text-sm font-medium text-gray-700 mb-3">
+                언어 선택
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, preferred_language: lang.code })}
+                    className={`px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                      formData.preferred_language === lang.code
+                        ? 'bg-primary-600 text-white ring-2 ring-primary-300'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    <span className="text-lg">{lang.flag}</span>
+                    <span className="text-xs">{lang.name}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div>

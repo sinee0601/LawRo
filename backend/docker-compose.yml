@@ -7,10 +7,12 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DEBUG=False
+      - DEBUG=true
     env_file:
       - .env
     volumes:
+      # Mount app directory for live code updates
+      - ./app:/app/app
       # Mount data directory for ChromaDB persistence
       - ./data/chroma:/app/data/chroma
       # Mount Firebase credentials (you'll need to add this file)

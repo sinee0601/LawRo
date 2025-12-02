@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "LAWRO",
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "success": "Thành công",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "confirm": "Xác nhận"
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "loginButton": "Đăng nhập",
+      "loginButtonLoading": "Đang đăng nhập...",
+      "signupLink": "Đăng ký",
+      "forgotPasswordLink": "Quên mật khẩu",
+      "snsLogin": "Đăng nhập bằng SNS",
+      "emailRequired": "Email không được tìm thấy trong hệ thống.",
+      "passwordMismatch": "Mật khẩu không khớp.",
+      "loginFailed": "Đăng nhập thất bại."
+    },
+    "signup": {
+      "title": "Đăng ký",
+      "fullName": "Họ và tên",
+      "email": "Email",
+      "emailFormat": "Định dạng email không hợp lệ.",
+      "selectDomain": "Chọn",
+      "verificationCode": "Mã xác minh",
+      "sendCode": "Gửi mã",
+      "codeVerified": "Xác minh hoàn tất.",
+      "password": "Mật khẩu",
+      "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự.",
+      "passwordValid": "Mật khẩu hợp lệ.",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "passwordNoMatch": "Mật khẩu không khớp.",
+      "passwordRequirement": "8-20 ký tự / Hỗn hợp chữ hoa, chữ thường, số và ký tự đặc biệt (ít nhất 2 loại)",
+      "languageSelect": "Chọn ngôn ngữ",
+      "signupButton": "Đăng ký",
+      "signupButtonLoading": "Đang đăng ký...",
+      "signupSuccess": "Đăng ký hoàn tất. Vui lòng đăng nhập.",
+      "signupFailed": "Đăng ký thất bại."
+    }
+  },
+  "navigation": {
+    "contract": "Phân tích hợp đồng",
+    "chat": "Tư vấn pháp lý",
+    "statistics": "Thống kê",
+    "workTime": "Theo dõi thời gian làm việc",
+    "settings": "Cài đặt"
+  },
+  "workTime": {
+    "title": "Đo thời gian làm việc",
+    "startButton": "Bắt đầu",
+    "stopButton": "Dừng",
+    "saveButton": "Lưu",
+    "workLocation": "Địa điểm làm việc",
+    "latitude": "Vĩ độ",
+    "longitude": "Kinh độ",
+    "selectLocation": "Chọn vị trí trên bản đồ hoặc bắt đầu đo lường",
+    "workRecords": "Hồ sơ làm việc",
+    "noRecords": "Chưa có hồ sơ làm việc",
+    "mapLoading": "Đang tải bản đồ...",
+    "mapError": "Tải bản đồ thất bại",
+    "naverMapClientIdError": "Naver Map Client ID chưa được cấu hình.",
+    "naverMapAuthError": "Xác thực Naver Map API thất bại. Vui lòng kiểm tra Client ID của bạn.",
+    "currentLocationError": "Không thể lấy vị trí hiện tại",
+    "geolocationNotSupported": "Trình duyệt này không hỗ trợ thông tin vị trí",
+    "mapInitError": "Khởi tạo bản đồ thất bại"
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "profile": "Hồ sơ",
+    "language": "Ngôn ngữ",
+    "languageSelection": "Chọn ngôn ngữ",
+    "languageDescription": "Ngôn ngữ được chọn sẽ được áp dụng cho giao diện ứng dụng và phản hồi chatbot.",
+    "theme": "Chủ đề",
+    "about": "Về ứng dụng",
+    "privacy": "Chính sách bảo mật",
+    "changePassword": "Thay đổi mật khẩu"
+  },
+  "languages": {
+    "korean": "한국어",
+    "english": "English",
+    "chinese": "中文",
+    "vietnamese": "Tiếng Việt",
+    "japanese": "日本語",
+    "thai": "ไทย"
+  }
+}

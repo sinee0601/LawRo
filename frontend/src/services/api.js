@@ -120,8 +120,8 @@ export const authAPI = {
   // 로그인
   login: async (credentials) => {
     const response = await api.post('/auth/login', credentials);
-    if (response.data.access_token) {
-      localStorage.setItem('access_token', response.data.access_token);
+    if (response.data.id_token) {
+      localStorage.setItem('access_token', response.data.id_token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
     }
     return response.data;

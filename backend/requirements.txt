@@ -1,5 +1,6 @@
 fastapi
 uvicorn[standard]
+gunicorn[gevent]
 python-multipart
 firebase-admin
 pydantic

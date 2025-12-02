@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "LAWRO",
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다",
+    "success": "성공",
+    "cancel": "취소",
+    "save": "저장",
+    "delete": "삭제",
+    "edit": "수정",
+    "back": "뒤로",
+    "next": "다음",
+    "confirm": "확인"
+  },
+  "auth": {
+    "login": {
+      "title": "로그인",
+      "email": "이메일",
+      "password": "비밀번호",
+      "loginButton": "로그인",
+      "loginButtonLoading": "로그인 중...",
+      "signupLink": "회원가입하기",
+      "forgotPasswordLink": "비밀번호 찾기",
+      "snsLogin": "SNS로 로그인하기",
+      "emailRequired": "가입된 이메일 정보가 없습니다.",
+      "passwordMismatch": "비밀번호가 일치하지 않습니다.",
+      "loginFailed": "로그인에 실패했습니다."
+    },
+    "signup": {
+      "title": "회원가입",
+      "fullName": "이름",
+      "email": "이메일",
+      "emailFormat": "올바른 이메일 형식이 아닙니다.",
+      "selectDomain": "선택",
+      "verificationCode": "인증번호",
+      "sendCode": "인증번호 전송",
+      "codeVerified": "인증완료되었습니다.",
+      "password": "비밀번호",
+      "passwordMinLength": "비밀번호는 최소 6자 이상이어야 합니다.",
+      "passwordValid": "사용가능한 비밀번호입니다.",
+      "confirmPassword": "비밀번호 확인",
+      "passwordNoMatch": "비밀번호가 일치하지 않습니다.",
+      "passwordRequirement": "8~20자/영문 대문자, 소문자, 숫자, 특수문자 중 2가지 이상 조합",
+      "languageSelect": "언어 선택",
+      "signupButton": "회원가입",
+      "signupButtonLoading": "가입 중...",
+      "signupSuccess": "회원가입이 완료되었습니다. 로그인해주세요.",
+      "signupFailed": "회원가입에 실패했습니다."
+    }
+  },
+  "navigation": {
+    "contract": "계약서 분석",
+    "chat": "법률 상담",
+    "statistics": "통계",
+    "workTime": "근무 시간 측정",
+    "settings": "설정"
+  },
+  "workTime": {
+    "title": "근무 시간 측정",
+    "startButton": "측정",
+    "stopButton": "정지",
+    "saveButton": "저장",
+    "workLocation": "근무 위치",
+    "latitude": "위도",
+    "longitude": "경도",
+    "selectLocation": "지도에서 위치를 선택하거나 측정을 시작하세요",
+    "workRecords": "근무 기록",
+    "noRecords": "아직 근무 기록이 없습니다",
+    "mapLoading": "지도 로드 중...",
+    "mapError": "지도 로드 실패",
+    "naverMapClientIdError": "네이버 지도 Client ID가 설정되지 않았습니다",
+    "naverMapAuthError": "네이버 지도 API 인증에 실패했습니다. Client ID를 확인하세요.",
+    "currentLocationError": "현재 위치를 가져올 수 없습니다",
+    "geolocationNotSupported": "이 브라우저는 위치 정보를 지원하지 않습니다",
+    "mapInitError": "지도 초기화 실패"
+  },
+  "settings": {
+    "title": "설정",
+    "profile": "프로필",
+    "language": "언어",
+    "languageSelection": "언어 선택",
+    "languageDescription": "선택한 언어는 앱의 UI와 챗봇 응답에 적용됩니다.",
+    "theme": "테마",
+    "about": "앱 정보",
+    "privacy": "개인정보 처리방침",
+    "changePassword": "비밀번호 변경"
+  },
+  "languages": {
+    "korean": "한국어",
+    "english": "English",
+    "chinese": "中文",
+    "vietnamese": "Tiếng Việt",
+    "japanese": "日本語",
+    "thai": "ไทย"
+  }
+}

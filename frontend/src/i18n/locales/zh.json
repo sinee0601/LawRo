@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "LAWRO",
+    "loading": "加载中...",
+    "error": "发生错误",
+    "success": "成功",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "back": "返回",
+    "next": "下一步",
+    "confirm": "确认"
+  },
+  "auth": {
+    "login": {
+      "title": "登录",
+      "email": "电子邮件",
+      "password": "密码",
+      "loginButton": "登录",
+      "loginButtonLoading": "正在登录...",
+      "signupLink": "注册",
+      "forgotPasswordLink": "忘记密码",
+      "snsLogin": "使用SNS登录",
+      "emailRequired": "系统中未找到电子邮件。",
+      "passwordMismatch": "密码不匹配。",
+      "loginFailed": "登录失败。"
+    },
+    "signup": {
+      "title": "注册",
+      "fullName": "全名",
+      "email": "电子邮件",
+      "emailFormat": "无效的电子邮件格式。",
+      "selectDomain": "选择",
+      "verificationCode": "验证码",
+      "sendCode": "发送验证码",
+      "codeVerified": "验证完成。",
+      "password": "密码",
+      "passwordMinLength": "密码必须至少包含6个字符。",
+      "passwordValid": "密码有效。",
+      "confirmPassword": "确认密码",
+      "passwordNoMatch": "密码不匹配。",
+      "passwordRequirement": "8-20字符 / 大小写字母、数字和特殊字符的混合（至少2种）",
+      "languageSelect": "选择语言",
+      "signupButton": "注册",
+      "signupButtonLoading": "正在注册...",
+      "signupSuccess": "注册完成。请登录。",
+      "signupFailed": "注册失败。"
+    }
+  },
+  "navigation": {
+    "contract": "合同分析",
+    "chat": "法律咨询",
+    "statistics": "统计数据",
+    "workTime": "工作时间追踪",
+    "settings": "设置"
+  },
+  "workTime": {
+    "title": "工作时间测量",
+    "startButton": "开始",
+    "stopButton": "停止",
+    "saveButton": "保存",
+    "workLocation": "工作地点",
+    "latitude": "纬度",
+    "longitude": "经度",
+    "selectLocation": "在地图上选择位置或开始测量",
+    "workRecords": "工作记录",
+    "noRecords": "还没有工作记录",
+    "mapLoading": "地图加载中...",
+    "mapError": "地图加载失败",
+    "naverMapClientIdError": "未配置Naver地图Client ID。",
+    "naverMapAuthError": "Naver地图API身份验证失败。请检查您的Client ID。",
+    "currentLocationError": "无法获取当前位置",
+    "geolocationNotSupported": "此浏览器不支持位置信息",
+    "mapInitError": "地图初始化失败"
+  },
+  "settings": {
+    "title": "设置",
+    "profile": "个人资料",
+    "language": "语言",
+    "languageSelection": "语言选择",
+    "languageDescription": "选定的语言将应用于应用程序UI和聊天机器人响应。",
+    "theme": "主题",
+    "about": "关于应用程序",
+    "privacy": "隐私政策",
+    "changePassword": "更改密码"
+  },
+  "languages": {
+    "korean": "한국어",
+    "english": "English",
+    "chinese": "中文",
+    "vietnamese": "Tiếng Việt",
+    "japanese": "日本語",
+    "thai": "ไทย"
+  }
+}

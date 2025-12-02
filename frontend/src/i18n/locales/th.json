@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "LAWRO",
+    "loading": "กำลังโหลด...",
+    "error": "เกิดข้อผิดพลาด",
+    "success": "สำเร็จ",
+    "cancel": "ยกเลิก",
+    "save": "บันทึก",
+    "delete": "ลบ",
+    "edit": "แก้ไข",
+    "back": "ย้อนกลับ",
+    "next": "ถัดไป",
+    "confirm": "ยืนยัน"
+  },
+  "auth": {
+    "login": {
+      "title": "เข้าสู่ระบบ",
+      "email": "อีเมล",
+      "password": "รหัสผ่าน",
+      "loginButton": "เข้าสู่ระบบ",
+      "loginButtonLoading": "กำลังเข้าสู่ระบบ...",
+      "signupLink": "ลงทะเบียน",
+      "forgotPasswordLink": "ลืมรหัสผ่าน",
+      "snsLogin": "เข้าสู่ระบบด้วย SNS",
+      "emailRequired": "ไม่พบอีเมลในระบบ",
+      "passwordMismatch": "รหัสผ่านไม่ตรงกัน",
+      "loginFailed": "เข้าสู่ระบบล้มเหลว"
+    },
+    "signup": {
+      "title": "ลงทะเบียน",
+      "fullName": "ชื่อเต็ม",
+      "email": "อีเมล",
+      "emailFormat": "รูปแบบอีเมลไม่ถูกต้อง",
+      "selectDomain": "เลือก",
+      "verificationCode": "รหัสยืนยัน",
+      "sendCode": "ส่งรหัส",
+      "codeVerified": "ยืนยันเสร็จสิ้น",
+      "password": "รหัสผ่าน",
+      "passwordMinLength": "รหัสผ่านต้องมีอักษรอย่างน้อย 6 ตัว",
+      "passwordValid": "รหัสผ่านถูกต้อง",
+      "confirmPassword": "ยืนยันรหัสผ่าน",
+      "passwordNoMatch": "รหัสผ่านไม่ตรงกัน",
+      "passwordRequirement": "8-20 อักษร / ส่วนผสมของตัวพิมพ์ใหญ่ ตัวพิมพ์เล็ก ตัวเลข และอักขระพิเศษ (อย่างน้อย 2 ประเภท)",
+      "languageSelect": "เลือกภาษา",
+      "signupButton": "ลงทะเบียน",
+      "signupButtonLoading": "กำลังลงทะเบียน...",
+      "signupSuccess": "ลงทะเบียนเสร็จสิ้น โปรดเข้าสู่ระบบ",
+      "signupFailed": "ลงทะเบียนล้มเหลว"
+    }
+  },
+  "navigation": {
+    "contract": "วิเคราะห์สัญญา",
+    "chat": "ปรึกษากฎหมาย",
+    "statistics": "สถิติ",
+    "workTime": "ติดตามเวลาการทำงาน",
+    "settings": "การตั้งค่า"
+  },
+  "workTime": {
+    "title": "การวัดเวลาการทำงาน",
+    "startButton": "เริ่ม",
+    "stopButton": "หยุด",
+    "saveButton": "บันทึก",
+    "workLocation": "สถานที่ทำงาน",
+    "latitude": "ละติจูด",
+    "longitude": "経度",
+    "selectLocation": "เลือกตำแหน่งบนแผนที่หรือเริ่มการวัดผล",
+    "workRecords": "บันทึกการทำงาน",
+    "noRecords": "ยังไม่มีบันทึกการทำงาน",
+    "mapLoading": "กำลังโหลดแผนที่...",
+    "mapError": "ไม่สามารถโหลดแผนที่",
+    "naverMapClientIdError": "ยังไม่ได้กำหนด Naver Map Client ID",
+    "naverMapAuthError": "การรับรอง Naver Map API ล้มเหลว โปรดตรวจสอบ Client ID ของคุณ",
+    "currentLocationError": "ไม่สามารถรับตำแหน่งปัจจุบัน",
+    "geolocationNotSupported": "เบราว์เซอร์นี้ไม่รองรับข้อมูลตำแหน่ง",
+    "mapInitError": "ไม่สามารถเตรียมใช้งานแผนที่"
+  },
+  "settings": {
+    "title": "การตั้งค่า",
+    "profile": "โปรไฟล์",
+    "language": "ภาษา",
+    "languageSelection": "เลือกภาษา",
+    "languageDescription": "ภาษาที่เลือกจะถูกนำไปใช้กับ UI ของแอป และการตอบสนองของ chatbot",
+    "theme": "ธีม",
+    "about": "เกี่ยวกับแอป",
+    "privacy": "นโยบายความเป็นส่วนตัว",
+    "changePassword": "เปลี่ยนรหัสผ่าน"
+  },
+  "languages": {
+    "korean": "한국어",
+    "english": "English",
+    "chinese": "中文",
+    "vietnamese": "Tiếng Việt",
+    "japanese": "日本語",
+    "thai": "ไทย"
+  }
+}

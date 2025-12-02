@@ -33,8 +33,10 @@ async def get_current_user(
         HTTPException: If token is invalid or expired
     """
     try:
+        logger.info("get_current_user() called")
         # Get token from Authorization header
         token = credentials.credentials
+        logger.info(f"Token received: {token[:50]}...")
 
         # Verify Firebase ID token
         firebase = get_firebase()
@@ -98,4 +100,14 @@ async def get_current_user_optional(
 
 def get_firestore_db():
     """Dependency for Firestore database access"""
-    return get_db()
+    logger.info("get_firestore_db() called")
+    try:
+        db = get_db()
+        logger.info("Firestore database retrieved successfully")
+        return db
+    except Exception as e:
+        logger.error(f"Failed to get Firestore database: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Firestore connection failed: {str(e)}"
+        )

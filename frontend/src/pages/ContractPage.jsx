@@ -101,7 +101,7 @@ export default function ContractPage() {
             <div className="bg-white rounded-3xl shadow-lg p-8 mb-6">
               <h2 className="text-lg font-bold text-gray-900 mb-2">근로계약서 분석</h2>
               <p className="text-sm text-gray-600 mb-6">
-                근로계약은 근로자와 사용자 간에 근로조건을 정하여 체결하여야 하며, 이를 서면으로 명시하여야 한다.
+                근로계약서의 사진을 찍거나, 파일을 업로드하여 계약조항이 법적으로 옳은지 확인해보세요!
               </p>
 
               {error && (
