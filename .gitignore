@@ -144,4 +144,5 @@ data/large/
 
 # 캐시
 .cache/
-*.cache
+*.cachelegacy/chatbot_service/chroma_db/ 
+legacy/chatbot_service/chroma_db/
