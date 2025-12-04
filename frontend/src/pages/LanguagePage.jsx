@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
+import useTranslation from '../hooks/useTranslation';
 import { settingsAPI } from '../services/api';
 import { Check, Globe } from 'lucide-react';
 import MobileHeader from '../components/MobileHeader';
@@ -8,7 +9,8 @@ import BottomNav from '../components/BottomNav';
 
 export default function LanguagePage() {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, setLanguage } = useAuthStore();
+  const { t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState('korean');
   const [isSaving, setIsSaving] = useState(false);
 
@@ -30,8 +32,8 @@ export default function LanguagePage() {
   const handleSaveLanguage = async (language) => {
     setIsSaving(true);
     try {
-      // localStorage에 저장
-      localStorage.setItem('userLanguage', language);
+      // Update Zustand store and i18next
+      setLanguage(language);
 
       // Backend API 호출로 Firestore user profile 업데이트
       await settingsAPI.updateLanguage(language);
@@ -41,7 +43,7 @@ export default function LanguagePage() {
         navigate('/settings');
       }, 500);
     } catch (error) {
-      alert('언어 설정에 실패했습니다.');
+      alert(t('common.error'));
     } finally {
       setIsSaving(false);
     }
@@ -87,7 +89,7 @@ export default function LanguagePage() {
         <div className="mt-6 p-4 bg-blue-50 rounded-2xl flex items-start gap-3">
           <Globe className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-blue-900">
-            선택한 언어는 앱의 UI와 챗봇 응답에 적용됩니다.
+            {t('settings.languageDescription')}
           </p>
         </div>
       </main>

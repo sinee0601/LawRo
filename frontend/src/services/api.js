@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 // Axios 인스턴스 생성
 const api = axios.create({
@@ -84,6 +84,8 @@ api.interceptors.response.use(
       // 토큰 만료 시 로그아웃 처리
       localStorage.removeItem('access_token');
       localStorage.removeItem('user');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userLanguage');
       window.location.href = '/login';
     }
     return Promise.reject(error);
@@ -114,15 +116,35 @@ export const authAPI = {
   // 회원가입
   signup: async (userData) => {
     const response = await api.post('/auth/signup', userData);
+    if (response.data.id_token) {
+      localStorage.setItem('access_token', response.data.id_token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      // user_id를 별도로 저장 (계약서 분석용)
+      if (response.data.user?.uid) {
+        localStorage.setItem('userId', response.data.user.uid);
+      }
+      // 언어 설정 저장
+      if (response.data.user?.preferred_language) {
+        localStorage.setItem('userLanguage', response.data.user.preferred_language);
+      }
+    }
     return response.data;
   },
 
   // 로그인
   login: async (credentials) => {
     const response = await api.post('/auth/login', credentials);
-    if (response.data.access_token) {
-      localStorage.setItem('access_token', response.data.access_token);
+    if (response.data.id_token) {
+      localStorage.setItem('access_token', response.data.id_token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
+      // user_id를 별도로 저장 (계약서 분석용)
+      if (response.data.user?.uid) {
+        localStorage.setItem('userId', response.data.user.uid);
+      }
+      // 언어 설정 저장
+      if (response.data.user?.preferred_language) {
+        localStorage.setItem('userLanguage', response.data.user.preferred_language);
+      }
     }
     return response.data;
   },
@@ -131,6 +153,8 @@ export const authAPI = {
   logout: () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userLanguage');
   },
 
   // 프로필 조회
@@ -192,6 +216,12 @@ export const chatAPI = {
     const response = await api.get('/chat/stats');
     return response.data;
   },
+
+  // 모든 채팅 세션 목록 조회
+  listSessions: async () => {
+    const response = await api.get('/chat/sessions');
+    return response.data;
+  },
 };
 
 // 계약서 분석 API
@@ -243,9 +273,142 @@ export const contractAPI = {
     return response.data;
   },
 
-  // 분석 히스토리 조회
+  // 분석 히스토리 조회 (레거시)
   getHistory: async () => {
     const response = await api.get('/contract/history');
+    return response.data;
+  },
+
+  // 분석 내역 조회 (Firestore)
+  getAnalysisHistory: async (userId) => {
+    const response = await api.get(`/contract/api/analysis-history/${userId}`);
+    return response.data;
+  },
+
+  // 분석 삭제
+  deleteAnalysis: async (analysisId) => {
+    const response = await api.delete(`/contract/api/analysis/${analysisId}`);
+    return response.data;
+  },
+};
+
+// 근무시간 추적 API
+export const worktimeAPI = {
+  // 근무지 저장/업데이트
+  saveWorkplace: async (latitude, longitude, address = null, radiusMeters = 500) => {
+    const response = await api.post('/worktime/workplace', {
+      latitude,
+      longitude,
+      address,
+      radius_meters: radiusMeters,
+    });
+    return response.data;
+  },
+
+  // 근무지 조회
+  getWorkplace: async () => {
+    const response = await api.get('/worktime/workplace');
+    return response.data;
+  },
+
+  // 근무지 삭제
+  deleteWorkplace: async () => {
+    const response = await api.delete('/worktime/workplace');
+    return response.data;
+  },
+
+  // 위치 상태 확인 (근무지 반경 내인지 확인)
+  checkLocationStatus: async (currentLatitude, currentLongitude) => {
+    const response = await api.post('/worktime/location-status', {
+      current_latitude: currentLatitude,
+      current_longitude: currentLongitude,
+    });
+    return response.data;
+  },
+
+  // 근무 기록 저장
+  saveWorkRecord: async (startTime, endTime, location, date) => {
+    // startTime과 endTime이 ISO 문자열인 경우 Date로 파싱하여 duration 계산
+    const startDate = typeof startTime === 'string' ? new Date(startTime) : startTime;
+    const endDate = typeof endTime === 'string' ? new Date(endTime) : endTime;
+    const durationSeconds = Math.floor((endDate - startDate) / 1000);
+
+    const response = await api.post('/worktime/records', {
+      start_time: startTime,
+      end_time: endTime,
+      duration_seconds: durationSeconds,
+      location: {
+        latitude: location.latitude,
+        longitude: location.longitude,
+        address: location.address,
+      },
+      date,
+    });
+    return response.data;
+  },
+
+  // 근무 기록 조회
+  getWorkRecords: async (date = null, limit = 100) => {
+    const params = new URLSearchParams();
+    if (date) params.append('date', date);
+    if (limit) params.append('limit', limit);
+
+    const response = await api.get(`/worktime/records?${params.toString()}`);
+    return response.data;
+  },
+
+  // 근무 기록 삭제
+  deleteWorkRecord: async (recordId) => {
+    const response = await api.delete(`/worktime/records/${recordId}`);
+    return response.data;
+  },
+
+  // 근무 요약 (날짜 범위)
+  getWorkSummary: async (startDate, endDate) => {
+    const response = await api.get(
+      `/worktime/summary?start_date=${startDate}&end_date=${endDate}`
+    );
+    return response.data;
+  },
+
+  // 근무 서비스 상태 확인
+  checkHealth: async () => {
+    const response = await api.get('/worktime/health');
+    return response.data;
+  },
+};
+
+// 지원 기관 API
+export const supportCenterAPI = {
+  // 지원 기관 검색
+  searchCenters: async (query) => {
+    const response = await api.post('/support/api/search', query);
+    return response.data;
+  },
+
+  // 주변 지원 기관 조회
+  getNearby: async (latitude, longitude, radiusKm = 20, centerType = null) => {
+    const params = new URLSearchParams({
+      latitude: latitude.toString(),
+      longitude: longitude.toString(),
+      radius_km: radiusKm.toString(),
+    });
+    if (centerType) {
+      params.append('center_type', centerType);
+    }
+    const response = await api.get(`/support/api/nearby?${params.toString()}`);
+    return response.data;
+  },
+
+  // 지원 기관 상세 조회
+  getCenterById: async (centerId) => {
+    const response = await api.get(`/support/api/centers/${centerId}`);
+    return response.data;
+  },
+
+  // 지원 기관 서비스 상태 확인
+  checkHealth: async () => {
+    const response = await api.get('/support/health');
     return response.data;
   },
 };

@@ -12,7 +12,7 @@ import time
 
 from .config import settings
 from .database import get_firebase
-from .routers import auth, chat, contract
+from .routers import auth, chat, contract, worktime, support_center
 from .services.chat_service import ChatService
 
 # Configure logging
@@ -121,6 +121,8 @@ async def global_exception_handler(request: Request, exc: Exception):
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(chat.router, prefix="/chat", tags=["Chatbot"])
 app.include_router(contract.router, prefix="/contract", tags=["Contract Analysis"])
+app.include_router(worktime.router, tags=["Work Time Tracking"])
+app.include_router(support_center.router, prefix="/support", tags=["Support Centers"])
 
 
 # Root endpoint
@@ -212,10 +214,19 @@ async def get_stats():
         "version": settings.APP_VERSION,
         "firebase_initialized": get_firebase().is_initialized(),
         "chatbot_stats": chatbot_stats,
-        # TODO: Add contract analysis stats in phase 3
     }
 
 
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "app.main:app",
+        host=settings.HOST,
+        port=settings.PORT,
+        reload=settings.DEBUG,
+    )
 if __name__ == "__main__":
     import uvicorn
 

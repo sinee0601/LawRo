@@ -1,0 +1,1285 @@
+[
+  {
+    "id": "labor_001",
+    "name": "서울지방고용노동청",
+    "type": "labor_office",
+    "address": "서울특별시 중구 삼일대로 340",
+    "phone": "02-2004-7777",
+    "location": {
+      "latitude": 37.564,
+      "longitude": 126.9962
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_002",
+    "name": "서울동부지청",
+    "type": "labor_office",
+    "address": "서울특별시 광진구 자양로 167",
+    "phone": "02-2204-7777",
+    "location": {
+      "latitude": 37.5335,
+      "longitude": 127.0778
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_003",
+    "name": "서울남부지청",
+    "type": "labor_office",
+    "address": "서울특별시 영등포구 당산로 41길 11",
+    "phone": "02-2670-5800",
+    "location": {
+      "latitude": 37.5264,
+      "longitude": 126.8982
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_004",
+    "name": "서울북부지청",
+    "type": "labor_office",
+    "address": "서울특별시 노원구 노해로 437",
+    "phone": "02-950-7400",
+    "location": {
+      "latitude": 37.6545,
+      "longitude": 127.0617
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_005",
+    "name": "경기지방고용노동청",
+    "type": "labor_office",
+    "address": "경기도 의정부시 청사로 1",
+    "phone": "031-828-8114",
+    "location": {
+      "latitude": 37.7386,
+      "longitude": 127.0347
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_006",
+    "name": "부천지청",
+    "type": "labor_office",
+    "address": "경기도 부천시 원미구 송내대로 28",
+    "phone": "032-320-1400",
+    "location": {
+      "latitude": 37.4867,
+      "longitude": 126.7832
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_007",
+    "name": "안양지청",
+    "type": "labor_office",
+    "address": "경기도 안양시 동안구 관평로 182",
+    "phone": "031-380-8500",
+    "location": {
+      "latitude": 37.3817,
+      "longitude": 126.9513
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_008",
+    "name": "성남지청",
+    "type": "labor_office",
+    "address": "경기도 성남시 중원구 사기막골로 124",
+    "phone": "031-735-8200",
+    "location": {
+      "latitude": 37.4206,
+      "longitude": 127.1401
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_009",
+    "name": "부산지방고용노동청",
+    "type": "labor_office",
+    "address": "부산광역시 부산진구 중앙대로 1017",
+    "phone": "051-860-1000",
+    "location": {
+      "latitude": 35.1635,
+      "longitude": 129.0586
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_010",
+    "name": "부산동부지청",
+    "type": "labor_office",
+    "address": "부산광역시 해운대구 재반로 143",
+    "phone": "051-760-7500",
+    "location": {
+      "latitude": 35.1783,
+      "longitude": 129.1758
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_011",
+    "name": "경남지방고용노동청",
+    "type": "labor_office",
+    "address": "경상남도 창원시 의창구 중앙대로 291",
+    "phone": "055-213-4301",
+    "location": {
+      "latitude": 35.2403,
+      "longitude": 128.6789
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_012",
+    "name": "대구지방고용노동청",
+    "type": "labor_office",
+    "address": "대구광역시 북구 연암로 140",
+    "phone": "053-350-3000",
+    "location": {
+      "latitude": 35.896,
+      "longitude": 128.6177
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_013",
+    "name": "경북지방고용노동청",
+    "type": "labor_office",
+    "address": "경상북도 포항시 남구 상도로 120",
+    "phone": "054-270-8114",
+    "location": {
+      "latitude": 36.0087,
+      "longitude": 129.3678
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_014",
+    "name": "인천지방고용노동청",
+    "type": "labor_office",
+    "address": "인천광역시 남동구 정각로 29",
+    "phone": "032-470-6114",
+    "location": {
+      "latitude": 37.4489,
+      "longitude": 126.7315
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_015",
+    "name": "광주지방고용노동청",
+    "type": "labor_office",
+    "address": "광주광역시 동구 금남로 245",
+    "phone": "062-230-1114",
+    "location": {
+      "latitude": 35.1457,
+      "longitude": 126.9227
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_016",
+    "name": "전남지방고용노동청",
+    "type": "labor_office",
+    "address": "전라남도 무안군 삼향읍 후광대로 242",
+    "phone": "061-280-5000",
+    "location": {
+      "latitude": 34.8167,
+      "longitude": 126.4628
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_017",
+    "name": "대전지방고용노동청",
+    "type": "labor_office",
+    "address": "대전광역시 서구 둔산로 212",
+    "phone": "042-480-4114",
+    "location": {
+      "latitude": 36.3504,
+      "longitude": 127.3845
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_018",
+    "name": "충북지방고용노동청",
+    "type": "labor_office",
+    "address": "충청북도 청주시 흥덕구 강내로 254",
+    "phone": "043-240-3114",
+    "location": {
+      "latitude": 36.6318,
+      "longitude": 127.4574
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_019",
+    "name": "충남지방고용노동청",
+    "type": "labor_office",
+    "address": "충청남도 천안시 서북구 불당21로 272",
+    "phone": "041-560-1400",
+    "location": {
+      "latitude": 36.8077,
+      "longitude": 127.1538
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_020",
+    "name": "전북지방고용노동청",
+    "type": "labor_office",
+    "address": "전북특별자치도 전주시 덕진구 백제대로 708",
+    "phone": "063-230-1500",
+    "location": {
+      "latitude": 35.849,
+      "longitude": 127.1291
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_021",
+    "name": "강원지방고용노동청",
+    "type": "labor_office",
+    "address": "강원특별자치도 춘천시 중앙로 7",
+    "phone": "033-260-3114",
+    "location": {
+      "latitude": 37.8813,
+      "longitude": 127.7298
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "labor_022",
+    "name": "제주지방고용노동청",
+    "type": "labor_office",
+    "address": "제주특별자치도 제주시 연삼로 473",
+    "phone": "064-724-8114",
+    "location": {
+      "latitude": 33.4996,
+      "longitude": 126.5312
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "근로계약 상담",
+      "임금체불 신고",
+      "부당해고 구제",
+      "산재 접수"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "legal_001",
+    "name": "대한법률구조공단 서울중앙지부",
+    "type": "legal_aid",
+    "address": "서울특별시 서초구 법원로3길 30",
+    "phone": "02-2183-4700",
+    "location": {
+      "latitude": 37.4781,
+      "longitude": 127.0022
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_002",
+    "name": "대한법률구조공단 인천지부",
+    "type": "legal_aid",
+    "address": "인천광역시 남동구 정각로 29",
+    "phone": "032-509-2400",
+    "location": {
+      "latitude": 37.4489,
+      "longitude": 126.7315
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_003",
+    "name": "대한법률구조공단 수원지부",
+    "type": "legal_aid",
+    "address": "경기도 수원시 영통구 광교중앙로 140",
+    "phone": "031-219-2500",
+    "location": {
+      "latitude": 37.284,
+      "longitude": 127.044
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_004",
+    "name": "대한법률구조공단 부산지부",
+    "type": "legal_aid",
+    "address": "부산광역시 연제구 중앙대로 1000",
+    "phone": "051-507-0500",
+    "location": {
+      "latitude": 35.1916,
+      "longitude": 129.0787
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_005",
+    "name": "대한법률구조공단 대구지부",
+    "type": "legal_aid",
+    "address": "대구광역시 수성구 동대구로 390",
+    "phone": "053-755-9915",
+    "location": {
+      "latitude": 35.8714,
+      "longitude": 128.6014
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_006",
+    "name": "대한법률구조공단 광주지부",
+    "type": "legal_aid",
+    "address": "광주광역시 동구 서석로 33",
+    "phone": "062-232-3436",
+    "location": {
+      "latitude": 35.1509,
+      "longitude": 126.9169
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_007",
+    "name": "대한법률구조공단 대전지부",
+    "type": "legal_aid",
+    "address": "대전광역시 서구 둔산로 121",
+    "phone": "042-480-6500",
+    "location": {
+      "latitude": 36.3504,
+      "longitude": 127.3845
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_008",
+    "name": "대한법률구조공단 울산지부",
+    "type": "legal_aid",
+    "address": "울산광역시 남구 삼산로 249",
+    "phone": "052-260-2525",
+    "location": {
+      "latitude": 35.5384,
+      "longitude": 129.3114
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_009",
+    "name": "대한법률구조공단 춘천지부",
+    "type": "legal_aid",
+    "address": "강원특별자치도 춘천시 중앙로 64",
+    "phone": "033-254-1414",
+    "location": {
+      "latitude": 37.8813,
+      "longitude": 127.7298
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_010",
+    "name": "대한법률구조공단 청주지부",
+    "type": "legal_aid",
+    "address": "충청북도 청주시 상당구 상당로 69",
+    "phone": "043-257-9911",
+    "location": {
+      "latitude": 36.6357,
+      "longitude": 127.4913
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_011",
+    "name": "대한법률구조공단 전주지부",
+    "type": "legal_aid",
+    "address": "전북특별자치도 전주시 완산구 기린대로 250",
+    "phone": "063-230-2200",
+    "location": {
+      "latitude": 35.8242,
+      "longitude": 127.148
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "legal_012",
+    "name": "대한법률구조공단 제주지부",
+    "type": "legal_aid",
+    "address": "제주특별자치도 제주시 문연로 26",
+    "phone": "064-720-4700",
+    "location": {
+      "latitude": 33.5097,
+      "longitude": 126.5219
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "무료 법률 상담",
+      "소송 대리",
+      "법률 문서 작성",
+      "외국인 근로자 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어"
+    ],
+    "website": "https://www.klac.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "foreign_001",
+    "name": "서울외국인노동자센터",
+    "type": "foreign_support",
+    "address": "서울특별시 광진구 천호대로 585",
+    "phone": "02-3437-8891",
+    "location": {
+      "latitude": 37.5468,
+      "longitude": 127.0844
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "일요일만 휴무"
+    },
+    "services": [
+      "통역 지원",
+      "법률 상담",
+      "의료 지원",
+      "긴급 구조",
+      "귀국 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어",
+      "중국어",
+      "베트남어",
+      "태국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "foreign_002",
+    "name": "경기외국인노동자지원센터",
+    "type": "foreign_support",
+    "address": "경기도 안산시 단원구 화정로 26",
+    "phone": "031-492-9347",
+    "location": {
+      "latitude": 37.3217,
+      "longitude": 126.8308
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "일요일만 휴무"
+    },
+    "services": [
+      "통역 지원",
+      "법률 상담",
+      "의료 지원",
+      "긴급 구조",
+      "귀국 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어",
+      "중국어",
+      "베트남어",
+      "태국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "foreign_003",
+    "name": "인천외국인노동자지원센터",
+    "type": "foreign_support",
+    "address": "인천광역시 남동구 논현로 32번길 29",
+    "phone": "032-431-9441",
+    "location": {
+      "latitude": 37.4327,
+      "longitude": 126.7013
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "일요일만 휴무"
+    },
+    "services": [
+      "통역 지원",
+      "법률 상담",
+      "의료 지원",
+      "긴급 구조",
+      "귀국 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어",
+      "중국어",
+      "베트남어",
+      "태국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "foreign_004",
+    "name": "부산외국인노동자지원센터",
+    "type": "foreign_support",
+    "address": "부산광역시 사상구 학장로 260",
+    "phone": "051-317-9177",
+    "location": {
+      "latitude": 35.1494,
+      "longitude": 128.991
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "일요일만 휴무"
+    },
+    "services": [
+      "통역 지원",
+      "법률 상담",
+      "의료 지원",
+      "긴급 구조",
+      "귀국 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어",
+      "중국어",
+      "베트남어",
+      "태국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "foreign_005",
+    "name": "대구외국인노동자지원센터",
+    "type": "foreign_support",
+    "address": "대구광역시 북구 산격동 1475",
+    "phone": "053-959-9977",
+    "location": {
+      "latitude": 35.8959,
+      "longitude": 128.6176
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "일요일만 휴무"
+    },
+    "services": [
+      "통역 지원",
+      "법률 상담",
+      "의료 지원",
+      "긴급 구조",
+      "귀국 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어",
+      "중국어",
+      "베트남어",
+      "태국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "foreign_006",
+    "name": "광주외국인노동자지원센터",
+    "type": "foreign_support",
+    "address": "광주광역시 북구 중흥동 684-1",
+    "phone": "062-266-0035",
+    "location": {
+      "latitude": 35.1726,
+      "longitude": 126.9119
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "일요일만 휴무"
+    },
+    "services": [
+      "통역 지원",
+      "법률 상담",
+      "의료 지원",
+      "긴급 구조",
+      "귀국 지원"
+    ],
+    "languages": [
+      "한국어",
+      "영어",
+      "중국어",
+      "베트남어",
+      "태국어"
+    ],
+    "is_active": true
+  },
+  {
+    "id": "welfare_001",
+    "name": "근로복지공단 서울업무상질병판정위원회",
+    "type": "welfare",
+    "address": "서울특별시 마포구 마포대로 135",
+    "phone": "1588-0075",
+    "location": {
+      "latitude": 37.5442,
+      "longitude": 126.9493
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "산재 신청",
+      "요양급여",
+      "보험급여 상담",
+      "재활 지원"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "website": "https://www.kcomwel.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "welfare_002",
+    "name": "근로복지공단 서울강남지사",
+    "type": "welfare",
+    "address": "서울특별시 강남구 테헤란로 125",
+    "phone": "02-569-7700",
+    "location": {
+      "latitude": 37.5019,
+      "longitude": 127.0398
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "산재 신청",
+      "요양급여",
+      "보험급여 상담",
+      "재활 지원"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "website": "https://www.kcomwel.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "welfare_003",
+    "name": "근로복지공단 인천지역본부",
+    "type": "welfare",
+    "address": "인천광역시 남동구 정각로 9",
+    "phone": "032-460-9000",
+    "location": {
+      "latitude": 37.4489,
+      "longitude": 126.7315
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "산재 신청",
+      "요양급여",
+      "보험급여 상담",
+      "재활 지원"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "website": "https://www.kcomwel.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "welfare_004",
+    "name": "근로복지공단 부산지역본부",
+    "type": "welfare",
+    "address": "부산광역시 연제구 중앙대로 1001",
+    "phone": "051-520-0400",
+    "location": {
+      "latitude": 35.1916,
+      "longitude": 129.0787
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "산재 신청",
+      "요양급여",
+      "보험급여 상담",
+      "재활 지원"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "website": "https://www.kcomwel.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "welfare_005",
+    "name": "근로복지공단 대구지역본부",
+    "type": "welfare",
+    "address": "대구광역시 북구 연암로 140",
+    "phone": "053-350-0300",
+    "location": {
+      "latitude": 35.896,
+      "longitude": 128.6177
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "산재 신청",
+      "요양급여",
+      "보험급여 상담",
+      "재활 지원"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "website": "https://www.kcomwel.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "welfare_006",
+    "name": "근로복지공단 광주지역본부",
+    "type": "welfare",
+    "address": "광주광역시 서구 상무중앙로 38",
+    "phone": "062-360-6000",
+    "location": {
+      "latitude": 35.1522,
+      "longitude": 126.8805
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "산재 신청",
+      "요양급여",
+      "보험급여 상담",
+      "재활 지원"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "website": "https://www.kcomwel.or.kr",
+    "is_active": true
+  },
+  {
+    "id": "welfare_007",
+    "name": "근로복지공단 대전지역본부",
+    "type": "welfare",
+    "address": "대전광역시 서구 둔산로 123",
+    "phone": "042-480-7700",
+    "location": {
+      "latitude": 36.3504,
+      "longitude": 127.3845
+    },
+    "hours": {
+      "weekday": "09:00-18:00",
+      "lunch": "12:00-13:00",
+      "weekend": "휴무"
+    },
+    "services": [
+      "산재 신청",
+      "요양급여",
+      "보험급여 상담",
+      "재활 지원"
+    ],
+    "languages": [
+      "한국어"
+    ],
+    "website": "https://www.kcomwel.or.kr",
+    "is_active": true
+  }
+]

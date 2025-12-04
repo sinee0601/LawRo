@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "LAWRO",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "success": "成功",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "back": "戻る",
+    "next": "次へ",
+    "confirm": "確認"
+  },
+  "auth": {
+    "login": {
+      "title": "ログイン",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "loginButton": "ログイン",
+      "loginButtonLoading": "ログイン中...",
+      "signupLink": "会員登録",
+      "forgotPasswordLink": "パスワードを忘れた",
+      "snsLogin": "SNSでログイン",
+      "emailRequired": "システムにメールアドレスが見つかりません。",
+      "passwordMismatch": "パスワードが一致しません。",
+      "loginFailed": "ログインに失敗しました。"
+    },
+    "signup": {
+      "title": "会員登録",
+      "fullName": "氏名",
+      "email": "メールアドレス",
+      "emailFormat": "無効なメールアドレス形式です。",
+      "selectDomain": "選択",
+      "verificationCode": "認証コード",
+      "sendCode": "コードを送信",
+      "codeVerified": "認証が完了しました。",
+      "password": "パスワード",
+      "passwordMinLength": "パスワードは最低6文字である必要があります。",
+      "passwordValid": "有効なパスワードです。",
+      "confirmPassword": "パスワード確認",
+      "passwordNoMatch": "パスワードが一致しません。",
+      "passwordRequirement": "8-20文字 / 大文字、小文字、数字、特殊文字の混合（最低2種類）",
+      "languageSelect": "言語を選択",
+      "signupButton": "会員登録",
+      "signupButtonLoading": "登録中...",
+      "signupSuccess": "会員登録が完了しました。ログインしてください。",
+      "signupFailed": "会員登録に失敗しました。"
+    }
+  },
+  "navigation": {
+    "contract": "契約書分析",
+    "chat": "法律相談",
+    "statistics": "統計",
+    "workTime": "労働時間追跡",
+    "settings": "設定"
+  },
+  "workTime": {
+    "title": "労働時間測定",
+    "startButton": "開始",
+    "stopButton": "停止",
+    "saveButton": "保存",
+    "workLocation": "勤務地",
+    "latitude": "緯度",
+    "longitude": "経度",
+    "selectLocation": "地図上の位置を選択するか、測定を開始してください",
+    "workRecords": "労働記録",
+    "noRecords": "労働記録がまだありません",
+    "mapLoading": "地図を読み込み中...",
+    "mapError": "地図の読み込みに失敗しました",
+    "naverMapClientIdError": "Naver Map Client IDが設定されていません。",
+    "naverMapAuthError": "Naver Map API認証に失敗しました。Client IDを確認してください。",
+    "currentLocationError": "現在地を取得できません",
+    "geolocationNotSupported": "このブラウザは位置情報をサポートしていません",
+    "mapInitError": "地図の初期化に失敗しました"
+  },
+  "settings": {
+    "title": "設定",
+    "profile": "プロフィール",
+    "language": "言語",
+    "languageSelection": "言語選択",
+    "languageDescription": "選択した言語はアプリのUIとチャットボットの応答に適用されます。",
+    "theme": "テーマ",
+    "about": "アプリについて",
+    "privacy": "プライバシーポリシー",
+    "changePassword": "パスワード変更"
+  },
+  "languages": {
+    "korean": "한국어",
+    "english": "English",
+    "chinese": "中文",
+    "vietnamese": "Tiếng Việt",
+    "japanese": "日本語",
+    "thai": "ไทย"
+  }
+}

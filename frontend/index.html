@@ -3,8 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>LawRo - 노동 법률 지원</title>
+
+    <!-- Naver Maps API - Static loading via callback -->
+    <script type="text/javascript">
+      // Global callback function called when Naver Maps API loads
+      window.initNaverMapGlobal = function () {
+        console.log('✅ 네이버 지도 API 로드 완료 (전역 콜백)');
+        window.naverMapReady = true;
+        // Dispatch custom event for React components
+        window.dispatchEvent(new CustomEvent('naverMapLoaded'));
+      };
+
+      // Global error handler for authentication failure
+      window.navermap_authFailure = function () {
+        console.error('❌ 네이버 지도 API 인증 실패');
+        const clientId = new URLSearchParams(
+          document.currentScript?.src.split('?')[1] || ''
+        ).get('ncpKeyId');
+        console.error('  - 사용한 Client ID:', clientId);
+        console.error('  - 도메인 확인: http://localhost 또는 http://127.0.0.1 만 등록되어 있는지?');
+        window.dispatchEvent(new CustomEvent('naverMapError', {
+          detail: { error: 'Naver Maps API 인증에 실패했습니다. Client ID와 도메인을 확인하세요.' }
+        }));
+      };
+    </script>
+
+    <!-- Naver Maps API Script (공식 문서: callback 파라미터로 자동 로드) -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=xvyp5v7zoj&callback=initNaverMapGlobal" async></script>
   </head>
   <body>
     <div id="root"></div>

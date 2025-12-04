@@ -1,0 +1,194 @@
+import { useEffect, useRef, useState } from 'react';
+import { MapPin } from 'lucide-react';
+
+export default function NaverMap({ latitude, longitude, onLocationChange }) {
+  const mapElement = useRef(null);
+  const mapInstance = useRef(null);
+  const markerInstance = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);
+
+  // 1단계: 네이버 지도 API 로드 확인 (index.html에서 정적 로드)
+  useEffect(() => {
+    // 이미 로드된 경우 스킵
+    if (window.naver && window.naver.maps) {
+      setIsLoaded(true);
+      return;
+    }
+
+    // 전역 API 준비 플래그 확인
+    if (window.naverMapReady) {
+      setIsLoaded(true);
+      return;
+    }
+
+    // 'naverMapLoaded' 이벤트 리스너 추가 (index.html 콜백이 발생할 때)
+    const handleNaverMapLoaded = () => {
+      setIsLoaded(true);
+    };
+
+    // 'naverMapError' 이벤트 리스너 추가 (인증 실패 시)
+    const handleNaverMapError = (event) => {
+      console.error('❌ 네이버 지도 API 로드 실패:', event.detail?.error);
+      setError(event.detail?.error || '네이버 지도 API 인증에 실패했습니다.');
+    };
+
+    window.addEventListener('naverMapLoaded', handleNaverMapLoaded);
+    window.addEventListener('naverMapError', handleNaverMapError);
+
+    return () => {
+      window.removeEventListener('naverMapLoaded', handleNaverMapLoaded);
+      window.removeEventListener('naverMapError', handleNaverMapError);
+    };
+  }, []);
+
+  // 2단계: API 로드 완료 후 지도 초기화
+  useEffect(() => {
+    // API가 아직 로드되지 않았으면 스킵
+    if (!isLoaded) return;
+
+    // DOM 컨테이너가 없으면 스킵
+    if (!mapElement.current) return;
+
+    // window.naver.maps가 없으면 스킵
+    if (!window.naver || !window.naver.maps) return;
+
+    // 이미 초기화되었으면 스킵
+    if (mapInstance.current) return;
+
+    initializeMap();
+  }, [isLoaded]);
+
+  // 지도 초기화
+  const initializeMap = () => {
+    try {
+      if (!mapElement.current) {
+        console.error('❌ 지도 컨테이너를 찾을 수 없습니다');
+        return;
+      }
+
+      const defaultLat = latitude || 37.3595704;
+      const defaultLng = longitude || 127.1052062;
+
+      const mapOptions = {
+        center: new window.naver.maps.LatLng(defaultLat, defaultLng),
+        zoom: 15,
+        minZoom: 8,
+        maxZoom: 21,
+        mapTypeControl: true,
+      };
+
+      mapInstance.current = new window.naver.maps.Map(mapElement.current, mapOptions);
+
+      // 마커 추가
+      addMarker(defaultLat, defaultLng);
+
+      // 지도 클릭 이벤트 리스너
+      window.naver.maps.Event.addListener(mapInstance.current, 'click', (e) => {
+        const lat = e.coord.lat();
+        const lng = e.coord.lng();
+        updateMarkerPosition(lat, lng);
+        onLocationChange?.({ latitude: lat, longitude: lng });
+      });
+    } catch (err) {
+      console.error('❌ 지도 초기화 오류:', err);
+      setError(`지도 초기화 실패: ${err.message}`);
+    }
+  };
+
+  // 마커 추가
+  const addMarker = (lat, lng) => {
+    if (!mapInstance.current) return;
+
+    if (markerInstance.current) {
+      markerInstance.current.setMap(null);
+    }
+
+    markerInstance.current = new window.naver.maps.Marker({
+      position: new window.naver.maps.LatLng(lat, lng),
+      map: mapInstance.current,
+      title: '근무 위치',
+    });
+  };
+
+  // 마커 위치 업데이트
+  const updateMarkerPosition = (lat, lng) => {
+    if (markerInstance.current && mapInstance.current) {
+      markerInstance.current.setPosition(new window.naver.maps.LatLng(lat, lng));
+      mapInstance.current.setCenter(new window.naver.maps.LatLng(lat, lng));
+    }
+  };
+
+  // 현재 위치로 이동
+  const moveToCurrentLocation = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          updateMarkerPosition(lat, lng);
+          onLocationChange?.({ latitude: lat, longitude: lng });
+        },
+        (err) => {
+          console.error('위치 조회 오류:', err);
+          if (err.code === 3) {
+            setError('위치 조회 타임아웃. GPS를 켜거나 권한을 확인하세요.');
+          } else if (err.code === 1) {
+            setError('위치 접근 권한이 필요합니다.');
+          } else {
+            setError('현재 위치를 가져올 수 없습니다');
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 30000,
+          maximumAge: 5000,
+        }
+      );
+    } else {
+      setError('이 브라우저는 위치 정보를 지원하지 않습니다');
+    }
+  };
+
+  if (error) {
+    return (
+      <div className="bg-gray-100 rounded-3xl aspect-video mb-6 flex items-center justify-center">
+        <div className="text-center">
+          <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+          <p className="text-sm text-gray-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isLoaded) {
+    return (
+      <div className="bg-gray-200 rounded-3xl aspect-video mb-6 flex items-center justify-center">
+        <div className="text-center">
+          <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-2 animate-pulse" />
+          <p className="text-sm text-gray-600">지도 로드 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative mb-6">
+      {/* 지도 컨테이너 */}
+      <div
+        ref={mapElement}
+        className="bg-gray-200 rounded-3xl aspect-video w-full"
+        style={{ minHeight: '300px' }}
+      />
+
+      {/* 현재 위치 버튼 */}
+      <button
+        onClick={moveToCurrentLocation}
+        className="absolute bottom-4 right-4 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
+        title="현재 위치로 이동"
+      >
+        <MapPin className="w-6 h-6 text-primary-600" />
+      </button>
+    </div>
+  );
+}

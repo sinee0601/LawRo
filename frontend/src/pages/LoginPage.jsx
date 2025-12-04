@@ -4,7 +4,7 @@ import useAuthStore from '../store/authStore';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login, isLoading, error, clearError } = useAuthStore();
+  const { login, isLoading, error, clearError, initializeLanguage } = useAuthStore();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -22,7 +22,11 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(formData);
+      const data = await login(formData);
+      // Initialize user's preferred language on login
+      if (data.user) {
+        initializeLanguage(data.user);
+      }
       navigate('/contract');
     } catch (err) {
       console.error('Login failed:', err);

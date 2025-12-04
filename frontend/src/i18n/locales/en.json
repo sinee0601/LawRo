@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "LAWRO",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "loginButton": "Login",
+      "loginButtonLoading": "Logging in...",
+      "signupLink": "Sign up",
+      "forgotPasswordLink": "Forgot password",
+      "snsLogin": "Login with SNS",
+      "emailRequired": "Email not found in system.",
+      "passwordMismatch": "Passwords do not match.",
+      "loginFailed": "Login failed."
+    },
+    "signup": {
+      "title": "Sign Up",
+      "fullName": "Full Name",
+      "email": "Email",
+      "emailFormat": "Invalid email format.",
+      "selectDomain": "Select",
+      "verificationCode": "Verification Code",
+      "sendCode": "Send Code",
+      "codeVerified": "Verification completed.",
+      "password": "Password",
+      "passwordMinLength": "Password must be at least 6 characters.",
+      "passwordValid": "Valid password.",
+      "confirmPassword": "Confirm Password",
+      "passwordNoMatch": "Passwords do not match.",
+      "passwordRequirement": "8-20 characters / Mix of uppercase, lowercase, numbers, and special characters (at least 2 types)",
+      "languageSelect": "Select Language",
+      "signupButton": "Sign Up",
+      "signupButtonLoading": "Signing up...",
+      "signupSuccess": "Sign up completed. Please login.",
+      "signupFailed": "Sign up failed."
+    }
+  },
+  "navigation": {
+    "contract": "Contract Analysis",
+    "chat": "Legal Consultation",
+    "statistics": "Statistics",
+    "workTime": "Work Time Tracking",
+    "settings": "Settings"
+  },
+  "workTime": {
+    "title": "Work Time Measurement",
+    "startButton": "Start",
+    "stopButton": "Stop",
+    "saveButton": "Save",
+    "workLocation": "Work Location",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "selectLocation": "Select location on map or start measurement",
+    "workRecords": "Work Records",
+    "noRecords": "No work records yet",
+    "mapLoading": "Loading map...",
+    "mapError": "Failed to load map",
+    "naverMapClientIdError": "Naver Map Client ID is not configured.",
+    "naverMapAuthError": "Naver Map API authentication failed. Please check your Client ID.",
+    "currentLocationError": "Unable to get current location",
+    "geolocationNotSupported": "This browser does not support location information",
+    "mapInitError": "Map initialization failed"
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": "Profile",
+    "language": "Language",
+    "languageSelection": "Language Selection",
+    "languageDescription": "Selected language will be applied to app UI and chatbot responses.",
+    "theme": "Theme",
+    "about": "About App",
+    "privacy": "Privacy Policy",
+    "changePassword": "Change Password"
+  },
+  "languages": {
+    "korean": "한국어",
+    "english": "English",
+    "chinese": "中文",
+    "vietnamese": "Tiếng Việt",
+    "japanese": "日本語",
+    "thai": "ไทย"
+  }
+}

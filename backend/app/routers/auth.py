@@ -13,6 +13,8 @@ from ..models.auth import (
     SignupRequest,
     LoginRequest,
     SocialAuthRequest,
+    UpdateProfileRequest,
+    ChangePasswordRequest,
     AuthResponse,
     UserResponse,
     MessageResponse,
@@ -30,6 +32,10 @@ router = APIRouter()
 FIREBASE_AUTH_URL = "https://identitytoolkit.googleapis.com/v1/accounts"
 FIREBASE_TOKEN_URL = "https://securetoken.googleapis.com/v1/token"
 
+# Token expiration settings (in seconds)
+# settings.JWT_EXPIRE_HOURS에서 가져온 값을 초단위로 변환
+TOKEN_EXPIRATION_SECONDS = settings.JWT_EXPIRE_HOURS * 3600
+
 
 def _get_user_response(user_record, firestore_user=None) -> UserResponse:
     """Convert Firebase user record to UserResponse"""
@@ -38,6 +44,7 @@ def _get_user_response(user_record, firestore_user=None) -> UserResponse:
         email=user_record.email,
         email_verified=user_record.email_verified,
         full_name=firestore_user.get("full_name") if firestore_user else user_record.display_name,
+        preferred_language=firestore_user.get("preferred_language") if firestore_user else "korean",
         picture=user_record.photo_url,
         provider=user_record.provider_data[0].provider_id if user_record.provider_data else None,
         created_at=firestore_user.get("created_at") if firestore_user else None,
@@ -83,6 +90,7 @@ async def signup(request: SignupRequest, db=Depends(get_firestore_db)):
             "uid": user.uid,
             "email": request.email,
             "full_name": request.full_name,
+            "preferred_language": request.preferred_language,
             "email_verified": False,
             "provider": "password",
             "created_at": datetime.utcnow(),
@@ -270,7 +278,7 @@ async def google_callback(request: SocialAuthRequest, db=Depends(get_firestore_d
             user=_get_user_response(user_record, user_data),
             id_token=request.id_token,
             refresh_token="",  # Client handles refresh
-            expires_in=3600,
+            expires_in=TOKEN_EXPIRATION_SECONDS,
         )
 
     except Exception as e:
@@ -336,7 +344,7 @@ async def naver_callback(request: SocialAuthRequest, db=Depends(get_firestore_db
 # Settings Endpoints
 @router.put("/profile", response_model=MessageResponse)
 async def update_profile(
-    request: dict,
+    request: UpdateProfileRequest,
     current_user: dict = Depends(get_current_user),
     db=Depends(get_firestore_db)
 ):
@@ -344,10 +352,10 @@ async def update_profile(
     Update user profile information (name, language, theme)
 
     Compatible with: PUT /auth/profile
-    Accepts:
-    - full_name: 사용자 이름
-    - preferred_language: 선호 언어 (korean, english, chinese, vietnamese, japanese, thai)
-    - theme_preference: 테마 (light, dark)
+    Request body:
+    - full_name: 사용자 이름 (optional)
+    - preferred_language: 선호 언어 - korean, english, chinese, vietnamese, japanese, thai (optional)
+    - theme_preference: 테마 - light, dark (optional)
     """
     try:
         user_uid = current_user["uid"]
@@ -356,9 +364,12 @@ async def update_profile(
         # Prepare update data
         update_data = {}
 
+        logger.info(f"[UPDATE_PROFILE] Attempting to update profile for user: {user_uid}")
+        logger.info(f"[UPDATE_PROFILE] Request data: full_name={request.full_name}, language={request.preferred_language}, theme={request.theme_preference}")
+
         # Update full_name
-        if "full_name" in request:
-            full_name = request["full_name"]
+        if request.full_name is not None:
+            full_name = request.full_name
             if not full_name or not isinstance(full_name, str) or len(full_name.strip()) == 0:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -372,8 +383,8 @@ async def update_profile(
                 logger.warning(f"Failed to update Firebase display name: {e}")
 
         # Update language
-        if "preferred_language" in request:
-            language = request["preferred_language"]
+        if request.preferred_language is not None:
+            language = request.preferred_language
             valid_languages = ["korean", "english", "chinese", "vietnamese", "japanese", "thai"]
             if language not in valid_languages:
                 raise HTTPException(
@@ -383,8 +394,8 @@ async def update_profile(
             update_data["preferred_language"] = language
 
         # Update theme
-        if "theme_preference" in request:
-            theme = request["theme_preference"]
+        if request.theme_preference is not None:
+            theme = request.theme_preference
             valid_themes = ["light", "dark"]
             if theme not in valid_themes:
                 raise HTTPException(
@@ -401,16 +412,47 @@ async def update_profile(
 
         # Update Firestore
         from datetime import datetime
-        update_data["updated_at"] = datetime.utcnow()
-        user_ref.update(update_data)
 
-        logger.info(f"User profile updated: {user_uid}")
+        update_data["updated_at"] = datetime.utcnow()
+        try:
+            logger.info(f"[UPDATE_PROFILE] Update data: {update_data}")
+
+            # Check if user document exists, if not create it first
+            user_doc = user_ref.get()
+            logger.info(f"[UPDATE_PROFILE] User document exists: {user_doc.exists}")
+
+            if not user_doc.exists:
+                logger.info(f"[UPDATE_PROFILE] Creating new user document for: {user_uid}")
+                # Create initial user document with email
+                initial_data = {
+                    "uid": user_uid,
+                    "email": current_user.get("email"),
+                    "created_at": datetime.utcnow(),
+                }
+                initial_data.update(update_data)
+                logger.info(f"[UPDATE_PROFILE] Calling user_ref.set()")
+                user_ref.set(initial_data)
+                logger.info(f"[UPDATE_PROFILE] User document created successfully")
+            else:
+                # Update existing document
+                logger.info(f"[UPDATE_PROFILE] Calling user_ref.update()")
+                user_ref.update(update_data)
+                logger.info(f"[UPDATE_PROFILE] User document updated successfully")
+
+        except Exception as e:
+            logger.error(f"[UPDATE_PROFILE] Firestore error ({type(e).__name__}): {str(e)}", exc_info=True)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"프로필 업데이트에 실패했습니다: {str(e)}"
+            )
+
+        logger.info(f"[UPDATE_PROFILE] User profile updated successfully: {user_uid}")
         return MessageResponse(message="사용자 정보가 업데이트되었습니다.")
 
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Profile update error: {e}")
+        logger.error(f"[UPDATE_PROFILE] Unexpected error: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="프로필 업데이트에 실패했습니다."
@@ -419,7 +461,7 @@ async def update_profile(
 
 @router.post("/change-password", response_model=MessageResponse)
 async def change_password(
-    request: dict,
+    request: ChangePasswordRequest,
     current_user: dict = Depends(get_current_user),
     db=Depends(get_firestore_db)
 ):
@@ -427,29 +469,19 @@ async def change_password(
     Change user password
 
     Compatible with: POST /auth/change-password
-    Requires:
+    Request body:
     - email: 사용자 이메일
     - current_password: 현재 비밀번호
-    - new_password: 새 비밀번호
+    - new_password: 새 비밀번호 (8자 이상)
     """
     try:
-        email = request.get("email")
-        current_password = request.get("current_password")
-        new_password = request.get("new_password")
+        email = request.email
+        current_password = request.current_password
+        new_password = request.new_password
+
+        logger.info(f"[CHANGE_PASSWORD] Password change requested for user: {email}")
 
         # Validate input
-        if not all([email, current_password, new_password]):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="이메일, 현재 비밀번호, 새 비밀번호는 필수입니다."
-            )
-
-        if not isinstance(new_password, str) or len(new_password) < 8:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="새 비밀번호는 8자 이상이어야 합니다."
-            )
-
         if current_password == new_password:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -458,6 +490,7 @@ async def change_password(
 
         # Verify current password using Firebase REST API
         try:
+            logger.info(f"[CHANGE_PASSWORD] Verifying current password for: {email}")
             verify_response = requests.post(
                 f"{FIREBASE_AUTH_URL}:signInWithPassword",
                 params={"key": settings.FIREBASE_API_KEY},
@@ -470,7 +503,7 @@ async def change_password(
 
             if verify_response.status_code != 200:
                 error_data = verify_response.json()
-                logger.warning(f"Password verification failed for user: {email}")
+                logger.warning(f"[CHANGE_PASSWORD] Password verification failed for user: {email}")
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="현재 비밀번호가 올바르지 않습니다."
@@ -478,7 +511,7 @@ async def change_password(
         except HTTPException:
             raise
         except Exception as e:
-            logger.error(f"Password verification error: {e}")
+            logger.error(f"[CHANGE_PASSWORD] Password verification error: {e}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="현재 비밀번호 확인에 실패했습니다."
@@ -488,9 +521,11 @@ async def change_password(
 
         # Update password in Firebase
         try:
+            logger.info(f"[CHANGE_PASSWORD] Updating password in Firebase for user: {user_uid}")
             auth.update_user(user_uid, password=new_password)
+            logger.info(f"[CHANGE_PASSWORD] Password updated successfully in Firebase")
         except Exception as e:
-            logger.error(f"Failed to update password in Firebase: {e}")
+            logger.error(f"[CHANGE_PASSWORD] Failed to update password in Firebase: {e}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="비밀번호 변경에 실패했습니다."
@@ -499,18 +534,24 @@ async def change_password(
         # Update last password change timestamp
         from datetime import datetime
         user_ref = db.collection(Collections.USERS).document(user_uid)
-        user_ref.update({
-            "password_changed_at": datetime.utcnow(),
-            "updated_at": datetime.utcnow(),
-        })
+        try:
+            logger.info(f"[CHANGE_PASSWORD] Updating password_changed_at timestamp in Firestore")
+            user_ref.update({
+                "password_changed_at": datetime.utcnow(),
+                "updated_at": datetime.utcnow(),
+            })
+            logger.info(f"[CHANGE_PASSWORD] Password change completed successfully for user: {user_uid}")
+        except Exception as e:
+            logger.warning(f"[CHANGE_PASSWORD] Failed to update timestamp in Firestore: {e}")
+            # Don't fail the entire operation if timestamp update fails
+            pass
 
-        logger.info(f"Password changed for user: {user_uid}")
         return MessageResponse(message="비밀번호가 성공적으로 변경되었습니다.")
 
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Change password error: {e}")
+        logger.error(f"[CHANGE_PASSWORD] Unexpected error: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="비밀번호 변경 중 오류가 발생했습니다."

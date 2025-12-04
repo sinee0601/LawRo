@@ -17,9 +17,11 @@ from ..models.chat import (
     BatchMessageRequest,
     BatchMessageResponse,
     HealthStatusResponse,
-    SessionStatsResponse
+    SessionStatsResponse,
+    SessionListResponse,
+    ChatSessionInfo
 )
-from ..dependencies import get_current_user_optional
+from ..dependencies import get_current_user
 from ..services.chat_service import ChatService
 
 logger = logging.getLogger(__name__)
@@ -41,7 +43,7 @@ def get_chat_service() -> ChatService:
 @router.post("/send", response_model=ChatResponse)
 async def send_chat_message(
     request: ChatRequest,
-    current_user: dict = Depends(get_current_user_optional)
+    current_user: dict = Depends(get_current_user)
 ):
     """
     Send a chat message and receive AI response
@@ -117,7 +119,7 @@ async def send_chat_message(
 @router.get("/history/{session_id}", response_model=ChatHistoryResponse)
 async def get_chat_history(
     session_id: str,
-    current_user: dict = Depends(get_current_user_optional)
+    current_user: dict = Depends(get_current_user)
 ):
     """
     Get chat history for a specific session
@@ -160,7 +162,7 @@ async def get_chat_history(
 
 
 @router.post("/new-session", response_model=NewSessionResponse)
-async def create_new_chat_session(current_user: dict = Depends(get_current_user_optional)):
+async def create_new_chat_session(current_user: dict = Depends(get_current_user)):
     """
     Create a new chat session
 
@@ -190,50 +192,72 @@ async def create_new_chat_session(current_user: dict = Depends(get_current_user_
         )
 
 
+@router.get("/sessions", response_model=SessionListResponse)
+async def get_user_sessions(current_user: dict = Depends(get_current_user)):
+    """
+    Get all chat session history for the current user.
+    """
+    user_id = current_user.get("uid")
+    logger.info(f"Fetching all sessions for user [user: {user_id}]")
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not authenticated")
+
+    try:
+        chat_service = get_chat_service()
+        sessions_data = await chat_service.list_sessions_for_user(user_id=user_id)
+        
+        # Convert dicts to ChatSessionInfo models if needed, though Pydantic handles it.
+        return SessionListResponse(sessions=sessions_data)
+
+    except Exception as e:
+        logger.error(f"Failed to retrieve sessions for user {user_id}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to retrieve user sessions"
+        )
+
+
 @router.delete("/history/{session_id}", response_model=DeleteHistoryResponse)
-async def clear_chat_history(
+async def delete_chat_session(
     session_id: str,
-    current_user: dict = Depends(get_current_user_optional)
+    current_user: dict = Depends(get_current_user)
 ):
     """
-    Clear chat history for a specific session
-
-    Compatible with: DELETE /chat/history/{session_id}
+    Deletes a chat session entirely.
     """
     session_short_id = session_id[:8] if len(session_id) >= 8 else session_id
     user_id = current_user["uid"] if current_user else None
 
-    logger.info(f"Clear history request [session: {session_short_id}] [user: {user_id}]")
+    logger.info(f"Delete session request [session: {session_short_id}] [user: {user_id}]")
 
     try:
         chat_service = get_chat_service()
 
-        # Input validation
         if not session_id or len(session_id) < 8:
             raise ValueError("Invalid session ID")
 
-        success = await chat_service.clear_chat_history(session_id)
+        success = await chat_service.delete_session(session_id)
 
         if success:
-            logger.info(f"History cleared [session: {session_short_id}]")
+            logger.info(f"Session deleted [session: {session_short_id}]")
         else:
-            logger.warning(f"History clear failed [session: {session_short_id}] - session not found")
+            logger.warning(f"Delete session failed [session: {session_short_id}] - session not found")
 
         return DeleteHistoryResponse(
             success=success,
-            message="채팅 히스토리가 삭제되었습니다." if success else "삭제에 실패했습니다. 세션을 찾을 수 없습니다.",
+            message="채팅 세션이 삭제되었습니다." if success else "삭제에 실패했습니다. 세션을 찾을 수 없습니다.",
             session_id=session_id
         )
 
     except ValueError as ve:
-        logger.warning(f"Clear history validation error [session: {session_short_id}]: {ve}")
+        logger.warning(f"Delete session validation error [session: {session_short_id}]: {ve}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
 
     except Exception as e:
-        logger.error(f"Clear history error [session: {session_short_id}]: {e}", exc_info=True)
+        logger.error(f"Delete session error [session: {session_short_id}]: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to clear chat history"
+            detail="Failed to delete chat session"
         )
 
 
@@ -295,7 +319,7 @@ async def get_session_stats():
 @router.post("/batch", response_model=BatchMessageResponse)
 async def batch_process_messages(
     request: BatchMessageRequest,
-    current_user: dict = Depends(get_current_user_optional)
+    current_user: dict = Depends(get_current_user)
 ):
     """
     Process multiple messages in batch

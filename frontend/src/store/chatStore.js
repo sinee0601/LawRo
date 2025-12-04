@@ -2,15 +2,37 @@ import { create } from 'zustand';
 import { chatAPI, performanceMetrics } from '../services/api';
 
 const useChatStore = create((set, get) => ({
-  sessions: {},
+  sessions: {}, // Stores messages for loaded sessions: { [sessionId]: { messages: [...] } }
+  sessionList: [], // Stores the list of all available sessions: [ { session_id, title, ... } ]
   currentSessionId: null,
   isLoading: false,
+  isHistoryLoading: false,
   error: null,
   retryCount: 0,
   stats: {
     totalMessages: 0,
     successfulMessages: 0,
     failedMessages: 0,
+  },
+
+  // 모든 세션 목록 가져오기
+  fetchSessionList: async () => {
+    try {
+      const data = await chatAPI.listSessions();
+      const sessions = data.sessions || [];
+      set({ sessionList: sessions });
+
+      // If the list is empty and there's no active session, create a new one.
+      if (sessions.length === 0 && !get().currentSessionId) {
+        await get().createSession();
+      }
+      // If the list is not empty but there's no active session, select the most recent one.
+      else if (sessions.length > 0 && !get().currentSessionId) {
+        get().selectSession(sessions[0].session_id);
+      }
+    } catch (error) {
+      console.error('Failed to fetch session list:', error);
+    }
   },
 
   // 새 세션 생성
@@ -35,6 +57,7 @@ const useChatStore = create((set, get) => ({
         retryCount: 0,
       }));
 
+      get().fetchSessionList(); // Refresh the session list
       return sessionId;
     } catch (error) {
       set({
@@ -211,37 +234,43 @@ const useChatStore = create((set, get) => ({
 
   // 세션 히스토리 로드
   loadHistory: async (sessionId) => {
-    set({ isLoading: true });
+    set({ isHistoryLoading: true });
     try {
       const data = await chatAPI.getHistory(sessionId);
       set((state) => ({
         sessions: {
           ...state.sessions,
           [sessionId]: {
+            ...state.sessions[sessionId], // Preserve existing data like title
             id: sessionId,
-            messages: data.messages || [],
-            createdAt: data.created_at,
-            language: data.language || 'korean',
+            messages: data.chat_history || [], // Corrected field name
+            createdAt: data.created_at || new Date().toISOString(),
           }
         },
         currentSessionId: sessionId,
-        isLoading: false,
+        isHistoryLoading: false,
       }));
     } catch (error) {
       console.error('Failed to load history:', error);
       set({
         error: '히스토리 로드에 실패했습니다.',
-        isLoading: false,
+        isHistoryLoading: false,
       });
     }
   },
 
-  // 세션 선택
+  // 세션 선택 (히스토리 로드 기능 추가)
   selectSession: (sessionId) => {
+    const { sessions } = get();
     set({ currentSessionId: sessionId, error: null });
+    
+    // If messages for this session are not already loaded, fetch them.
+    if (!sessions[sessionId] || !sessions[sessionId].messages || sessions[sessionId].messages.length === 0) {
+      get().loadHistory(sessionId);
+    }
   },
 
-  // 세션 삭제
+  // 세션 삭제 (sessionList 업데이트 추가)
   deleteSession: async (sessionId) => {
     try {
       await chatAPI.deleteSession(sessionId);
@@ -249,9 +278,22 @@ const useChatStore = create((set, get) => ({
         const newSessions = { ...state.sessions };
         delete newSessions[sessionId];
 
+        const newSessionList = state.sessionList.filter(s => s.session_id !== sessionId);
+
+        // If the deleted session was the active one, select the first available session or null
+        const newCurrentSessionId = state.currentSessionId === sessionId 
+          ? (newSessionList.length > 0 ? newSessionList[0].session_id : null) 
+          : state.currentSessionId;
+        
+        // If a new session is selected, load its history
+        if (newCurrentSessionId && newCurrentSessionId !== state.currentSessionId) {
+          get().loadHistory(newCurrentSessionId);
+        }
+
         return {
           sessions: newSessions,
-          currentSessionId: state.currentSessionId === sessionId ? null : state.currentSessionId,
+          sessionList: newSessionList,
+          currentSessionId: newCurrentSessionId,
         };
       });
     } catch (error) {
