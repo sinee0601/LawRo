@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { contractAPI } from '../services/api';
-import { Trash2, FileText, Calendar, AlertCircle, CheckCircle, X } from 'lucide-react';
+import { Trash2, FileText, Calendar, AlertCircle, CheckCircle, X, Plus } from 'lucide-react';
 import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
 
@@ -90,10 +90,10 @@ export default function AnalysisHistoryPage() {
               계약서를 분석하면 내역이 저장됩니다.
             </p>
             <button
-              onClick={() => navigate('/contract')}
+              onClick={() => navigate('/contract/new')}
               className="mt-6 bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-6 rounded-xl transition-colors"
             >
-              계약서 분석하기
+              새 계약서 분석하기
             </button>
           </div>
         ) : (
@@ -297,12 +297,104 @@ export default function AnalysisHistoryPage() {
               {/* 챗봇 상세 분석 */}
               {selectedAnalysis.chatbot_analysis?.analysis && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">⚖️ 법률 전문가 분석</h3>
-                  <div className="p-4 bg-primary-50 rounded-xl">
-                    <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
-                      {selectedAnalysis.chatbot_analysis.analysis}
-                    </p>
-                  </div>
+                  {(() => {
+                    const analysisText = selectedAnalysis.chatbot_analysis.analysis;
+                    try {
+                      // Try to parse as JSON
+                      const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
+                      if (jsonMatch) {
+                        const parsed = JSON.parse(jsonMatch[0]);
+
+                        return (
+                          <div className="space-y-4">
+                            {/* Score Section */}
+                            {parsed.totalScore && (
+                              <div className="p-4 bg-gradient-to-r from-primary-50 to-primary-100 rounded-xl">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm font-semibold text-gray-900">종합 안전도</span>
+                                  <div className="flex items-center gap-2">
+                                    <div className="text-2xl font-bold text-primary-600">{parsed.totalScore}</div>
+                                    <span className="text-xs text-gray-600">/100</span>
+                                  </div>
+                                </div>
+                                <div className="mt-2 w-full bg-gray-300 rounded-full h-2">
+                                  <div
+                                    className="bg-primary-600 h-2 rounded-full transition-all"
+                                    style={{ width: `${Math.min(parsed.totalScore, 100)}%` }}
+                                  />
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Summary */}
+                            {parsed.summary && (
+                              <div className="p-4 bg-blue-50 rounded-xl">
+                                <h4 className="text-sm font-semibold text-gray-900 mb-2">📋 요약</h4>
+                                <p className="text-sm text-gray-800 leading-relaxed">{parsed.summary}</p>
+                              </div>
+                            )}
+
+                            {/* Aware (주의 사항) */}
+                            {parsed.aware && Array.isArray(parsed.aware) && parsed.aware.length > 0 && (
+                              <div className="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-xl">
+                                <h4 className="text-sm font-semibold text-gray-900 mb-3">⚠️ 주의 사항</h4>
+                                <ul className="space-y-2">
+                                  {parsed.aware.map((item, idx) => (
+                                    <li key={idx} className="flex gap-2 text-sm text-gray-800">
+                                      <span className="flex-shrink-0 font-bold text-yellow-600">•</span>
+                                      <span>{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            {/* Highlights */}
+                            {parsed.highlights && Array.isArray(parsed.highlights) && parsed.highlights.length > 0 && (
+                              <div className="p-4 bg-green-50 rounded-xl">
+                                <h4 className="text-sm font-semibold text-gray-900 mb-3">✅ 긍정 요소</h4>
+                                <ul className="space-y-2">
+                                  {parsed.highlights.map((item, idx) => (
+                                    <li key={idx} className="flex gap-2 text-sm text-gray-800">
+                                      <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                                      <span>{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+
+                            {/* Legal Interpretation */}
+                            {parsed.legalInterpretation && Array.isArray(parsed.legalInterpretation) && parsed.legalInterpretation.length > 0 && (
+                              <div className="p-4 bg-purple-50 rounded-xl">
+                                <h4 className="text-sm font-semibold text-gray-900 mb-3">⚖️ 법률 해석</h4>
+                                <div className="space-y-3">
+                                  {parsed.legalInterpretation.map((item, idx) => (
+                                    <div key={idx} className="border-l-2 border-purple-400 pl-3">
+                                      <p className="text-xs font-semibold text-gray-900 mb-1">{item.issue}</p>
+                                      <p className="text-sm text-gray-800">{item.interpretation}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                    } catch (e) {
+                      // If JSON parsing fails, show as plain text
+                    }
+
+                    // Fallback to plain text display
+                    return (
+                      <div className="p-4 bg-primary-50 rounded-xl">
+                        <h3 className="font-semibold text-gray-900 mb-2 text-sm">📋 법률 전문가 분석</h3>
+                        <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                          {analysisText}
+                        </p>
+                      </div>
+                    );
+                  })()}
                 </div>
               )}
 
@@ -333,6 +425,18 @@ export default function AnalysisHistoryPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* 플로팅 버튼: 새 계약서 분석 */}
+      {!isLoading && analyses.length > 0 && (
+        <button
+          onClick={() => navigate('/contract/new')}
+          className="fixed bottom-24 right-6 bg-primary-600 hover:bg-primary-700 text-white rounded-full px-6 py-4 shadow-2xl transition-all hover:scale-105 z-40 flex items-center gap-2 font-medium"
+          title="새 계약서 분석하기"
+        >
+          <FileText className="w-5 h-5" />
+          <span>계약서 분석</span>
+        </button>
       )}
 
       <BottomNav />

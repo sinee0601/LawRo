@@ -34,7 +34,11 @@ const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const data = await authAPI.signup(userData);
-      set({ isLoading: false });
+      set({
+        user: data.user,
+        isAuthenticated: true,
+        isLoading: false
+      });
       return data;
     } catch (error) {
       set({

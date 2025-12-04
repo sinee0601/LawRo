@@ -1,3 +1,9 @@
+
+
+
+
+
+
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, Clock, Save, Trash2, AlertCircle, CheckCircle, Navigation, X } from 'lucide-react';
 import { worktimeAPI } from '../services/api';
@@ -115,12 +121,15 @@ export default function WorkTimePage() {
         },
         (error) => {
           console.error('위치 추적 오류:', error);
+          if (error.code === 3) {
+            console.warn('위치 조회 타임아웃. 권한을 확인하거나 GPS를 켜세요.');
+          }
           setError('위치 추적 권한이 필요합니다.');
         },
         {
           enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0,
+          timeout: 30000,
+          maximumAge: 5000,
         }
       );
     } else {
@@ -182,11 +191,8 @@ export default function WorkTimePage() {
 
     try {
       const endTime = new Date();
-      const date = currentSessionStart.toLocaleDateString('ko-KR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      });
+      // Date 형식: YYYY-MM-DD (Backend와 일관성 유지)
+      const date = currentSessionStart.toISOString().split('T')[0];
 
       await worktimeAPI.saveWorkRecord(
         currentSessionStart.toISOString(),

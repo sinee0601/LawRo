@@ -7,99 +7,55 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
   const markerInstance = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
-  const scriptLoadedRef = useRef(false);
 
-  // 1단계: 네이버 지도 API 로드 (공식 문서 콜백 방식)
+  // 1단계: 네이버 지도 API 로드 확인 (index.html에서 정적 로드)
   useEffect(() => {
     // 이미 로드된 경우 스킵
     if (window.naver && window.naver.maps) {
-      console.log('✅ 네이버 지도 API 이미 로드됨');
       setIsLoaded(true);
       return;
     }
 
-    // 이미 로드 중이면 스킵
-    if (scriptLoadedRef.current) {
+    // 전역 API 준비 플래그 확인
+    if (window.naverMapReady) {
+      setIsLoaded(true);
       return;
     }
 
-    const ncpKeyId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID;
-
-    if (!ncpKeyId || ncpKeyId === 'YOUR_NAVER_MAP_CLIENT_ID') {
-      setError('네이버 지도 Client ID가 설정되지 않았습니다');
-      console.error('❌ VITE_NAVER_MAP_CLIENT_ID가 없습니다');
-      return;
-    }
-
-    scriptLoadedRef.current = true;
-
-    // 전역 콜백 함수: API 로드 완료 시 자동 호출
-    window.initNaverMap = function () {
-      console.log('✅ 네이버 지도 API 로드 완료 (callback)');
+    // 'naverMapLoaded' 이벤트 리스너 추가 (index.html 콜백이 발생할 때)
+    const handleNaverMapLoaded = () => {
       setIsLoaded(true);
     };
 
-    // 인증 실패 처리 (공식 문서: 클라이언트 아이디 인증 실패 확인)
-    window.navermap_authFailure = function () {
-      console.error('❌ 네이버 지도 API 인증 실패');
-      setError('네이버 지도 API 인증에 실패했습니다. Client ID를 확인하세요.');
+    // 'naverMapError' 이벤트 리스너 추가 (인증 실패 시)
+    const handleNaverMapError = (event) => {
+      console.error('❌ 네이버 지도 API 로드 실패:', event.detail?.error);
+      setError(event.detail?.error || '네이버 지도 API 인증에 실패했습니다.');
     };
 
-    console.log('📍 네이버 지도 API 로드 시작...');
-
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    // callback 파라미터로 자동 콜백 등록 (공식 권장)
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${ncpKeyId}&callback=initNaverMap`;
-    script.async = true;
-
-    script.onerror = (err) => {
-      console.error('❌ 지도 API 로드 실패:', err);
-      setError('네이버 지도 API 로드 실패');
-      scriptLoadedRef.current = false;
-    };
-
-    document.head.appendChild(script);
+    window.addEventListener('naverMapLoaded', handleNaverMapLoaded);
+    window.addEventListener('naverMapError', handleNaverMapError);
 
     return () => {
-      // Cleanup
-      if (document.head.contains(script)) {
-        try {
-          document.head.removeChild(script);
-        } catch (e) {
-          console.warn('스크립트 제거 실패');
-        }
-      }
+      window.removeEventListener('naverMapLoaded', handleNaverMapLoaded);
+      window.removeEventListener('naverMapError', handleNaverMapError);
     };
   }, []);
 
   // 2단계: API 로드 완료 후 지도 초기화
   useEffect(() => {
     // API가 아직 로드되지 않았으면 스킵
-    if (!isLoaded) {
-      console.log('⏳ API 로드 대기 중...');
-      return;
-    }
+    if (!isLoaded) return;
 
     // DOM 컨테이너가 없으면 스킵
-    if (!mapElement.current) {
-      console.log('⏳ DOM 컨테이너 대기 중...');
-      return;
-    }
+    if (!mapElement.current) return;
 
     // window.naver.maps가 없으면 스킵
-    if (!window.naver || !window.naver.maps) {
-      console.log('⏳ window.naver.maps 대기 중...');
-      return;
-    }
+    if (!window.naver || !window.naver.maps) return;
 
     // 이미 초기화되었으면 스킵
-    if (mapInstance.current) {
-      console.log('✅ 지도가 이미 초기화되었습니다');
-      return;
-    }
+    if (mapInstance.current) return;
 
-    console.log('🚀 지도 초기화 조건 충족, 초기화 시작...');
     initializeMap();
   }, [isLoaded]);
 
@@ -110,10 +66,6 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
         console.error('❌ 지도 컨테이너를 찾을 수 없습니다');
         return;
       }
-
-      console.log('📍 지도 초기화 시작...');
-      console.log('mapElement.current:', mapElement.current);
-      console.log('window.naver.maps:', window.naver.maps);
 
       const defaultLat = latitude || 37.3595704;
       const defaultLng = longitude || 127.1052062;
@@ -126,9 +78,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
         mapTypeControl: true,
       };
 
-      console.log('🗺️ 지도 생성 중...', mapOptions);
       mapInstance.current = new window.naver.maps.Map(mapElement.current, mapOptions);
-      console.log('✅ 지도 생성 완료');
 
       // 마커 추가
       addMarker(defaultLat, defaultLng);
@@ -137,7 +87,6 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
       window.naver.maps.Event.addListener(mapInstance.current, 'click', (e) => {
         const lat = e.coord.lat();
         const lng = e.coord.lng();
-        console.log('🖱️ 지도 클릭:', lat, lng);
         updateMarkerPosition(lat, lng);
         onLocationChange?.({ latitude: lat, longitude: lng });
       });
@@ -181,8 +130,19 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
           onLocationChange?.({ latitude: lat, longitude: lng });
         },
         (err) => {
-          setError('현재 위치를 가져올 수 없습니다');
-          console.error('Geolocation error:', err);
+          console.error('위치 조회 오류:', err);
+          if (err.code === 3) {
+            setError('위치 조회 타임아웃. GPS를 켜거나 권한을 확인하세요.');
+          } else if (err.code === 1) {
+            setError('위치 접근 권한이 필요합니다.');
+          } else {
+            setError('현재 위치를 가져올 수 없습니다');
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 30000,
+          maximumAge: 5000,
         }
       );
     } else {

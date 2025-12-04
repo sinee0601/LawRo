@@ -43,8 +43,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **핵심 구성요소**:
 - **Vector DB**: `backend/data/chroma/chroma.sqlite3` (lawro_legal_docs collection)
-- **Embedding**: solar-embedding-1-large-query
-- **LLM**: solar-pro2 (일반 상담), solar-pro (계약서 분석)
 - **Session**: Firestore + in-memory 2-tier cache (5분 timeout, 최대 50개 메시지)
 - **Custom Prompt**: 계약서 분석 시 analysis_request_template.txt 주입
 

@@ -203,22 +203,28 @@ class WorkTimeService:
             return []
 
         try:
-            query = self.db.collection(Collections.WORK_RECORDS).where(
+            # Simple query: only filter by user_id to avoid composite index
+            # Sorting and date filtering done in memory
+            docs = self.db.collection(Collections.WORK_RECORDS).where(
                 "user_id", "==", user_id
-            )
-
-            if date:
-                query = query.where("date", "==", date)
-
-            docs = query.order_by("created_at", direction="DESCENDING").limit(limit).stream()
+            ).stream()
 
             records = []
             for doc in docs:
                 data = doc.to_dict()
                 data["id"] = doc.id
+
+                # Apply date filter in memory if specified
+                if date and data.get("date") != date:
+                    continue
+
                 records.append(data)
 
-            return records
+            # Sort by created_at in memory (descending)
+            records.sort(key=lambda x: x.get("created_at", datetime.min), reverse=True)
+
+            # Return limited results
+            return records[:limit]
         except Exception as e:
             logger.error(f"Failed to get work records: {e}")
             return []
@@ -251,12 +257,9 @@ class WorkTimeService:
             }
 
         try:
+            # Build simple query without date range filters to avoid composite index
             docs = self.db.collection(Collections.WORK_RECORDS).where(
                 "user_id", "==", user_id
-            ).where(
-                "date", ">=", start_date
-            ).where(
-                "date", "<=", end_date
             ).stream()
 
             records = []
@@ -265,8 +268,12 @@ class WorkTimeService:
             for doc in docs:
                 data = doc.to_dict()
                 data["id"] = doc.id
-                records.append(data)
-                total_seconds += data.get("duration_seconds", 0)
+
+                # Apply date range filter in memory
+                record_date = data.get("date")
+                if record_date and start_date <= record_date <= end_date:
+                    records.append(data)
+                    total_seconds += data.get("duration_seconds", 0)
 
             total_hours = total_seconds / 3600
 

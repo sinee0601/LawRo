@@ -322,10 +322,15 @@ export const worktimeAPI = {
 
   // 근무 기록 저장
   saveWorkRecord: async (startTime, endTime, location, date) => {
+    // startTime과 endTime이 ISO 문자열인 경우 Date로 파싱하여 duration 계산
+    const startDate = typeof startTime === 'string' ? new Date(startTime) : startTime;
+    const endDate = typeof endTime === 'string' ? new Date(endTime) : endTime;
+    const durationSeconds = Math.floor((endDate - startDate) / 1000);
+
     const response = await api.post('/worktime/records', {
       start_time: startTime,
       end_time: endTime,
-      duration_seconds: Math.floor((endTime - startTime) / 1000),
+      duration_seconds: durationSeconds,
       location: {
         latitude: location.latitude,
         longitude: location.longitude,
@@ -363,6 +368,41 @@ export const worktimeAPI = {
   // 근무 서비스 상태 확인
   checkHealth: async () => {
     const response = await api.get('/worktime/health');
+    return response.data;
+  },
+};
+
+// 지원 기관 API
+export const supportCenterAPI = {
+  // 지원 기관 검색
+  searchCenters: async (query) => {
+    const response = await api.post('/support/api/search', query);
+    return response.data;
+  },
+
+  // 주변 지원 기관 조회
+  getNearby: async (latitude, longitude, radiusKm = 20, centerType = null) => {
+    const params = new URLSearchParams({
+      latitude: latitude.toString(),
+      longitude: longitude.toString(),
+      radius_km: radiusKm.toString(),
+    });
+    if (centerType) {
+      params.append('center_type', centerType);
+    }
+    const response = await api.get(`/support/api/nearby?${params.toString()}`);
+    return response.data;
+  },
+
+  // 지원 기관 상세 조회
+  getCenterById: async (centerId) => {
+    const response = await api.get(`/support/api/centers/${centerId}`);
+    return response.data;
+  },
+
+  // 지원 기관 서비스 상태 확인
+  checkHealth: async () => {
+    const response = await api.get('/support/health');
     return response.data;
   },
 };

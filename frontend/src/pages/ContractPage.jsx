@@ -92,7 +92,7 @@ export default function ContractPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <MobileHeader title="근로계약서 분석" showBack={false} />
+      <MobileHeader title="새 계약서 분석" showBack={true} />
 
       {/* 메인 컨텐츠 */}
       <main className="max-w-md mx-auto px-4 pt-20 pb-8">
@@ -389,10 +389,10 @@ export default function ContractPage() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => {
-                    // TODO: PDF 내보내기 기능 구현
                     alert('PDF 내보내기 기능은 준비 중입니다.');
                   }}
                   className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-3 rounded-xl transition-colors"
+                  title="향후 업데이트 예정"
                 >
                   PDF 내보내기
                 </button>
@@ -419,13 +419,10 @@ export default function ContractPage() {
               </div>
 
               <button
-                onClick={() => {
-                  setFile(null);
-                  setResult(null);
-                }}
+                onClick={() => navigate('/contract')}
                 className="w-full mt-3 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-3 rounded-xl transition-colors"
               >
-                새 계약서 분석
+                분석 내역 보기
               </button>
             </div>
           </div>

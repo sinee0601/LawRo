@@ -79,11 +79,6 @@ uvicorn app.main:app --reload
 
 Server will be available at: http://localhost:8000
 
-### Run with Docker
-
-```bash
-docker-compose up --build
-```
 
 ## API Endpoints
 
