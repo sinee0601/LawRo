@@ -93,3 +93,16 @@ class SessionStatsResponse(BaseModel):
     max_sessions: int
     session_timeout_minutes: float
     storage_backend: str
+
+
+# Models for Session History List
+class ChatSessionInfo(BaseModel):
+    """Brief information about a single chat session."""
+    session_id: str
+    user_id: str
+    created_at: datetime
+    title: str = Field(..., description="A title for the session, e.g., the first user message.")
+
+class SessionListResponse(BaseModel):
+    """Response model for listing all chat sessions for a user."""
+    sessions: List[ChatSessionInfo]

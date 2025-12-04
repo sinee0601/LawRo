@@ -54,7 +54,7 @@ class Settings(BaseSettings):
     CHAT_MAX_MESSAGES: int = 50
     CHAT_SESSION_TIMEOUT: int = 300  # 5 minutes
     CHAT_RETRIEVAL_K: int = 2
-    CHAT_RETRIEVAL_SCORE_THRESHOLD: float = 0.5  # Similarity threshold
+    CHAT_RETRIEVAL_SCORE_THRESHOLD: float = 0.3  # Similarity threshold
     CHAT_LLM_MODEL: str = "solar-pro2"  # solar-mini, solar-pro, solar-pro2, solar-max
     CHAT_EMBEDDING_MODEL: str = "solar-embedding-1-large-query"
     CHAT_MAX_RETRIES: int = 3  # API retry count

@@ -158,25 +158,57 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
 
   // 현재 위치로 이동
   const moveToCurrentLocation = () => {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          if (mapInstance.current) {
-            mapInstance.current.setCenter(new window.naver.maps.LatLng(lat, lng));
-            mapInstance.current.setZoom(14);
-          }
-        },
-        (err) => {
-          console.error('위치 조회 오류:', err);
-          setError('현재 위치를 가져올 수 없습니다');
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+    // HTTP 환경 체크
+    const isSecureContext = window.isSecureContext;
+
+    if (!isSecureContext && window.location.protocol === 'http:') {
+      alert(
+        '⚠️ 위치 정보 사용 불가\n\n' +
+        '현재 HTTP 연결을 사용 중입니다.\n' +
+        '위치 정보를 사용하려면 HTTPS 연결이 필요합니다.\n\n' +
+        '해결 방법:\n' +
+        '1. localhost로 접속\n' +
+        '2. HTTPS 환경 사용 (ngrok 등)'
       );
-    } else {
-      setError('이 브라우저는 위치 정보를 지원하지 않습니다');
+      return;
     }
+
+    if (!('geolocation' in navigator)) {
+      alert('❌ 이 브라우저는 위치 정보를 지원하지 않습니다.');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        if (mapInstance.current) {
+          mapInstance.current.setCenter(new window.naver.maps.LatLng(lat, lng));
+          mapInstance.current.setZoom(14);
+        }
+      },
+      (err) => {
+        let message = '현재 위치를 가져올 수 없습니다.\n\n';
+
+        switch (err.code) {
+          case 1: // PERMISSION_DENIED
+            message += '원인: 위치 권한이 거부되었습니다.\n\n해결: 브라우저 설정에서 위치 권한을 허용해주세요.';
+            break;
+          case 2: // POSITION_UNAVAILABLE
+            message += '원인: 위치 정보를 사용할 수 없습니다.\n\n해결: GPS가 켜져 있는지 확인하거나 잠시 후 다시 시도해주세요.';
+            break;
+          case 3: // TIMEOUT
+            message += '원인: 위치 조회 시간이 초과되었습니다.\n\n해결: 네트워크 연결을 확인하고 다시 시도해주세요.';
+            break;
+          default:
+            message += `오류 코드: ${err.code}`;
+        }
+
+        alert(message);
+        console.error('Geolocation error:', err);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+    );
   };
 
   if (error) {

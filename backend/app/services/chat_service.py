@@ -184,7 +184,8 @@ class ChatService:
             self.vectorstore = Chroma(
                 persist_directory=chroma_path,
                 embedding_function=self.embedding,
-                collection_name=settings.CHROMA_COLLECTION_NAME
+                collection_name=settings.CHROMA_COLLECTION_NAME,
+                collection_metadata={"hnsw:space": "cosine"}  # Use cosine similarity
             )
 
             # Hybrid retriever with similarity score threshold
@@ -392,7 +393,7 @@ class ChatService:
             default_prompt = """[역할] 법률 전문가로서 사용자에게 법률 상담을 제공합니다.
 
 [지침]
-- 제공된 문서 내용을 바탕으로 간결하고 명확한 답변을 생성하세요
+- 임베딩 문서 내용을 바탕으로 100자 내로 간결하고 명확한 답변을 생성하세요
 - 문서 내용을 직접 인용하지 말고 자연스럽게 풀어서 설명하세요
 - 법률과 관련된 질문에만 답변하세요
 - 답을 모르거나 확실하지 않으면 솔직하게 모른다고 하세요
@@ -503,7 +504,7 @@ class ChatService:
                 if self.retriever and not custom_prompt:
                     try:
                         rag_start = time.time()
-                        docs = self.retriever.get_relevant_documents(message)
+                        docs = await self.retriever.ainvoke(message)
                         context = "\n\n".join([doc.page_content for doc in docs])
                         rag_latency = time.time() - rag_start
 
@@ -583,26 +584,76 @@ class ChatService:
 
         return []
 
-    async def clear_chat_history(self, session_id: str) -> bool:
-        """Clear chat history"""
+    async def delete_session(self, session_id: str) -> bool:
+        """Deletes a chat session from memory and Firestore."""
         with self._session_lock:
+            session_found = False
             if session_id in self._sessions:
-                self._sessions[session_id].messages = []
+                del self._sessions[session_id]
+                session_found = True
 
-                # Clear from Firestore
-                if self.use_firestore:
-                    try:
-                        session_ref = self.db.collection(Collections.CHAT_SESSIONS).document(session_id)
-                        session_ref.update({"messages": []})
-                    except Exception as e:
-                        logger.error(f"Failed to clear Firestore messages: {e}")
-
-                return True
-            return False
+            # Also delete from Firestore
+            if self.use_firestore:
+                try:
+                    session_ref = self.db.collection(Collections.CHAT_SESSIONS).document(session_id)
+                    doc = session_ref.get()
+                    if doc.exists:
+                        session_ref.delete()
+                        session_found = True
+                except Exception as e:
+                    logger.error(f"Failed to delete session {session_id} from Firestore: {e}")
+                    # We still return True if it was deleted from memory, 
+                    # but the error is logged.
+            
+            return session_found
 
     async def create_new_session(self, user_id: Optional[str] = None) -> str:
         """Create new session"""
         return self._get_or_create_session(user_id=user_id)
+
+    async def list_sessions_for_user(self, user_id: str) -> List[Dict]:
+        """List all chat sessions for a given user from Firestore."""
+        if not self.use_firestore:
+            logger.warning("Cannot list sessions: Firestore is not enabled.")
+            return []
+
+        try:
+            sessions_ref = self.db.collection(Collections.CHAT_SESSIONS)
+            query = sessions_ref.where("user_id", "==", user_id).order_by(
+                "created_at", direction="DESCENDING"
+            )
+            
+            sessions = []
+            docs = query.stream()
+            if not docs:
+                logger.info(f"No sessions found for user {user_id}")
+                return []
+
+            for doc in docs:
+                session_data = doc.to_dict()
+                
+                # Find the first user message to use as a title
+                title = "새로운 채팅"  # Default title
+                messages = session_data.get("messages", [])
+                if messages:
+                    # Find first user message, not just first message
+                    for msg in messages:
+                        if msg.get("role") == "user" and msg.get("content"):
+                            title = msg["content"][:50]  # Use first 50 chars
+                            break
+                
+                sessions.append({
+                    "session_id": doc.id,
+                    "user_id": session_data.get("user_id"),
+                    "created_at": datetime.fromtimestamp(session_data.get("created_at", time.time())),
+                    "title": title,
+                })
+            
+            logger.info(f"Found {len(sessions)} sessions for user {user_id}")
+            return sessions
+        except Exception as e:
+            logger.error(f"Failed to list sessions for user {user_id}: {e}", exc_info=True)
+            return []
 
     def get_session_stats(self) -> Dict:
         """Get session statistics"""

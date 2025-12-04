@@ -217,6 +217,16 @@ async def get_stats():
     }
 
 
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "app.main:app",
+        host=settings.HOST,
+        port=settings.PORT,
+        reload=settings.DEBUG,
+    )
 if __name__ == "__main__":
     import uvicorn
 

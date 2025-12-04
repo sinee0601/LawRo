@@ -11,6 +11,9 @@ CLAUDE.md
 GEMINI.md
 env.example
 
+.claude
+storage
+
 *.png
 *.jpg
 *.jpeg
@@ -52,7 +55,7 @@ backend/config.env
 chatbot/.env*
 
 # 데이터베이스 및 저장소
-storage/
+#storage/
 */chroma_db/
 */storage/
 *.db

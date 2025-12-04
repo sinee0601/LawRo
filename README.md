@@ -1,223 +1,137 @@
-# LawRo 마이크로서비스 아키텍처
+# LawRo - 외국인 노동자를 위한 AI 법률 상담 플랫폼
 
-LawRo는 법률 상담 및 계약서 분석을 위한 마이크로서비스 기반 애플리케이션입니다.
+**LawRo**는 대한민국에 거주하는 외국인 노동자들이 겪는 법률적 어려움을 해소하기 위해 설계된 AI 기반 법률 상담 및 계약서 분석 플랫폼입니다. RAG(검색 증강 생성) 기반 챗봇을 통해 법률 및 노동 관련 질문에 답변하고, OCR 기술을 활용하여 근로 계약서를 분석하고 위험 요소를 알려주는 기능을 제공합니다.
 
-## 아키텍처 개요
+## ✨ 주요 기능
+
+- **🤖 AI 법률 상담 챗봇:** Upstage Solar LLM과 RAG 기술을 활용하여, 내장된 법률 문서를 기반으로 정확하고 신뢰도 높은 법률 상담을 제공합니다.
+- **📄 계약서 분석:** 스마트폰으로 촬영한 계약서 이미지를 업로드하면, OCR로 텍스트를 추출하고 LLM이 핵심 내용을 요약 및 분석하여 법률적 위험 요소를 알려줍니다.
+- **🗂️ 채팅 기록 관리:** Gemini 웹 버전과 같이, 이전 대화 기록이 세션별로 저장되어 언제든지 지난 상담 내용을 확인하고 이어서 대화를 나눌 수 있습니다.
+- **🌐 다국어 지원:** 다양한 국적의 사용자를 위해 다국어 질문 및 답변을 지원합니다.
+
+## 🛠️ 기술 스택
+
+| 구분 | 기술 | 설명 |
+|---|---|---|
+| **Frontend** | React, Vite, Zustand, Tailwind CSS | 사용자 인터페이스 및 상태 관리 |
+| **Backend** | FastAPI (Python) | 통합 API 서버 |
+| **AI** | Upstage Solar, Upstage Embeddings | LLM 및 임베딩 모델 |
+| **Database**| Firestore, ChromaDB | 사용자/세션 데이터 및 벡터DB |
+| **Deployment**| Nginx, uvicorn | 리버스 프록시 및 ASGI 서버 |
+
+<br/>
+
+## 📂 프로젝트 구조
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   main-docker   │    │ chatbot-docker  │    │contract_parser  |
-│   (Port 8000)   │────│   (Port 8001)   │    │   (Port 8002)   │
-│                 │    │                 │    │                 │
-│ - 사용자 관리    │    │ - 챗봇 서비스    │    │ - 계약서 파싱    │
-│ - 인증/JWT      │    │ - RAG 체인      │    │ - OCR 처리      │
-│ - API 게이트웨이 │    │ - 세션 관리      │    │ - 문서 분석     │
-│ - Firestore DB  │    │ - LLM 통합      │    │ - S3 연동       │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-        │                        │                        │
-        └────────────────────────┼────────────────────────┘
-                                 │
-                    ┌─────────────────┐
-                    │  Docker Network │
-                    │  (lawro-network)│
-                    └─────────────────┘
+/
+├── backend/              # FastAPI 통합 백엔드
+│   ├── app/              # 메인 애플리케이션 로직
+│   │   ├── routers/      # API 엔드포인트 라우터
+│   │   ├── services/     # 비즈니스 로직 (챗봇, 계약서 분석 등)
+│   │   └── config.py     # 애플리케이션 설정
+│   ├── data/
+│   │   └── chroma/       # ChromaDB 벡터 데이터베이스
+│   └── embed_data.py     # 데이터 임베딩 스크립트
+│
+├── frontend/             # React 프론트엔드
+│   ├── src/
+│   │   ├── pages/        # 페이지 컴포넌트 (ChatPage, ContractPage 등)
+│   │   ├── components/   # 재사용 가능한 컴포넌트
+│   │   ├── store/        # Zustand 상태 관리
+│   │   └── services/     # API 클라이언트
+│   └── vite.config.js    # Vite 설정
+│
+└── storage/
+    └── data/
+        ├── raw/          # 원본 PDF 문서 저장 폴더
+        ├── processed/    # 1차 가공된 JSON 파일 저장 폴더
+        └── data_processing.py # PDF 전처리 스크립트
 ```
 
-## 서비스 구성
+## 🚀 설치 및 실행 방법
 
-### 1. Main API Service (Port 8000)
-- **역할**: 메인 API 게이트웨이, 사용자 관리, 인증
-- **기술스택**: FastAPI, Firebase Admin SDK, JWT
-- **주요 기능**:
-  - 회원가입/로그인
-  - JWT 토큰 인증
-  - 챗봇 서비스 프록시
-  - 계약서 분석 서비스 프록시
-  - Firestore를 통한 사용자 데이터 관리
-
-### 2. Chatbot Service (Port 8001)
-- **역할**: 법률 상담 챗봇
-- **기술스택**: FastAPI, LangChain, Upstage API, ChromaDB
-- **주요 기능**:
-  - RAG 기반 법률 상담
-  - 채팅 세션 관리
-  - 벡터 데이터베이스 검색
-  - 다국어 지원
-
-### 3. Contract Analyzer Service (Port 8002)
-- **역할**: 계약서 분석 및 처리
-- **기술스택**: FastAPI, OCR, LLM, AWS S3
-- **주요 기능**:
-  - 계약서 업로드 및 OCR 처리
-  - 계약서 분석 및 요약
-  - 위험요소 탐지
-  - 파일 저장 관리
-
-## 설치 및 실행
-
-### 필수 조건
-- Docker
-- Docker Compose
+### 사전 요구 사항
 - Python 3.11+
+- Node.js 18+
+- (배포 시) Nginx
 
-### 환경 설정
-
-1. **환경 변수 파일 생성**
+### 1. 프로젝트 클론
 ```bash
-cp .env.example .env
+git clone https://github.com/your-repository/LawRo.git
+cd LawRo
 ```
 
-2. **환경 변수 설정**
+### 2. 백엔드 설정
+1.  **가상 환경 생성 및 활성화 (권장)**
+    ```bash
+    python -m venv venv
+    source venv/Scripts/activate  # Windows
+    # source venv/bin/activate    # macOS/Linux
+    ```
+2.  **필요 패키지 설치**
+    ```bash
+    pip install -r backend/requirements.txt
+    ```
+3.  **`.env` 파일 생성**
+    -   프로젝트 최상위 폴더(`LawRo/`)에 `.env` 파일을 생성합니다.
+    -   아래 내용을 복사하여 붙여넣고, `UPSTAGE_API_KEY` 등 본인의 환경에 맞게 값을 수정합니다. Firebase 관련 키도 필요합니다.
+      ```dotenv
+      # .env
+      UPSTAGE_API_KEY="up_..."
+      FIREBASE_CREDENTIALS_PATH="firebase-credentials.json"
+      # ... 기타 필요한 설정값들 ...
+      CHAT_RETRIEVAL_SCORE_THRESHOLD=0.4
+      ```
+4.  **Firebase 인증 설정**
+    -   Firebase 프로젝트에서 발급받은 서비스 계정 키 파일의 이름을 `firebase-credentials.json`으로 변경하여 프로젝트 최상위 폴더에 위치시킵니다.
+
+### 3. 프론트엔드 설정
 ```bash
-# .env 파일에서 다음 값들을 설정하세요:
-JWT_SECRET_KEY=your-jwt-secret-key
-UPSTAGE_API_KEY=your-upstage-api-key
-FIREBASE_PROJECT_ID=your-firebase-project-id
-# ... 기타 Firebase 및 AWS 설정
-```
-
-3. **Firebase 서비스 계정 키 설정**
-```bash
-mkdir firebase-credentials
-# firebase-service-account.json 파일을 firebase-credentials/ 디렉토리에 배치
-```
-
-### Docker Compose로 실행
-
-```bash
-# 모든 서비스 빌드 및 실행
-docker-compose up --build
-
-# 백그라운드 실행
-docker-compose up -d --build
-
-# 특정 서비스만 실행
-docker-compose up main-api
-docker-compose up chatbot
-docker-compose up contract
-```
 cd frontend
 npm install
-npm start
-
-### 개별 서비스 실행
-
-#### Main API Service
-```bash
-cd main-docker
-pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-#### Chatbot Service
-```bash
-cd chatbot-docker
-pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8001 --reload
-```
+### 4. 데이터 준비 및 임베딩 (매우 중요!)
+챗봇이 법률 문서를 참고하여 답변하게 하려면, 로컬 벡터 데이터베이스(ChromaDB)를 구축해야 합니다.
 
-#### Contract Analyzer Service
-```bash
-cd contract_analyzer
-pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8002 --reload
-```
+1.  **PDF 준비:**
+    -   챗봇의 지식 기반이 될 PDF 법률 문서들을 `storage/data/raw` 폴더에 넣습니다.
 
-## API 엔드포인트
+2.  **PDF 전처리 (PDF -> JSON):**
+    -   프로젝트 최상위 폴더에서 아래 명령어를 실행합니다. `raw` 폴더의 모든 PDF가 `processed` 폴더에 JSON 파일로 변환됩니다.
+    ```bash
+    python storage/data/data_processing.py
+    ```
 
-### Main API (Port 8000)
+3.  **데이터 임베딩 (JSON -> ChromaDB):**
+    -   전처리가 완료되면, 아래 명령어를 실행하여 JSON 파일들을 임베딩하고 ChromaDB에 저장합니다.
+    ```bash
+    python backend/embed_data.py
+    ```
 
-#### 인증
-- `POST /auth/signup` - 회원가입
-- `POST /auth/login` - 로그인
-- `GET /auth/profile` - 프로필 조회
+### 5. 애플리케이션 실행 (개발 모드)
+두 개의 터미널을 열고 각각 다음을 실행합니다.
 
-#### 챗봇
-- `POST /chat` - 챗봇 대화
-- `POST /chat/new-session` - 새 세션 생성
-- `GET /chat/history/{session_id}` - 채팅 히스토리
+-   **터미널 1 (백엔드):**
+    ```bash
+    uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+    ```
+-   **터미널 2 (프론트엔드):**
+    ```bash
+    cd frontend
+    npm run dev
+    ```
+-   이제 웹 브라우저에서 `http://localhost:5173`으로 접속합니다.
 
-#### 계약서 분석
-- `POST /contract/analyze` - 계약서 분석
-- `POST /contract/upload` - 계약서 업로드
-- `GET /contract/history` - 분석 히스토리
+##  배포 (Nginx 리버스 프록시)
 
-#### 시스템
-- `GET /health` - 헬스 체크
-- `GET /stats` - 시스템 통계
+개발 환경을 외부 인터넷에 공개하고 HTTPS를 적용하려면 Nginx를 리버스 프록시로 사용하는 것이 가장 좋습니다.
 
-### 직접 서비스 접근 (개발용)
-- Chatbot Service: http://localhost:8001/docs
-- Contract Analyzer: http://localhost:8002/docs
-
-## 모니터링
-
-### 헬스 체크
-```bash
-# 전체 시스템 상태
-curl http://localhost:8000/health
-
-# 개별 서비스 상태
-curl http://localhost:8001/health  # Chatbot
-curl http://localhost:8002/health  # Contract Analyzer
-```
-
-### 로그 확인
-```bash
-# 모든 서비스 로그
-docker-compose logs -f
-
-# 특정 서비스 로그
-docker-compose logs -f main-api
-docker-compose logs -f chatbot
-docker-compose logs -f contract
-```
-
-## 개발 환경
-
-### 서비스 간 통신 테스트
-```bash
-# 챗봇 서비스 직접 테스트
-curl -X POST http://localhost:8001/chat/send \
-  -H "Content-Type: application/json" \
-  -d '{"message": "계약서 관련 질문입니다"}'
-
-# 계약서 분석 서비스 직접 테스트
-curl -X POST http://localhost:8002/api/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"file_path": "test.pdf"}'
-```
-
-### 데이터베이스 관리
-- **Firestore**: Firebase Console에서 관리
-- **ChromaDB**: `chatbot-docker/chroma_db/` 디렉토리에 저장
-- **업로드 파일**: `contract_analyzer/uploads/` 디렉토리에 저장
-
-## 배포
-
-### 프로덕션 배포
-```bash
-# 프로덕션 환경 변수 설정
-export ENVIRONMENT=production
-export DEBUG=false
-
-# Docker Compose 프로덕션 실행
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-```
-
-## 문제 해결
-
-### 공통 문제
-1. **포트 충돌**: 8000, 8001, 8002 포트가 사용 중인지 확인
-2. **환경 변수**: .env 파일 설정 확인
-3. **Firebase 인증**: 서비스 계정 키 파일 경로 확인
-4. **네트워크**: Docker 네트워크 `lawro-network` 상태 확인
-
-### 서비스별 문제
-- **Main API**: Firestore 연결 및 JWT 설정 확인
-- **Chatbot**: UPSTAGE_API_KEY 및 ChromaDB 파일 확인
-- **Contract**: AWS 자격증명 및 S3 버킷 설정 확인
+1.  **Nginx 설치 및 SSL 인증서 발급:** `win-acme` 등의 ACME 클라이언트를 사용하여 Let's Encrypt 인증서를 발급받습니다.
+2.  **`nginx.conf` 설정:** Nginx가 443(HTTPS) 포트로 들어오는 요청을 받아, 경로에 따라 프론트엔드(`localhost:5173`) 또는 백엔드(`localhost:8000`)로 전달하도록 설정합니다.
+3.  **포트 포워딩:** 공유기에서 외부 80, 443 포트를 Nginx가 실행되는 PC로 포워딩합니다.
+4.  **DNS 설정:** 구매한 도메인의 A 레코드를 서버의 공인 IP 주소로 향하게 합니다.
 
 ## 라이선스
 이 프로젝트는 MIT 라이선스 하에 있습니다.
-

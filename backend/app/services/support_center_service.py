@@ -25,7 +25,7 @@ class SupportCenterService:
     """지원 기관 서비스"""
 
     def __init__(self):
-        self.db = get_firebase().get_firestore()
+        self.db = get_firebase().db
         self.collection_name = "support_centers"
 
     def calculate_distance(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:

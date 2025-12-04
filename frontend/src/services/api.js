@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 // Axios 인스턴스 생성
 const api = axios.create({
@@ -214,6 +214,12 @@ export const chatAPI = {
   // 세션 통계 조회 (new)
   getSessionStats: async () => {
     const response = await api.get('/chat/stats');
+    return response.data;
+  },
+
+  // 모든 채팅 세션 목록 조회
+  listSessions: async () => {
+    const response = await api.get('/chat/sessions');
     return response.data;
   },
 };

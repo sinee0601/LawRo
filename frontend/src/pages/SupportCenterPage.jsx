@@ -48,7 +48,9 @@ export default function SupportCenterPage() {
 
   // 현재 위치 가져오기
   useEffect(() => {
-    if ('geolocation' in navigator) {
+    const isSecureContext = window.isSecureContext;
+
+    if ('geolocation' in navigator && isSecureContext) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const location = {
@@ -60,12 +62,16 @@ export default function SupportCenterPage() {
         },
         (err) => {
           console.error('위치 조회 오류:', err);
-          // 위치 없이도 검색 가능
+          // 기본 위치 사용 안내
+          setError('위치 정보를 가져올 수 없어 서울 기준으로 표시합니다.');
           fetchCenters(null);
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
       );
     } else {
+      if (!isSecureContext && window.location.protocol === 'http:') {
+        setError('⚠️ HTTP 환경에서는 위치 정보를 사용할 수 없습니다. HTTPS 연결을 사용해주세요.');
+      }
       fetchCenters(null);
     }
   }, []);

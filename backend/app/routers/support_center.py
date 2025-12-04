@@ -99,14 +99,33 @@ async def get_nearby_centers(
         center_type=center_type
     )
 
+    service = None
     try:
         service = get_support_center_service()
         result = await service.search_centers(query)
         return result
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"주변 지원 기관 검색 오류: {str(e)}"
+        import traceback
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"❌ 지원 기관 검색 오류: {str(e)}")
+        logger.error(traceback.format_exc())
+
+        # 에러 발생 시 빈 결과 반환 (500 에러 대신)
+        from ..models.support_center import SupportCenterResponse
+
+        # 긴급 연락처는 service 없이도 제공 가능
+        emergency_contacts = []
+        if service:
+            try:
+                emergency_contacts = service._get_emergency_contacts()
+            except:
+                pass
+
+        return SupportCenterResponse(
+            centers=[],
+            total=0,
+            emergency_contacts=emergency_contacts
         )
 
 
