@@ -11,6 +11,7 @@ export default function ChatPage() {
     sessions,
     currentSessionId,
     sendMessage,
+    createSession,
     isLoading,
     isHistoryLoading,
   } = useChatStore();
@@ -26,6 +27,60 @@ export default function ChatPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // 계약서 분석 결과가 있으면 자동으로 챗봇에 전송
+  useEffect(() => {
+    const handleContractAnalysis = async () => {
+      const contractDataStr = localStorage.getItem('contractAnalysisData');
+      if (!contractDataStr) return;
+
+      try {
+        const contractData = JSON.parse(contractDataStr);
+
+        // localStorage에서 데이터 먼저 삭제 (중복 전송 방지)
+        localStorage.removeItem('contractAnalysisData');
+
+        // 새로운 세션 생성
+        const newSessionId = await createSession();
+        console.log('새 계약서 상담 세션 생성:', newSessionId);
+
+        // 분석 결과를 기반으로 간결한 메시지 생성
+        const structuredResult = contractData.structuredResult || {};
+        const keyTerms = structuredResult.key_terms?.slice(0, 3) || []; // 최대 3개만
+
+        let message = `📋 **계약서 분석 상담**\n\n`;
+        message += `**[계약 정보]**\n`;
+        message += `• 유형: ${structuredResult.contract_type || '미확인'}\n`;
+        message += `• 기간: ${structuredResult.effective_date || '미확인'} ~ ${structuredResult.termination_date || '미확인'}\n`;
+
+        if (keyTerms.length > 0) {
+          message += `• 주요 조건:\n`;
+          keyTerms.forEach(term => {
+            message += `  - ${term}\n`;
+          });
+        }
+
+        if (contractData.chatbotAnalysis) {
+          message += `\n**[AI 분석 요약]**\n`;
+          // AI 분석 내용을 200자로 제한
+          const analysisPreview = contractData.chatbotAnalysis.length > 200
+            ? contractData.chatbotAnalysis.substring(0, 200) + '...'
+            : contractData.chatbotAnalysis;
+          message += `${analysisPreview}\n`;
+        }
+
+        message += `\n위 계약서의 문제점과 주의사항을 자세히 설명해주세요.`;
+
+        // 새 세션에 메시지 전송
+        await sendMessage(message);
+      } catch (error) {
+        console.error('Failed to process contract analysis data:', error);
+        localStorage.removeItem('contractAnalysisData');
+      }
+    };
+
+    handleContractAnalysis();
+  }, [createSession, sendMessage]);
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -48,7 +103,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-100">
+    <div className="h-screen flex flex-col bg-gray-100 overflow-x-hidden">
       {/* Mobile Header with Menu Button */}
       <div className="fixed top-0 left-0 right-0 h-14 bg-white border-b border-gray-200 z-50 flex items-center px-4">
         <button
@@ -81,10 +136,10 @@ export default function ChatPage() {
         </div>
 
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col relative bg-white">
+        <div className="flex-1 flex flex-col relative bg-white overflow-x-hidden">
           {/* Message List */}
-          <div className="flex-1 overflow-y-auto pb-32 md:pb-20">
-            <div className="max-w-2xl mx-auto px-4 py-6">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden pb-32 md:pb-20">
+            <div className="max-w-2xl mx-auto px-4 py-6 overflow-x-hidden">
               {isHistoryLoading ? (
                  <div className="flex items-center justify-center h-full text-gray-500">
                    <p>대화 기록을 불러오는 중...</p>
@@ -106,12 +161,19 @@ export default function ChatPage() {
                           <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                         </div>
                       )}
-                      <div className={`max-w-[85%] sm:max-w-[75%] px-4 py-3 rounded-2xl break-words ${
+                      <div className={`max-w-[85%] sm:max-w-[75%] px-4 py-3 rounded-2xl break-words overflow-hidden ${
                         msg.role === 'user'
                           ? 'bg-blue-600 text-white rounded-br-lg'
                           : 'bg-white shadow-sm border border-gray-200 rounded-bl-lg'
-                      }`}>
-                        <div className="prose prose-sm max-w-none text-gray-800 [&_p]:my-1">
+                      }`}
+                      style={{
+                        overflowWrap: 'break-word',
+                        wordBreak: 'break-word',
+                        wordWrap: 'break-word'
+                      }}>
+                        <div className={`prose prose-sm max-w-none ${
+                          msg.role === 'user' ? 'text-white' : 'text-gray-800'
+                        } [&_p]:my-1 [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_code]:break-words [&_*]:max-w-full [&_a]:break-all`}>
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
                         </div>
                       </div>
