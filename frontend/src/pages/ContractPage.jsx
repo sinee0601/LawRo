@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { contractAPI } from '../services/api';
-import { Camera, Upload, FileText, Loader, AlertCircle, CheckCircle } from 'lucide-react';
+import { Camera, Upload, FileText, Loader, AlertCircle, CheckCircle, Download } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import MobileHeader from '../components/MobileHeader';
+import { jsPDF } from 'jspdf';
 
 export default function ContractPage() {
   const navigate = useNavigate();
@@ -118,6 +119,18 @@ export default function ContractPage() {
     setPreviewUrl(null);
     setResult(null);
     setError(null);
+  };
+
+  const exportToPDF = () => {
+    if (!result) return;
+
+    try {
+      // 브라우저 인쇄 다이얼로그 열기 (한글 지원)
+      window.print();
+    } catch (error) {
+      console.error('PDF export failed:', error);
+      alert('PDF 내보내기에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
@@ -237,21 +250,225 @@ export default function ContractPage() {
                 <h2 className="text-lg font-bold text-gray-900">분석 결과</h2>
               </div>
 
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-gray-600 mb-6">
                 분석 날짜: {new Date().toLocaleDateString('ko-KR')}
               </p>
 
-              {/* ... (result display code remains the same) ... */}
-              
+              {/* 계약서 기본 정보 */}
+              {result.structured_result && (
+                <div className="space-y-6 mb-6">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-3">📋 계약서 정보</h3>
+                    <div className="space-y-2 text-sm bg-gray-50 p-4 rounded-xl">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">계약 유형:</span>
+                        <span className="font-medium text-gray-900">
+                          {result.structured_result.contract_type || '미확인'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">계약 기간:</span>
+                        <span className="font-medium text-gray-900 text-xs">
+                          {result.structured_result.effective_date || '미명시'} ~{' '}
+                          {result.structured_result.termination_date || '미명시'}
+                        </span>
+                      </div>
+                      {result.structured_result.parties && (
+                        <>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">갑(사용자):</span>
+                            <span className="font-medium text-gray-900">
+                              {result.structured_result.parties.party_a || '미명시'}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">을(근로자):</span>
+                            <span className="font-medium text-gray-900">
+                              {result.structured_result.parties.party_b || '미명시'}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                      {result.structured_result.payment_terms && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">급여:</span>
+                          <span className="font-medium text-gray-900">
+                            {result.structured_result.payment_terms}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 주요 조건 */}
+                  {result.structured_result.key_terms && result.structured_result.key_terms.length > 0 && (
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-3">✅ 주요 계약 조건</h3>
+                      <div className="space-y-2">
+                        {result.structured_result.key_terms.map((term, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-2 p-3 bg-blue-50 rounded-lg"
+                          >
+                            <CheckCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                            <p className="text-sm text-gray-900">{term}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 위험 요소 */}
+                  {result.structured_result.risks && result.structured_result.risks.length > 0 && (
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-3">⚠️ 법률적 위험 요소</h3>
+                      <div className="space-y-2">
+                        {result.structured_result.risks.map((risk, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-2 p-3 bg-red-50 border-l-4 border-red-500 rounded-lg"
+                          >
+                            <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
+                            <p className="text-sm text-gray-900">{risk}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 챗봇 상세 분석 */}
+                  {result.chatbot_analysis?.analysis && (
+                    <div>
+                      {(() => {
+                        const analysisText = result.chatbot_analysis.analysis;
+                        try {
+                          // Try to parse as JSON
+                          const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
+                          if (jsonMatch) {
+                            const parsed = JSON.parse(jsonMatch[0]);
+
+                            return (
+                              <div className="space-y-4">
+                                {/* Score Section */}
+                                {parsed.totalScore && (
+                                  <div className="p-4 bg-gradient-to-r from-primary-50 to-primary-100 rounded-xl">
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-sm font-semibold text-gray-900">종합 안전도</span>
+                                      <div className="flex items-center gap-2">
+                                        <div className="text-2xl font-bold text-primary-600">{parsed.totalScore}</div>
+                                        <span className="text-xs text-gray-600">/100</span>
+                                      </div>
+                                    </div>
+                                    <div className="mt-2 w-full bg-gray-300 rounded-full h-2">
+                                      <div
+                                        className="bg-primary-600 h-2 rounded-full transition-all"
+                                        style={{ width: `${Math.min(parsed.totalScore, 100)}%` }}
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Summary */}
+                                {parsed.summary && (
+                                  <div className="p-4 bg-blue-50 rounded-xl">
+                                    <h4 className="text-sm font-semibold text-gray-900 mb-2">📋 요약</h4>
+                                    <p className="text-sm text-gray-800 leading-relaxed">{parsed.summary}</p>
+                                  </div>
+                                )}
+
+                                {/* Aware (주의 사항) */}
+                                {parsed.aware && Array.isArray(parsed.aware) && parsed.aware.length > 0 && (
+                                  <div className="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-xl">
+                                    <h4 className="text-sm font-semibold text-gray-900 mb-3">⚠️ 주의 사항</h4>
+                                    <ul className="space-y-2">
+                                      {parsed.aware.map((item, idx) => (
+                                        <li key={idx} className="flex gap-2 text-sm text-gray-800">
+                                          <span className="flex-shrink-0 font-bold text-yellow-600">•</span>
+                                          <span>{item}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+
+                                {/* Highlights */}
+                                {parsed.highlights && Array.isArray(parsed.highlights) && parsed.highlights.length > 0 && (
+                                  <div className="p-4 bg-green-50 rounded-xl">
+                                    <h4 className="text-sm font-semibold text-gray-900 mb-3">✅ 긍정 요소</h4>
+                                    <ul className="space-y-2">
+                                      {parsed.highlights.map((item, idx) => (
+                                        <li key={idx} className="flex gap-2 text-sm text-gray-800">
+                                          <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                                          <span>{item}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+
+                                {/* Legal Interpretation */}
+                                {parsed.legalInterpretation && Array.isArray(parsed.legalInterpretation) && parsed.legalInterpretation.length > 0 && (
+                                  <div className="p-4 bg-purple-50 rounded-xl">
+                                    <h4 className="text-sm font-semibold text-gray-900 mb-3">⚖️ 법률 해석</h4>
+                                    <div className="space-y-3">
+                                      {parsed.legalInterpretation.map((item, idx) => (
+                                        <div key={idx} className="border-l-2 border-purple-400 pl-3">
+                                          <p className="text-xs font-semibold text-gray-900 mb-1">{item.issue}</p>
+                                          <p className="text-sm text-gray-800">{item.interpretation}</p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+                        } catch (e) {
+                          // If JSON parsing fails, show as plain text
+                        }
+
+                        // Fallback to plain text display
+                        return (
+                          <div className="p-4 bg-primary-50 rounded-xl">
+                            <h3 className="font-semibold text-gray-900 mb-2 text-sm">📋 법률 전문가 분석</h3>
+                            <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">
+                              {analysisText}
+                            </p>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  )}
+
+                  {/* OCR 추출 텍스트 (토글) */}
+                  {result.structured_result.extracted_text && (
+                    <div className="border border-gray-200 rounded-xl overflow-hidden">
+                      <button
+                        onClick={() => setShowExtractedText(!showExtractedText)}
+                        className="w-full px-4 py-3 bg-gray-100 hover:bg-gray-200 text-left font-medium text-gray-900 flex items-center justify-between transition-colors"
+                      >
+                        <span>추출된 원본 텍스트</span>
+                        <span className="text-gray-600">{showExtractedText ? '▲' : '▼'}</span>
+                      </button>
+                      {showExtractedText && (
+                        <div className="p-4 bg-white max-h-64 overflow-y-auto">
+                          <pre className="text-xs text-gray-700 whitespace-pre-wrap font-mono">
+                            {result.structured_result.extracted_text}
+                          </pre>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* 액션 버튼 */}
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <button
-                  onClick={() => {
-                    alert('PDF 내보내기 기능은 준비 중입니다.');
-                  }}
-                  className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-2.5 sm:py-3 px-2 rounded-xl transition-colors text-xs sm:text-sm"
-                  title="향후 업데이트 예정"
+                  onClick={exportToPDF}
+                  className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-2.5 sm:py-3 px-2 rounded-xl transition-colors text-xs sm:text-sm flex items-center justify-center gap-2"
                 >
+                  <Download className="w-4 h-4" />
                   PDF 내보내기
                 </button>
                 <button
@@ -275,13 +492,6 @@ export default function ContractPage() {
                   추가 상담하기
                 </button>
               </div>
-
-              <button
-                onClick={resetState}
-                className="w-full mt-2 sm:mt-3 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-2.5 sm:py-3 rounded-xl transition-colors text-xs sm:text-sm"
-              >
-                새로운 계약서 분석
-              </button>
             </div>
           </div>
         )}

@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { contractAPI } from '../services/api';
-import { Trash2, FileText, Calendar, AlertCircle, CheckCircle, X, Plus } from 'lucide-react';
+import { Trash2, FileText, Calendar, AlertCircle, CheckCircle, X, Download } from 'lucide-react';
 import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
+import html2pdf from 'html2pdf.js';
 
 export default function AnalysisHistoryPage() {
   const navigate = useNavigate();
@@ -64,6 +65,223 @@ export default function AnalysisHistoryPage() {
 
     localStorage.setItem('contractAnalysisData', JSON.stringify(contractData));
     navigate('/chat');
+  };
+
+  const exportToPDF = async (analysis) => {
+    if (!analysis) return;
+
+    try {
+      // 분석 데이터 추출
+      const analysisResult = analysis.analysis_result || {};
+      const chatbotAnalysis = analysis.chatbot_analysis?.analysis || '';
+
+      // 챗봇 분석 JSON 파싱 시도
+      let parsedChatbot = null;
+      try {
+        const jsonMatch = chatbotAnalysis.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          parsedChatbot = JSON.parse(jsonMatch[0]);
+        }
+      } catch (e) {
+        // JSON 파싱 실패 시 일반 텍스트로 처리
+      }
+
+      // PDF 콘텐츠 HTML 생성
+      const pdfContent = `
+        <div style="font-family: 'Malgun Gothic', sans-serif; padding: 40px; color: #1f2937;">
+          <h1 style="font-size: 28px; font-weight: bold; color: #1e40af; margin-bottom: 10px; border-bottom: 3px solid #1e40af; padding-bottom: 10px;">
+            계약서 분석 리포트
+          </h1>
+          <p style="font-size: 12px; color: #6b7280; margin-bottom: 30px;">
+            분석 일시: ${new Date(analysis.created_at).toLocaleString('ko-KR')}
+          </p>
+
+          <!-- 계약서 기본 정보 -->
+          <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 18px; font-weight: bold; color: #111827; margin-bottom: 15px;">
+              📋 계약서 정보
+            </h2>
+            <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px;">
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="padding: 8px 0; color: #6b7280; width: 30%;">계약 유형:</td>
+                  <td style="padding: 8px 0; font-weight: 600; color: #111827;">${analysisResult.contract_type || '미확인'}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #6b7280;">계약 기간:</td>
+                  <td style="padding: 8px 0; font-weight: 600; color: #111827;">${analysisResult.effective_date || '미명시'} ~ ${analysisResult.termination_date || '미명시'}</td>
+                </tr>
+                ${analysisResult.parties ? `
+                <tr>
+                  <td style="padding: 8px 0; color: #6b7280;">갑(사용자):</td>
+                  <td style="padding: 8px 0; font-weight: 600; color: #111827;">${analysisResult.parties.party_a || '미명시'}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #6b7280;">을(근로자):</td>
+                  <td style="padding: 8px 0; font-weight: 600; color: #111827;">${analysisResult.parties.party_b || '미명시'}</td>
+                </tr>
+                ` : ''}
+              </table>
+            </div>
+          </div>
+
+          <!-- 종합 안전도 -->
+          ${parsedChatbot?.totalScore ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 18px; font-weight: bold; color: #111827; margin-bottom: 15px;">
+              📊 종합 안전도
+            </h2>
+            <div style="background: linear-gradient(to right, #dbeafe, #bfdbfe); padding: 20px; border-radius: 8px;">
+              <div style="font-size: 36px; font-weight: bold; color: #1e40af; text-align: center;">
+                ${parsedChatbot.totalScore} / 100
+              </div>
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- 요약 -->
+          ${parsedChatbot?.summary ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 18px; font-weight: bold; color: #111827; margin-bottom: 15px;">
+              📋 요약
+            </h2>
+            <div style="background-color: #dbeafe; padding: 20px; border-radius: 8px;">
+              <p style="font-size: 14px; color: #1f2937; line-height: 1.6;">${parsedChatbot.summary}</p>
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- 주요 계약 조건 -->
+          ${analysisResult.key_terms && analysisResult.key_terms.length > 0 ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 18px; font-weight: bold; color: #111827; margin-bottom: 15px;">
+              ✅ 주요 계약 조건
+            </h2>
+            <div style="background-color: #dbeafe; padding: 20px; border-radius: 8px;">
+              ${analysisResult.key_terms.map(term => `
+                <div style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                  <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
+                  <span style="font-size: 14px; color: #1f2937;">${term}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- 긍정 요소 -->
+          ${parsedChatbot?.highlights && parsedChatbot.highlights.length > 0 ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 18px; font-weight: bold; color: #111827; margin-bottom: 15px;">
+              ✅ 긍정 요소
+            </h2>
+            <div style="background-color: #d1fae5; padding: 20px; border-radius: 8px;">
+              ${parsedChatbot.highlights.map(item => `
+                <div style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                  <span style="position: absolute; left: 0; color: #059669;">✓</span>
+                  <span style="font-size: 14px; color: #1f2937;">${item}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- 주의 사항 -->
+          ${parsedChatbot?.aware && parsedChatbot.aware.length > 0 ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 18px; font-weight: bold; color: #111827; margin-bottom: 15px;">
+              ⚠️ 주의 사항
+            </h2>
+            <div style="background-color: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+              ${parsedChatbot.aware.map(item => `
+                <div style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                  <span style="position: absolute; left: 0; color: #f59e0b;">•</span>
+                  <span style="font-size: 14px; color: #1f2937;">${item}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- 법률적 위험 요소 -->
+          ${analysisResult.risks && analysisResult.risks.length > 0 ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 18px; font-weight: bold; color: #111827; margin-bottom: 15px;">
+              ⚠️ 법률적 위험 요소
+            </h2>
+            <div style="background-color: #fee2e2; padding: 20px; border-radius: 8px; border-left: 4px solid #ef4444;">
+              ${analysisResult.risks.map(risk => `
+                <div style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                  <span style="position: absolute; left: 0; color: #ef4444;">⚠</span>
+                  <span style="font-size: 14px; color: #1f2937;">${risk}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- 법률 해석 -->
+          ${parsedChatbot?.legalInterpretation && parsedChatbot.legalInterpretation.length > 0 ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 18px; font-weight: bold; color: #111827; margin-bottom: 15px;">
+              ⚖️ 법률 해석
+            </h2>
+            <div style="background-color: #e9d5ff; padding: 20px; border-radius: 8px;">
+              ${parsedChatbot.legalInterpretation.map(item => `
+                <div style="margin-bottom: 15px; padding-left: 15px; border-left: 2px solid #9333ea;">
+                  <p style="font-size: 13px; font-weight: 600; color: #111827; margin-bottom: 5px;">${item.issue}</p>
+                  <p style="font-size: 14px; color: #374151;">${item.interpretation}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- 일반 텍스트 분석 (JSON 파싱 실패 시) -->
+          ${!parsedChatbot && chatbotAnalysis ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 18px; font-weight: bold; color: #111827; margin-bottom: 15px;">
+              📋 법률 전문가 분석
+            </h2>
+            <div style="background-color: #dbeafe; padding: 20px; border-radius: 8px;">
+              <p style="font-size: 14px; color: #1f2937; white-space: pre-wrap; line-height: 1.6;">${chatbotAnalysis}</p>
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- 푸터 -->
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center;">
+            <p style="font-size: 12px; color: #9ca3af;">
+              이 문서는 LawRo 플랫폼을 통해 자동 생성되었습니다.
+            </p>
+          </div>
+        </div>
+      `;
+
+      // html2pdf 설정
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `계약서_분석_${new Date(analysis.created_at).toLocaleDateString('ko-KR').replace(/\. /g, '-').replace('.', '')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          letterRendering: true
+        },
+        jsPDF: {
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'portrait',
+          compress: true
+        }
+      };
+
+      // PDF 생성 및 다운로드
+      await html2pdf().set(opt).from(pdfContent).save();
+
+    } catch (error) {
+      console.error('PDF export failed:', error);
+      alert('PDF 내보내기에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
@@ -203,10 +421,10 @@ export default function AnalysisHistoryPage() {
 
       {/* 분석 상세 보기 모달 */}
       {selectedAnalysis && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
-          <div className="bg-white w-full rounded-t-3xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end md:items-center md:justify-center">
+          <div className="bg-white w-full md:max-w-2xl rounded-t-3xl md:rounded-3xl max-h-[85vh] h-[85vh] flex flex-col">
             {/* 모달 헤더 */}
-            <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+            <div className="flex-shrink-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between rounded-t-3xl md:rounded-t-3xl">
               <h2 className="text-lg font-bold text-gray-900">분석 상세 보기</h2>
               <button
                 onClick={() => setSelectedAnalysis(null)}
@@ -217,7 +435,8 @@ export default function AnalysisHistoryPage() {
             </div>
 
             {/* 모달 콘텐츠 */}
-            <div className="p-6 space-y-6">
+            <div className="flex-1 overflow-y-auto p-4 md:p-6">
+              <div className="space-y-4 md:space-y-6">
               {/* 계약서 기본 정보 */}
               {selectedAnalysis.analysis_result && (
                 <div>
@@ -403,25 +622,31 @@ export default function AnalysisHistoryPage() {
                 분석 일시:{' '}
                 {new Date(selectedAnalysis.created_at).toLocaleString('ko-KR')}
               </div>
-            </div>
+              </div>
 
-            {/* 모달 하단 버튼 */}
-            <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 space-y-3">
-              <button
-                onClick={() => {
-                  handleRetouchAnalysis(selectedAnalysis);
-                  setSelectedAnalysis(null);
-                }}
-                className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 rounded-xl transition-colors"
-              >
-                이 분석으로 상담하기
-              </button>
-              <button
-                onClick={() => setSelectedAnalysis(null)}
-                className="w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-3 rounded-xl transition-colors"
-              >
-                닫기
-              </button>
+              {/* 모달 하단 버튼 */}
+              <div className="border-t border-gray-200 pt-4 mt-6 pb-16">
+                <div className="grid grid-cols-2 gap-2 md:gap-3">
+                  <button
+                    onClick={() => {
+                      exportToPDF(selectedAnalysis);
+                    }}
+                    className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-2.5 md:py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
+                  >
+                    <Download className="w-4 h-4" />
+                    PDF 내보내기
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleRetouchAnalysis(selectedAnalysis);
+                      setSelectedAnalysis(null);
+                    }}
+                    className="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 md:py-3 rounded-xl transition-colors text-sm"
+                  >
+                    상담하기
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

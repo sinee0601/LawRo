@@ -374,7 +374,7 @@ export default function WorkTimePage() {
             <h2 className="text-lg font-bold text-gray-900 mb-4">근무시간 측정</h2>
 
             {/* 타이머 */}
-            <div className="text-6xl font-bold text-gray-900 mb-8 font-mono tracking-wider">
+            <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-8 font-mono tracking-tight sm:tracking-normal whitespace-nowrap">
               {String(time.hours).padStart(2, '0')}:{String(time.minutes).padStart(2, '0')}:{String(time.seconds).padStart(2, '0')}
             </div>
 
