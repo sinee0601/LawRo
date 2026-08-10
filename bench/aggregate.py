@@ -102,6 +102,17 @@ def lang_table(samples: List[Dict[str, Any]], queries: Dict[str, Dict]) -> str:
     return "\n".join(lines)
 
 
+def false_negative_split(samples: List[Dict[str, Any]], queries: Dict[str, Dict]):
+    """관련 질의 오탐을 한국어/비한국어로 쪼갠다. 코퍼스가 한국어이므로 이 축이 핵심이다."""
+    relevant = [s for s in samples if queries[s["query_id"]]["category"] != "irrelevant"]
+    ko = [s for s in relevant if s["lang"] == "korean"]
+    non_ko = [s for s in relevant if s["lang"] != "korean"]
+    return (
+        sum(1 for s in ko if s["hits"] == 0), len(ko),
+        sum(1 for s in non_ko if s["hits"] == 0), len(non_ko),
+    )
+
+
 def threshold_section(samples: List[Dict[str, Any]], queries: Dict[str, Dict]) -> str:
     irrelevant = [s for s in samples if queries[s["query_id"]]["category"] == "irrelevant"]
     relevant = [s for s in samples if queries[s["query_id"]]["category"] != "irrelevant"]
@@ -111,14 +122,24 @@ def threshold_section(samples: List[Dict[str, Any]], queries: Dict[str, Dict]) -
 
     irr_scores = [s["top_score"] for s in irrelevant if s["top_score"] is not None]
     rel_scores = [s["top_score"] for s in relevant if s["top_score"] is not None]
+    ko_miss, ko_n, non_ko_miss, non_ko_n = false_negative_split(samples, queries)
 
     out = [
         f"- 무관 질의 **{blocked}/{len(irrelevant)}건 차단** (`hits:0`) — 기대값 대비 "
         f"{'일치' if blocked == len(irrelevant) else '불일치'}",
         f"- 관련 질의 중 `hits:0` 오탐 **{len(missed)}/{len(relevant)}건** "
         f"({len(missed) / len(relevant) * 100:.1f}%)",
+        f"  - 한국어 **{ko_miss}/{ko_n}건 ({ko_miss / ko_n * 100:.0f}%)**, "
+        f"비한국어 **{non_ko_miss}/{non_ko_n}건 ({non_ko_miss / non_ko_n * 100:.0f}%)**",
         f"- top_score 분포 — 무관: max {max(irr_scores):.3f} / 관련: min {min(rel_scores):.3f}, "
         f"p50 {statistics.median(rel_scores):.3f}",
+        "",
+        "**오탐은 전부 비한국어 질의에서 나왔다.** 색인된 법령 원문이 한국어이므로 "
+        "비한국어 질의는 같은 조문을 찾아도 코사인 점수가 낮게 나온다. 임계값 0.3은 "
+        "한국어 기준으로 맞춰진 값이고, 무관 질의(max "
+        f"{max(irr_scores):.3f})와 비한국어 관련 질의(min {min(rel_scores):.3f})의 점수 구간이 "
+        "겹쳐 단일 임계값으로는 분리되지 않는다. 언어별 임계값 또는 질의 번역 후 검색이 "
+        "후속 과제다.",
     ]
 
     if missed:
@@ -177,6 +198,12 @@ def main() -> int:
     search_p50 = statistics.median([s["search_ms"] for s in samples])
     generate_p50 = statistics.median([s["generate_ms"] for s in samples])
 
+    n_irrelevant = sum(1 for s in samples if queries[s["query_id"]]["category"] == "irrelevant")
+    blocked = sum(
+        1 for s in samples if queries[s["query_id"]]["category"] == "irrelevant" and s["hits"] == 0
+    )
+    ko_miss, ko_n, non_ko_miss, non_ko_n = false_negative_split(samples, queries)
+
     doc = f"""# LawRo 챗봇 RAG 구간 지연 실측 리포트
 
 측정일 {datetime.now().strftime('%Y-%m-%d')} · 커밋 `{meta['commit']}` · 브랜치 `measure/rag-latency`
@@ -188,6 +215,11 @@ def main() -> int:
 search(Chroma 벡터 검색)가 {search_p50 / total_p50 * 100:.1f}%** 를 차지했다.
 지연의 원인 구간은 **외부 API 왕복(generate + embed = {(generate_p50 + embed_p50) / total_p50 * 100:.0f}%)** 이며,
 벡터 검색은 병목이 아니다.
+
+검색 품질 쪽에서는 무관 질의 {blocked}/{n_irrelevant}건을 전부 차단했으나,
+관련 질의 {ko_n + non_ko_n}건 중 {ko_miss + non_ko_miss}건({(ko_miss + non_ko_miss) / (ko_n + non_ko_n) * 100:.1f}%)이 임계값 미달로 걸러졌고
+**그 전부가 비한국어 질의**다 (비한국어 {non_ko_miss}/{non_ko_n} = {non_ko_miss / non_ko_n * 100:.0f}%, 한국어 {ko_miss}/{ko_n} = 0%).
+한국어 코퍼스에 맞춰진 단일 임계값 0.3의 한계다.
 
 ## 실행 메타
 
@@ -236,6 +268,8 @@ search(Chroma 벡터 검색)가 {search_p50 / total_p50 * 100:.1f}%** 를 차지
 - 질의 100건 규모, 3회차. 외부 API 지연은 측정 시점의 네트워크·서버 상태에 따라 달라진다.
 - 세션 백엔드를 `memory` 로 고정했다(Firestore 자격증명 없음). Firestore 왕복은 total_ms 에 포함되지 않는다.
 - 생성 구간은 응답 길이에 비례하므로 질의 구성에 의존한다.
+- 관련 질의 90건에는 정답 조문을 미리 지정하지 않았다. 따라서 `hits>0`은 "임계값을 넘었다"는
+  뜻이지 "옳은 조문을 찾았다"는 뜻이 아니다. 검색 정확도(precision) 측정은 별도 과제다.
 
 ## 재현
 
