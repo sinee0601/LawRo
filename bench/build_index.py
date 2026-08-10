@@ -70,11 +70,16 @@ def chunk(articles: List[Dict[str, Any]]):
     ids: List[str] = []
 
     for article in articles:
-        # 검색 결과에 출처가 보이도록 조문 헤더를 본문에 포함시킨다
-        header = f"{article['law_name']} {article['article_no']}"
-        if article.get("article_title"):
-            header += f"({article['article_title']})"
-        full = f"{header}\n{article['text']}"
+        # 조문내용은 이미 "제56조(제목)"으로 시작한다. 빠진 건 법령명뿐이므로
+        # 라벨이 중복되지 않는 경우에만 조문 번호까지 붙인다.
+        body = article["text"]
+        if body.startswith(article["article_no"]):
+            header = article["law_name"]
+        else:
+            header = f"{article['law_name']} {article['article_no']}"
+            if article.get("article_title"):
+                header += f"({article['article_title']})"
+        full = f"{header} {body}" if header == article["law_name"] else f"{header}\n{body}"
 
         pieces = splitter.split_text(full)
         for i, piece in enumerate(pieces):
