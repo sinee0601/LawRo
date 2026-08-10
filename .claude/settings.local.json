@@ -3,7 +3,8 @@
     "allow": [
       "Bash(mkdir:*)",
       "Bash(touch:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(python3 -c ' *)"
     ],
     "deny": [],
     "ask": []
