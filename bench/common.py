@@ -11,7 +11,13 @@ BACKEND_ROOT = REPO_ROOT / "backend"
 
 
 def load_env() -> None:
+    """앱 설정은 backend/.env, 벤치 전용 값은 bench/.env 로 분리한다.
+
+    backend/.env 는 pydantic Settings 가 직접 읽으므로 스키마에 없는 키를 넣으면
+    앱 기동이 깨진다(extra_forbidden).
+    """
     load_dotenv(BACKEND_ROOT / ".env")
+    load_dotenv(Path(__file__).resolve().parent / ".env")
 
 
 def load_settings():

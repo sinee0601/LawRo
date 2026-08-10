@@ -1,0 +1,100 @@
+{"query_id": "q001", "lang": "korean", "category": "wage", "text": "최저임금은 얼마인가요?", "expect_hits": null}
+{"query_id": "q002", "lang": "korean", "category": "wage", "text": "월급을 제때 안 주면 어떻게 하나요?", "expect_hits": null}
+{"query_id": "q003", "lang": "korean", "category": "wage", "text": "야간에 일하면 수당을 더 받나요?", "expect_hits": null}
+{"query_id": "q004", "lang": "korean", "category": "wage", "text": "연장근로를 하면 수당을 얼마나 더 받나요?", "expect_hits": null}
+{"query_id": "q005", "lang": "korean", "category": "wage", "text": "회사가 도산하면 밀린 임금을 받을 수 있나요?", "expect_hits": null}
+{"query_id": "q006", "lang": "korean", "category": "wage", "text": "사장이 임금을 일방적으로 깎을 수 있나요?", "expect_hits": null}
+{"query_id": "q007", "lang": "korean", "category": "worktime", "text": "하루에 최대 몇 시간까지 일할 수 있나요?", "expect_hits": null}
+{"query_id": "q008", "lang": "korean", "category": "worktime", "text": "일주일에 최대 몇 시간 일할 수 있나요?", "expect_hits": null}
+{"query_id": "q009", "lang": "korean", "category": "worktime", "text": "휴게시간은 얼마나 주어야 하나요?", "expect_hits": null}
+{"query_id": "q010", "lang": "korean", "category": "worktime", "text": "연장근로는 주 몇 시간까지 가능한가요?", "expect_hits": null}
+{"query_id": "q011", "lang": "korean", "category": "holiday", "text": "연차휴가는 며칠인가요?", "expect_hits": null}
+{"query_id": "q012", "lang": "korean", "category": "holiday", "text": "주휴일은 반드시 줘야 하나요?", "expect_hits": null}
+{"query_id": "q013", "lang": "korean", "category": "holiday", "text": "1년 미만 근무했는데 연차가 있나요?", "expect_hits": null}
+{"query_id": "q014", "lang": "korean", "category": "holiday", "text": "출산전후휴가는 며칠인가요?", "expect_hits": null}
+{"query_id": "q015", "lang": "korean", "category": "insurance", "text": "외국인도 국민연금에 가입해야 하나요?", "expect_hits": null}
+{"query_id": "q016", "lang": "korean", "category": "insurance", "text": "건강보험료는 누가 부담하나요?", "expect_hits": null}
+{"query_id": "q017", "lang": "korean", "category": "insurance", "text": "고용보험에 가입하면 실업급여를 받을 수 있나요?", "expect_hits": null}
+{"query_id": "q018", "lang": "korean", "category": "insurance", "text": "4대보험 가입은 의무인가요?", "expect_hits": null}
+{"query_id": "q019", "lang": "korean", "category": "dismissal", "text": "해고를 당하면 예고를 받아야 하나요?", "expect_hits": null}
+{"query_id": "q020", "lang": "korean", "category": "dismissal", "text": "부당해고를 당하면 어디에 구제를 신청하나요?", "expect_hits": null}
+{"query_id": "q021", "lang": "korean", "category": "dismissal", "text": "회사가 정당한 이유 없이 해고할 수 있나요?", "expect_hits": null}
+{"query_id": "q022", "lang": "korean", "category": "probation", "text": "수습기간에도 최저임금을 받나요?", "expect_hits": null}
+{"query_id": "q023", "lang": "korean", "category": "probation", "text": "수습기간은 최대 얼마나 되나요?", "expect_hits": null}
+{"query_id": "q024", "lang": "korean", "category": "housing", "text": "회사가 기숙사 비용을 임금에서 공제할 수 있나요?", "expect_hits": null}
+{"query_id": "q025", "lang": "korean", "category": "housing", "text": "기숙사 시설에 대한 기준이 있나요?", "expect_hits": null}
+{"query_id": "q026", "lang": "korean", "category": "injury", "text": "일하다 다쳤는데 치료비는 누가 내나요?", "expect_hits": null}
+{"query_id": "q027", "lang": "korean", "category": "injury", "text": "산재로 일을 못하면 휴업급여를 받나요?", "expect_hits": null}
+{"query_id": "q028", "lang": "korean", "category": "visa", "text": "고용주가 여권을 보관해도 되나요?", "expect_hits": null}
+{"query_id": "q029", "lang": "korean", "category": "visa", "text": "외국인근로자가 사업장을 변경할 수 있나요?", "expect_hits": null}
+{"query_id": "q030", "lang": "korean", "category": "severance", "text": "퇴직금은 언제부터 받을 수 있나요?", "expect_hits": null}
+{"query_id": "q031", "lang": "english", "category": "wage", "text": "What is the minimum wage in Korea?", "expect_hits": null}
+{"query_id": "q032", "lang": "english", "category": "wage", "text": "What happens if my employer does not pay my wages?", "expect_hits": null}
+{"query_id": "q033", "lang": "english", "category": "wage", "text": "Do I get extra pay for night work?", "expect_hits": null}
+{"query_id": "q034", "lang": "english", "category": "worktime", "text": "How many hours can I work per week?", "expect_hits": null}
+{"query_id": "q035", "lang": "english", "category": "worktime", "text": "How long a break am I entitled to during the workday?", "expect_hits": null}
+{"query_id": "q036", "lang": "english", "category": "holiday", "text": "Am I entitled to paid annual leave?", "expect_hits": null}
+{"query_id": "q037", "lang": "english", "category": "holiday", "text": "How long is maternity leave?", "expect_hits": null}
+{"query_id": "q038", "lang": "english", "category": "insurance", "text": "Do foreign workers have to join the national pension?", "expect_hits": null}
+{"query_id": "q039", "lang": "english", "category": "dismissal", "text": "How much notice must my employer give before dismissal?", "expect_hits": null}
+{"query_id": "q040", "lang": "english", "category": "probation", "text": "Is there a limit to the probation period?", "expect_hits": null}
+{"query_id": "q041", "lang": "english", "category": "housing", "text": "Can my employer deduct dormitory costs from my salary?", "expect_hits": null}
+{"query_id": "q042", "lang": "english", "category": "injury", "text": "Who pays for treatment if I get injured at work?", "expect_hits": null}
+{"query_id": "q043", "lang": "english", "category": "visa", "text": "Can my employer keep my passport?", "expect_hits": null}
+{"query_id": "q044", "lang": "english", "category": "severance", "text": "Is severance pay mandatory?", "expect_hits": null}
+{"query_id": "q045", "lang": "chinese", "category": "wage", "text": "韩国的最低工资是多少？", "expect_hits": null}
+{"query_id": "q046", "lang": "chinese", "category": "wage", "text": "拖欠工资时应该怎么办？", "expect_hits": null}
+{"query_id": "q047", "lang": "chinese", "category": "wage", "text": "加班费怎么计算？", "expect_hits": null}
+{"query_id": "q048", "lang": "chinese", "category": "worktime", "text": "每周最多可以工作多少小时？", "expect_hits": null}
+{"query_id": "q049", "lang": "chinese", "category": "holiday", "text": "年休假有几天？", "expect_hits": null}
+{"query_id": "q050", "lang": "chinese", "category": "insurance", "text": "外国劳动者需要加入国民年金吗？", "expect_hits": null}
+{"query_id": "q051", "lang": "chinese", "category": "dismissal", "text": "被解雇前公司必须提前通知吗？", "expect_hits": null}
+{"query_id": "q052", "lang": "chinese", "category": "probation", "text": "试用期也有最低工资保障吗？", "expect_hits": null}
+{"query_id": "q053", "lang": "chinese", "category": "housing", "text": "公司可以从工资中扣除宿舍费吗？", "expect_hits": null}
+{"query_id": "q054", "lang": "chinese", "category": "injury", "text": "工伤的医疗费由谁承担？", "expect_hits": null}
+{"query_id": "q055", "lang": "chinese", "category": "visa", "text": "雇主可以扣押我的护照吗？", "expect_hits": null}
+{"query_id": "q056", "lang": "chinese", "category": "severance", "text": "退职金什么时候可以领取？", "expect_hits": null}
+{"query_id": "q057", "lang": "vietnamese", "category": "wage", "text": "Mức lương tối thiểu ở Hàn Quốc là bao nhiêu?", "expect_hits": null}
+{"query_id": "q058", "lang": "vietnamese", "category": "wage", "text": "Nếu công ty không trả lương thì tôi phải làm gì?", "expect_hits": null}
+{"query_id": "q059", "lang": "vietnamese", "category": "wage", "text": "Tiền làm thêm giờ được tính thế nào?", "expect_hits": null}
+{"query_id": "q060", "lang": "vietnamese", "category": "worktime", "text": "Một tuần được làm việc tối đa bao nhiêu giờ?", "expect_hits": null}
+{"query_id": "q061", "lang": "vietnamese", "category": "holiday", "text": "Tôi được nghỉ phép năm bao nhiêu ngày?", "expect_hits": null}
+{"query_id": "q062", "lang": "vietnamese", "category": "insurance", "text": "Người lao động nước ngoài có phải tham gia bảo hiểm y tế không?", "expect_hits": null}
+{"query_id": "q063", "lang": "vietnamese", "category": "dismissal", "text": "Công ty có phải báo trước khi sa thải không?", "expect_hits": null}
+{"query_id": "q064", "lang": "vietnamese", "category": "probation", "text": "Trong thời gian thử việc có được hưởng lương tối thiểu không?", "expect_hits": null}
+{"query_id": "q065", "lang": "vietnamese", "category": "housing", "text": "Công ty có được trừ tiền ký túc xá vào lương không?", "expect_hits": null}
+{"query_id": "q066", "lang": "vietnamese", "category": "injury", "text": "Ai trả chi phí điều trị khi bị tai nạn lao động?", "expect_hits": null}
+{"query_id": "q067", "lang": "vietnamese", "category": "visa", "text": "Chủ sử dụng lao động có được giữ hộ chiếu của tôi không?", "expect_hits": null}
+{"query_id": "q068", "lang": "vietnamese", "category": "severance", "text": "Khi nào tôi được nhận trợ cấp thôi việc?", "expect_hits": null}
+{"query_id": "q069", "lang": "japanese", "category": "wage", "text": "韓国の最低賃金はいくらですか？", "expect_hits": null}
+{"query_id": "q070", "lang": "japanese", "category": "wage", "text": "残業手当はどのように計算されますか？", "expect_hits": null}
+{"query_id": "q071", "lang": "japanese", "category": "worktime", "text": "週に何時間まで働けますか？", "expect_hits": null}
+{"query_id": "q072", "lang": "japanese", "category": "holiday", "text": "年次有給休暇は何日ですか？", "expect_hits": null}
+{"query_id": "q073", "lang": "japanese", "category": "insurance", "text": "外国人も国民年金に加入する必要がありますか？", "expect_hits": null}
+{"query_id": "q074", "lang": "japanese", "category": "dismissal", "text": "解雇される前に予告はありますか？", "expect_hits": null}
+{"query_id": "q075", "lang": "japanese", "category": "probation", "text": "試用期間中も最低賃金は適用されますか？", "expect_hits": null}
+{"query_id": "q076", "lang": "japanese", "category": "housing", "text": "会社が寮費を給料から差し引くことはできますか？", "expect_hits": null}
+{"query_id": "q077", "lang": "japanese", "category": "injury", "text": "労災の治療費は誰が負担しますか？", "expect_hits": null}
+{"query_id": "q078", "lang": "japanese", "category": "visa", "text": "雇用主がパスポートを預かってもいいですか？", "expect_hits": null}
+{"query_id": "q079", "lang": "japanese", "category": "severance", "text": "退職金はいつから受け取れますか？", "expect_hits": null}
+{"query_id": "q080", "lang": "thai", "category": "wage", "text": "ค่าแรงขั้นต่ำในเกาหลีเท่าไหร่?", "expect_hits": null}
+{"query_id": "q081", "lang": "thai", "category": "wage", "text": "ค่าล่วงเวลาคำนวณอย่างไร?", "expect_hits": null}
+{"query_id": "q082", "lang": "thai", "category": "worktime", "text": "ทำงานได้สูงสุดกี่ชั่วโมงต่อสัปดาห์?", "expect_hits": null}
+{"query_id": "q083", "lang": "thai", "category": "holiday", "text": "มีวันลาพักร้อนกี่วัน?", "expect_hits": null}
+{"query_id": "q084", "lang": "thai", "category": "insurance", "text": "แรงงานต่างชาติต้องเข้าประกันบำนาญแห่งชาติหรือไม่?", "expect_hits": null}
+{"query_id": "q085", "lang": "thai", "category": "dismissal", "text": "บริษัทต้องแจ้งล่วงหน้าก่อนเลิกจ้างหรือไม่?", "expect_hits": null}
+{"query_id": "q086", "lang": "thai", "category": "probation", "text": "ช่วงทดลองงานได้รับค่าแรงขั้นต่ำหรือไม่?", "expect_hits": null}
+{"query_id": "q087", "lang": "thai", "category": "housing", "text": "บริษัทหักค่าหอพักจากเงินเดือนได้หรือไม่?", "expect_hits": null}
+{"query_id": "q088", "lang": "thai", "category": "injury", "text": "ใครจ่ายค่ารักษาพยาบาลเมื่อบาดเจ็บจากการทำงาน?", "expect_hits": null}
+{"query_id": "q089", "lang": "thai", "category": "visa", "text": "นายจ้างสามารถเก็บหนังสือเดินทางของฉันได้หรือไม่?", "expect_hits": null}
+{"query_id": "q090", "lang": "thai", "category": "severance", "text": "เงินชดเชยเมื่อลาออกได้รับเมื่อใด?", "expect_hits": null}
+{"query_id": "q091", "lang": "korean", "category": "irrelevant", "text": "오늘 서울 날씨 어때?", "expect_hits": 0}
+{"query_id": "q092", "lang": "korean", "category": "irrelevant", "text": "근처에 맛있는 식당 추천해줘", "expect_hits": 0}
+{"query_id": "q093", "lang": "korean", "category": "irrelevant", "text": "어제 축구 경기 결과 알려줘", "expect_hits": 0}
+{"query_id": "q094", "lang": "english", "category": "irrelevant", "text": "What is the best kimchi recipe?", "expect_hits": 0}
+{"query_id": "q095", "lang": "english", "category": "irrelevant", "text": "Recommend a good movie to watch tonight.", "expect_hits": 0}
+{"query_id": "q096", "lang": "chinese", "category": "irrelevant", "text": "明天首尔天气怎么样？", "expect_hits": 0}
+{"query_id": "q097", "lang": "chinese", "category": "irrelevant", "text": "推荐一首好听的歌", "expect_hits": 0}
+{"query_id": "q098", "lang": "vietnamese", "category": "irrelevant", "text": "Gợi ý cho tôi một quán cà phê ngon ở Seoul", "expect_hits": 0}
+{"query_id": "q099", "lang": "japanese", "category": "irrelevant", "text": "面白いアニメを教えてください", "expect_hits": 0}
+{"query_id": "q100", "lang": "thai", "category": "irrelevant", "text": "แนะนำสถานที่ท่องเที่ยวในกรุงโซล", "expect_hits": 0}
