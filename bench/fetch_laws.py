@@ -15,6 +15,7 @@
 
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -49,6 +50,20 @@ TARGET_LAWS = [
 REQUEST_SLEEP = 0.5  # 공공 API 예의상 간격
 
 
+class LawApiError(RuntimeError):
+    """법제처가 JSON 대신 HTML 안내 페이지를 돌려준 경우(미신청 API, 잘못된 OC 등)."""
+
+
+def _parse_json(resp: requests.Response) -> Dict[str, Any]:
+    """오류 시 HTTP 200 + HTML 안내 페이지가 오므로 본문을 보고 판별한다."""
+    try:
+        return resp.json()
+    except ValueError:
+        body = re.sub(r"(?s)<(script|style|head).*?</\1>", " ", resp.text)
+        message = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", body)).strip()
+        raise LawApiError(message[:300] or "빈 응답") from None
+
+
 def _as_list(node: Any) -> List[Any]:
     """법령 API는 원소가 1개면 dict, 여러 개면 list로 준다."""
     if node is None:
@@ -74,7 +89,7 @@ def search_law(oc: str, name: str) -> Optional[Dict[str, str]]:
         timeout=30,
     )
     resp.raise_for_status()
-    payload = resp.json()
+    payload = _parse_json(resp)
 
     items = _as_list(payload.get("LawSearch", {}).get("law"))
     if not items:
@@ -98,7 +113,7 @@ def fetch_articles(oc: str, mst: str) -> Dict[str, Any]:
         timeout=30,
     )
     resp.raise_for_status()
-    return resp.json().get("법령", {})
+    return _parse_json(resp).get("법령", {})
 
 
 def render_article(article: Dict[str, Any]) -> str:
@@ -198,9 +213,13 @@ def main() -> int:
     manifest: List[Dict[str, Any]] = []
 
     for name in TARGET_LAWS:
-        print(f"수집: {name}")
+        print(f"수집: {name}", flush=True)
         try:
             result = collect(oc, name)
+        except LawApiError as exc:
+            # 계정 설정 문제이므로 나머지 법령도 전부 같은 결과다. 즉시 중단한다.
+            print(f"\n[중단] 법제처 API가 데이터 대신 안내 페이지를 반환했습니다:\n  {exc}\n", file=sys.stderr)
+            return 1
         except requests.HTTPError as exc:
             print(f"  [FAIL] HTTP {exc.response.status_code}: {name}", file=sys.stderr)
             continue
