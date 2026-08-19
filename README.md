@@ -81,7 +81,7 @@ cd LawRo
       UPSTAGE_API_KEY="up_..."
       FIREBASE_CREDENTIALS_PATH="firebase-credentials.json"
       # ... 기타 필요한 설정값들 ...
-      CHAT_RETRIEVAL_SCORE_THRESHOLD=0.4
+      CHAT_RETRIEVAL_SCORE_THRESHOLD=0.3
       ```
 4.  **Firebase 인증 설정**
     -   Firebase 프로젝트에서 발급받은 서비스 계정 키 파일의 이름을 `firebase-credentials.json`으로 변경하여 프로젝트 최상위 폴더에 위치시킵니다.
@@ -126,7 +126,7 @@ npm install
 
 ##  배포 (Nginx 리버스 프록시)
 
-개발 환경을 외부 인터넷에 공개하고 HTTPS를 적용하려면 Nginx를 리버스 프록시로 사용하는 것이 가장 좋습니다.
+개발 환경을 외부 인터넷에 공개하고 HTTPS를 적용하려면 Nginx를 리버스 프록시로 사용하는 것이 좋습니다.
 
 1.  **Nginx 설치 및 SSL 인증서 발급:** `win-acme` 등의 ACME 클라이언트를 사용하여 Let's Encrypt 인증서를 발급받습니다.
 2.  **`nginx.conf` 설정:** Nginx가 443(HTTPS) 포트로 들어오는 요청을 받아, 경로에 따라 프론트엔드(`localhost:5173`) 또는 백엔드(`localhost:8000`)로 전달하도록 설정합니다.
