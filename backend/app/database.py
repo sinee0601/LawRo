@@ -3,12 +3,13 @@ Database and Firebase Initialization
 Manages Firebase Admin SDK and Firestore connections
 """
 
-import firebase_admin
-from firebase_admin import credentials, firestore, auth
+import logging
+import os
 from functools import lru_cache
 from typing import Optional
-import os
-import logging
+
+import firebase_admin
+from firebase_admin import auth, credentials, firestore
 
 from .config import settings
 

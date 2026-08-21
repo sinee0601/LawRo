@@ -3,8 +3,9 @@ Contract Models
 Request and response models for contract analysis endpoints
 """
 
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
 
 
 # Upload Models

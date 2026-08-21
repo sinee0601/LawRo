@@ -3,16 +3,12 @@ Support Center Router
 법률 지원 기관 API 엔드포인트
 """
 
-from fastapi import APIRouter, HTTPException, status, Query
 from typing import Optional
 
+from fastapi import APIRouter, HTTPException, Query, status
+
+from ..models.support_center import CenterType, SupportCenter, SupportCenterQuery, SupportCenterResponse
 from ..services.support_center_service import SupportCenterService
-from ..models.support_center import (
-    SupportCenterQuery,
-    SupportCenterResponse,
-    SupportCenter,
-    CenterType
-)
 
 router = APIRouter()
 
@@ -105,8 +101,8 @@ async def get_nearby_centers(
         result = await service.search_centers(query)
         return result
     except Exception as e:
-        import traceback
         import logging
+        import traceback
         logger = logging.getLogger(__name__)
         logger.error(f"❌ 지원 기관 검색 오류: {str(e)}")
         logger.error(traceback.format_exc())
@@ -119,8 +115,8 @@ async def get_nearby_centers(
         if service:
             try:
                 emergency_contacts = service._get_emergency_contacts()
-            except:
-                pass
+            except Exception as contacts_error:
+                logger.warning(f"긴급 연락처 조회 실패: {contacts_error}")
 
         return SupportCenterResponse(
             centers=[],

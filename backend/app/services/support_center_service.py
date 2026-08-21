@@ -4,18 +4,15 @@ Support Center Service
 """
 
 import logging
+from math import atan2, cos, radians, sin, sqrt
 from typing import List, Optional
-from math import radians, sin, cos, sqrt, atan2
 
 from ..database import get_firebase
 from ..models.support_center import (
+    EmergencyContact,
     SupportCenter,
     SupportCenterQuery,
     SupportCenterResponse,
-    EmergencyContact,
-    CenterType,
-    Location,
-    OperatingHours
 )
 
 logger = logging.getLogger(__name__)

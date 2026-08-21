@@ -4,17 +4,18 @@ Handles contract analysis endpoints
 Compatible with existing frontend endpoints
 """
 
-from fastapi import APIRouter, File, UploadFile, HTTPException, status, Form, Depends
-from typing import List, Optional
 import logging
+from typing import List
 
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+
+from ..dependencies import get_current_user_optional
 from ..models.contract import (
-    UploadResponse,
     AnalyzeWithChatbotRequest,
     AnalyzeWithChatbotResponse,
-    ChatbotStatusResponse
+    ChatbotStatusResponse,
+    UploadResponse,
 )
-from ..dependencies import get_current_user_optional
 from ..services.contract_service import ContractService
 
 logger = logging.getLogger(__name__)
@@ -170,7 +171,7 @@ async def get_analysis_history(
 
     try:
         # Get analyses from Firestore
-        from ..database import get_firebase, Collections
+        from ..database import Collections, get_firebase
         firebase = get_firebase()
 
         # Query analyses for this user (without order_by to avoid index issues)
@@ -219,7 +220,7 @@ async def delete_analysis(
     logger.info(f"Deleting analysis {analysis_id}")
 
     try:
-        from ..database import get_firebase, Collections
+        from ..database import Collections, get_firebase
         firebase = get_firebase()
 
         # Delete document

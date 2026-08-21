@@ -3,10 +3,10 @@ Unified Configuration Management
 Loads all environment variables and provides centralized configuration
 """
 
-from pydantic_settings import BaseSettings
 from functools import lru_cache
 from typing import Optional
-import os
+
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):

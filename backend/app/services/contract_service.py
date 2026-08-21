@@ -3,17 +3,18 @@ Contract Service
 Handles contract analysis with OCR, GPT parsing, and chatbot integration
 """
 
-import os
 import json
 import logging
-import tempfile
+import os
 import shutil
-from typing import Dict, Any, List, Optional, Tuple
+import tempfile
 from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Tuple
+
 import httpx
 
 from ..config import settings
-from ..database import get_firebase, Collections
+from ..database import Collections, get_firebase
 from ..utils.local_storage import get_local_storage
 
 logger = logging.getLogger(__name__)

@@ -3,21 +3,18 @@ Work Time Router
 Handles work time tracking and workplace management
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends
 import logging
-from datetime import datetime
 from typing import Optional
 
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from ..dependencies import get_current_user_optional
 from ..models.worktime import (
-    SaveWorkplaceRequest,
-    WorkplaceResponse,
-    SaveWorkRecordRequest,
-    WorkRecordResponse,
-    WorkRecordsListResponse,
     LocationStatusRequest,
     LocationStatusResponse,
+    SaveWorkplaceRequest,
+    SaveWorkRecordRequest,
 )
-from ..dependencies import get_current_user_optional
 from ..services.worktime_service import WorkTimeService
 
 logger = logging.getLogger(__name__)

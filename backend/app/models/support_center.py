@@ -3,9 +3,10 @@ Support Center Models
 법률 지원 기관 관련 Pydantic 모델
 """
 
-from pydantic import BaseModel, Field
-from typing import List, Optional
 from enum import Enum
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
 
 
 class CenterType(str, Enum):

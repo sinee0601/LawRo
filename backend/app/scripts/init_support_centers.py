@@ -3,16 +3,16 @@ Support Center Data Initialization Script
 지원 기관 초기 데이터 세팅 (서울/경기 지역 중심)
 """
 
-import sys
 import os
+import sys
 
 # 프로젝트 루트를 Python path에 추가
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 import asyncio
-from app.services.support_center_service import SupportCenterService
-from app.models.support_center import SupportCenter, CenterType, Location, OperatingHours
 
+from app.models.support_center import CenterType, Location, OperatingHours, SupportCenter
+from app.services.support_center_service import SupportCenterService
 
 # 지원 기관 초기 데이터
 SUPPORT_CENTERS_DATA = [

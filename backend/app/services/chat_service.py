@@ -5,24 +5,24 @@ Combines in-memory cache with Firestore persistence
 Optimized with monitoring, error handling, and cost optimization
 """
 
+import asyncio
+import logging
 import os
 import threading
 import time
 import uuid
-import asyncio
+from collections import deque
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
-from dataclasses import dataclass, field, asdict
-from collections import deque
-import logging
 
-from openai import OpenAI, APIError, RateLimitError, APIConnectionError
-from langchain_upstage import UpstageEmbeddings
 from langchain_chroma import Chroma
+from langchain_upstage import UpstageEmbeddings
+from openai import APIConnectionError, APIError, OpenAI, RateLimitError
 
-from ..models.chat import ChatMessage
 from ..config import settings
-from ..database import get_firebase, Collections
+from ..database import Collections, get_firebase
+from ..models.chat import ChatMessage
 from . import rag_trace
 
 logger = logging.getLogger(__name__)

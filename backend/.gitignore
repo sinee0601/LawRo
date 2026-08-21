@@ -56,3 +56,6 @@ logs/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Lint cache
+.ruff_cache/

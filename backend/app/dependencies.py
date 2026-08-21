@@ -3,11 +3,12 @@ Common Dependencies
 Shared dependencies for authentication, database access, etc.
 """
 
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from firebase_admin import auth
-from typing import Optional
 import logging
+from typing import Optional
+
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from firebase_admin import auth
 
 from .database import get_db, get_firebase
 

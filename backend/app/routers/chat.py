@@ -4,24 +4,24 @@ Handles chat-related endpoints
 Compatible with existing frontend endpoints
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends
-import time
 import logging
+import time
 
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from ..dependencies import get_current_user
 from ..models.chat import (
-    ChatRequest,
-    ChatResponse,
-    ChatHistoryResponse,
-    NewSessionResponse,
-    DeleteHistoryResponse,
     BatchMessageRequest,
     BatchMessageResponse,
+    ChatHistoryResponse,
+    ChatRequest,
+    ChatResponse,
+    DeleteHistoryResponse,
     HealthStatusResponse,
-    SessionStatsResponse,
+    NewSessionResponse,
     SessionListResponse,
-    ChatSessionInfo
+    SessionStatsResponse,
 )
-from ..dependencies import get_current_user
 from ..services.chat_service import ChatService
 
 logger = logging.getLogger(__name__)
