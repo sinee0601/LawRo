@@ -20,6 +20,10 @@ from ..services.contract_service import ContractService
 
 logger = logging.getLogger(__name__)
 
+# NOTE: 이 라우터의 핸들러 중 await 없이 동기 I/O만 수행하는 것들은 의도적으로
+# `def` 로 선언한다. FastAPI가 스레드풀에서 실행해 이벤트 루프를 막지 않는다.
+# `async def` 로 되돌리면 Firestore·파일 I/O가 이벤트 루프를 점유한다.
+
 router = APIRouter()
 
 # Global contract service instance
@@ -35,7 +39,7 @@ def get_contract_service() -> ContractService:
 
 
 @router.post("/api/upload", response_model=UploadResponse)
-async def upload_contract(
+def upload_contract(
     user_id: str = Form(...),
     language: str = Form("korean"),
     files: List[UploadFile] = File(...),
@@ -158,7 +162,7 @@ async def get_chatbot_status():
 
 
 @router.get("/api/analysis-history/{user_id}")
-async def get_analysis_history(
+def get_analysis_history(
     user_id: str,
     current_user: dict = Depends(get_current_user_optional)
 ):
@@ -210,7 +214,7 @@ async def get_analysis_history(
 
 
 @router.delete("/api/analysis/{analysis_id}")
-async def delete_analysis(
+def delete_analysis(
     analysis_id: str,
     current_user: dict = Depends(get_current_user_optional)
 ):
@@ -242,7 +246,7 @@ async def delete_analysis(
 
 
 @router.get("/health")
-async def health_check():
+def health_check():
     """Contract service health check"""
     try:
         contract_service = get_contract_service()
