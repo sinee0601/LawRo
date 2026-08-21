@@ -63,6 +63,37 @@ jobs:
         # 외부 API 키 없이 도는 테스트만 포함한다 (스키마·설정·앱 조립 검증)
         run: pytest
 
+      # [임시] 라우터 등록 실패 원인 진단용. 원인 확인 후 제거한다.
+      - name: Diagnose router registration
+        if: always()
+        run: |
+          cat > /tmp/diag.py <<'PY'
+          import sys, traceback
+          print("python=" + sys.version.split()[0])
+          for mod in ("fastapi", "starlette", "pydantic"):
+              try:
+                  m = __import__(mod)
+                  print(mod + "=" + str(getattr(m, "__version__", getattr(m, "VERSION", "?"))))
+              except Exception as exc:
+                  print(mod + " import failed: " + repr(exc))
+          for name in ("auth", "chat", "contract", "worktime", "support_center"):
+              try:
+                  m = __import__("app.routers." + name, fromlist=["router"])
+                  print("router " + name + " routes=" + str(len(m.router.routes)))
+              except Exception as exc:
+                  print("router " + name + " FAILED: " + repr(exc))
+                  print(traceback.format_exc().replace(chr(10), " | ")[-400:])
+          try:
+              import app.main as main_mod
+              print("app.routes=" + str(len(main_mod.app.routes)))
+          except Exception as exc:
+              print("app.main FAILED: " + repr(exc))
+              print(traceback.format_exc().replace(chr(10), " | ")[-400:])
+          PY
+          PYTHONPATH=. python /tmp/diag.py > /tmp/diag.txt 2>&1 || true
+          cat /tmp/diag.txt
+          while IFS= read -r line; do echo "::error::$line"; done < /tmp/diag.txt
+
   docker:
     name: docker build
     runs-on: ubuntu-latest
