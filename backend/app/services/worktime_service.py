@@ -4,11 +4,11 @@ Handles work time tracking and workplace management
 """
 
 import logging
-from typing import Optional, List, Dict, Any
-from datetime import datetime, timedelta
 import math
-from ..database import get_firebase, Collections
-from ..models.worktime import WorkplaceLocation, LocationData, WorkRecord
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from ..database import Collections, get_firebase
 
 logger = logging.getLogger(__name__)
 

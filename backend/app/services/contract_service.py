@@ -3,17 +3,19 @@ Contract Service
 Handles contract analysis with OCR, GPT parsing, and chatbot integration
 """
 
-import os
 import json
 import logging
-import tempfile
+import os
 import shutil
-from typing import Dict, Any, List, Optional, Tuple
+import tempfile
 from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Tuple
+
 import httpx
+from starlette.concurrency import run_in_threadpool
 
 from ..config import settings
-from ..database import get_firebase, Collections
+from ..database import Collections, get_firebase
 from ..utils.local_storage import get_local_storage
 
 logger = logging.getLogger(__name__)
@@ -103,7 +105,7 @@ class ContractService:
 
         # Check for saved data in Firestore
         if use_saved_data and self.use_firestore:
-            saved_data = self._get_saved_analysis(user_id, contract_id)
+            saved_data = await run_in_threadpool(self._get_saved_analysis, user_id, contract_id)
             if saved_data:
                 logger.info(f"Using saved analysis data for {contract_id}")
                 return {
@@ -131,10 +133,12 @@ class ContractService:
         logger.info(f"Found {len(file_paths)} contract images")
 
         # Step 2: Process OCR
-        ocr_result = self._process_ocr(file_paths)
+        # 외부 OCR API는 페이지당 최대 60초 블로킹된다. 이벤트 루프를 점유하지
+        # 않도록 스레드풀로 넘긴다.
+        ocr_result = await run_in_threadpool(self._process_ocr, file_paths)
 
         # Step 3: Parse with Solar Pro 2
-        structured_result = self._parse_with_solar(ocr_result)
+        structured_result = await run_in_threadpool(self._parse_with_solar, ocr_result)
 
         # Step 4: Chatbot analysis (if enabled)
         chatbot_analysis = None
@@ -149,7 +153,8 @@ class ContractService:
         # Save to Firestore
         saved_to_firestore = False
         if self.use_firestore:
-            saved_to_firestore = self._save_analysis(
+            saved_to_firestore = await run_in_threadpool(
+                self._save_analysis,
                 user_id,
                 contract_id,
                 structured_result,

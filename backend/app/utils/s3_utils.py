@@ -3,13 +3,14 @@ AWS S3 Utilities
 Functions for uploading/downloading files to/from S3
 """
 
-import boto3
-import os
 import json
 import logging
-from uuid import uuid4
-from botocore.exceptions import ClientError, NoCredentialsError, PartialCredentialsError
+import os
 from typing import List, Optional
+from uuid import uuid4
+
+import boto3
+from botocore.exceptions import ClientError, NoCredentialsError, PartialCredentialsError
 
 from ..config import settings
 

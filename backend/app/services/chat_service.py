@@ -5,24 +5,25 @@ Combines in-memory cache with Firestore persistence
 Optimized with monitoring, error handling, and cost optimization
 """
 
+import asyncio
+import logging
 import os
 import threading
 import time
 import uuid
-import asyncio
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple
-from dataclasses import dataclass, field, asdict
 from collections import deque
-import logging
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Tuple
 
-from openai import OpenAI, APIError, RateLimitError, APIConnectionError
-from langchain_upstage import UpstageEmbeddings
 from langchain_chroma import Chroma
+from langchain_upstage import UpstageEmbeddings
+from openai import APIConnectionError, APIError, OpenAI, RateLimitError
 
-from ..models.chat import ChatMessage
 from ..config import settings
-from ..database import get_firebase, Collections
+from ..database import Collections, get_firebase
+from ..models.chat import ChatMessage
+from . import rag_trace
 
 logger = logging.getLogger(__name__)
 
@@ -405,9 +406,14 @@ class ChatService:
 {language_instruction}"""
             return default_prompt.replace("{context}", context).replace("{language_instruction}", language_instruction)
 
-    async def _call_llm_with_retry(self, messages: List[Dict], session_id: str) -> str:
+    async def _call_llm_with_retry(
+        self, messages: List[Dict], session_id: str, trace: Optional[Dict] = None
+    ) -> str:
         """Call LLM API with retry logic"""
         for attempt in range(self.MAX_RETRIES):
+            # 성공/실패 어느 쪽으로 끝나든 마지막 시도 횟수가 남도록 루프 진입 시점에 기록
+            if trace is not None:
+                trace["retry_count"] = attempt
             try:
                 start_time = time.time()
 
@@ -420,6 +426,12 @@ class ChatService:
                 latency = time.time() - start_time
                 self._llm_metrics.record_latency(latency)
                 self._llm_metrics.record_success(True)
+
+                if trace is not None:
+                    usage = getattr(response, "usage", None)
+                    if usage is not None:
+                        trace["prompt_tokens"] = getattr(usage, "prompt_tokens", 0)
+                        trace["completion_tokens"] = getattr(usage, "completion_tokens", 0)
 
                 logger.debug(f"LLM response latency: {latency:.2f}s")
                 return response.choices[0].message.content
@@ -494,6 +506,14 @@ class ChatService:
         # Get chat history
         chat_history = [] if custom_prompt else self._get_chat_history(session_id)
 
+        # 구간 계측 — embed(외부 API 왕복) / search(프로세스 내부 연산) / generate(외부 API 왕복)
+        trace: Dict[str, Any] = {
+            "embed_ms": 0.0, "search_ms": 0.0, "generate_ms": 0.0, "total_ms": 0.0,
+            "hits": 0, "top_score": None, "status": "ok", "error_type": None,
+            "retry_count": 0, "prompt_tokens": 0, "completion_tokens": 0,
+        }
+        request_start = time.perf_counter()
+
         try:
             # Generate response using OpenAI client
             if not self.client:
@@ -504,7 +524,32 @@ class ChatService:
                 if self.retriever and not custom_prompt:
                     try:
                         rag_start = time.time()
-                        docs = await self.retriever.ainvoke(message)
+
+                        # retriever.ainvoke() 는 임베딩 API 왕복과 벡터 검색을 한 덩어리로 묶는다.
+                        # 성격이 다른 두 구간을 분리하기 위해 같은 결과를 내는 형태로 펼친다.
+                        # (동치성은 bench/verify_equivalence.py 로 질의 5건에서 확인)
+                        embed_start = time.perf_counter()
+                        query_vector = await asyncio.get_running_loop().run_in_executor(
+                            None, self.embedding.embed_query, message
+                        )
+                        trace["embed_ms"] = (time.perf_counter() - embed_start) * 1000
+
+                        search_start = time.perf_counter()
+                        scored = self.vectorstore.similarity_search_by_vector_with_relevance_scores(
+                            query_vector, k=self.RETRIEVAL_K
+                        )
+                        trace["search_ms"] = (time.perf_counter() - search_start) * 1000
+
+                        # cosine 컬렉션의 relevance = 1.0 - distance (langchain_chroma 규약)
+                        relevance = [(doc, 1.0 - distance) for doc, distance in scored]
+                        if relevance:
+                            trace["top_score"] = round(relevance[0][1], 4)
+                        docs = [
+                            doc for doc, score in relevance
+                            if score >= self.RETRIEVAL_SCORE_THRESHOLD
+                        ]
+                        trace["hits"] = len(docs)
+
                         context = "\n\n".join([doc.page_content for doc in docs])
                         rag_latency = time.time() - rag_start
 
@@ -515,6 +560,8 @@ class ChatService:
                     except Exception as e:
                         logger.warning(f"Document retrieval failed: {e}")
                         self._rag_metrics.record_success(False)
+                        trace["status"] = "error"
+                        trace["error_type"] = rag_trace.classify_error(e)
                         context = ""
 
                 # Build system prompt
@@ -538,11 +585,22 @@ class ChatService:
                 messages.append({"role": "user", "content": message})
 
                 # Call LLM with retry logic
-                response_text = await self._call_llm_with_retry(messages, session_id)
+                generate_start = time.perf_counter()
+                response_text = await self._call_llm_with_retry(messages, session_id, trace=trace)
+                trace["generate_ms"] = (time.perf_counter() - generate_start) * 1000
 
         except Exception as e:
             logger.error(f"Error generating response: {e}")
             response_text = f"답변 생성 중 오류가 발생했습니다: {str(e)}"
+            trace["status"] = "error"
+            trace["error_type"] = rag_trace.classify_error(
+                e, retries_exhausted=trace["retry_count"] >= self.MAX_RETRIES - 1
+            )
+
+        trace["total_ms"] = (time.perf_counter() - request_start) * 1000
+        for key in ("embed_ms", "search_ms", "generate_ms", "total_ms"):
+            trace[key] = round(trace[key], 3)
+        rag_trace.record(**trace)
 
         # Add AI response
         assistant_message = ChatMessage(role="assistant", content=response_text)

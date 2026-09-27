@@ -3,14 +3,13 @@ Local File Storage Utilities
 Replacement for AWS S3 - stores files locally on the server
 """
 
-import os
-import shutil
 import json
 import logging
-from pathlib import Path
-from uuid import uuid4
-from typing import List, Optional, Dict, Any
+import os
+import shutil
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+from uuid import uuid4
 
 from ..config import settings
 
@@ -192,7 +191,7 @@ class LocalStorage:
 
                     logger.info(f"File copied successfully: {filename}")
 
-                except FileNotFoundError as e:
+                except FileNotFoundError:
                     logger.error(f"File not found: {relative_path}")
                     raise Exception(f"File not found: {relative_path}")
                 except Exception as e:

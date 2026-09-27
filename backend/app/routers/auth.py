@@ -4,24 +4,25 @@ Handles user authentication with Firebase Authentication
 Compatible with existing frontend endpoints
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends
-from firebase_admin import auth
-import requests
 import logging
 
+import requests
+from fastapi import APIRouter, Depends, HTTPException, status
+from firebase_admin import auth
+
+from ..config import settings
+from ..database import Collections
+from ..dependencies import get_current_user, get_firestore_db
 from ..models.auth import (
-    SignupRequest,
+    AuthResponse,
+    ChangePasswordRequest,
     LoginRequest,
+    MessageResponse,
+    SignupRequest,
     SocialAuthRequest,
     UpdateProfileRequest,
-    ChangePasswordRequest,
-    AuthResponse,
     UserResponse,
-    MessageResponse,
 )
-from ..dependencies import get_current_user, get_firestore_db
-from ..database import Collections
-from ..config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -430,14 +431,14 @@ async def update_profile(
                     "created_at": datetime.utcnow(),
                 }
                 initial_data.update(update_data)
-                logger.info(f"[UPDATE_PROFILE] Calling user_ref.set()")
+                logger.info("[UPDATE_PROFILE] Calling user_ref.set()")
                 user_ref.set(initial_data)
-                logger.info(f"[UPDATE_PROFILE] User document created successfully")
+                logger.info("[UPDATE_PROFILE] User document created successfully")
             else:
                 # Update existing document
-                logger.info(f"[UPDATE_PROFILE] Calling user_ref.update()")
+                logger.info("[UPDATE_PROFILE] Calling user_ref.update()")
                 user_ref.update(update_data)
-                logger.info(f"[UPDATE_PROFILE] User document updated successfully")
+                logger.info("[UPDATE_PROFILE] User document updated successfully")
 
         except Exception as e:
             logger.error(f"[UPDATE_PROFILE] Firestore error ({type(e).__name__}): {str(e)}", exc_info=True)
@@ -503,7 +504,8 @@ async def change_password(
 
             if verify_response.status_code != 200:
                 error_data = verify_response.json()
-                logger.warning(f"[CHANGE_PASSWORD] Password verification failed for user: {email}")
+                error_code = error_data.get("error", {}).get("message", "UNKNOWN")
+                logger.warning(f"[CHANGE_PASSWORD] Password verification failed for user: {email} ({error_code})")
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="현재 비밀번호가 올바르지 않습니다."
@@ -523,7 +525,7 @@ async def change_password(
         try:
             logger.info(f"[CHANGE_PASSWORD] Updating password in Firebase for user: {user_uid}")
             auth.update_user(user_uid, password=new_password)
-            logger.info(f"[CHANGE_PASSWORD] Password updated successfully in Firebase")
+            logger.info("[CHANGE_PASSWORD] Password updated successfully in Firebase")
         except Exception as e:
             logger.error(f"[CHANGE_PASSWORD] Failed to update password in Firebase: {e}")
             raise HTTPException(
@@ -535,7 +537,7 @@ async def change_password(
         from datetime import datetime
         user_ref = db.collection(Collections.USERS).document(user_uid)
         try:
-            logger.info(f"[CHANGE_PASSWORD] Updating password_changed_at timestamp in Firestore")
+            logger.info("[CHANGE_PASSWORD] Updating password_changed_at timestamp in Firestore")
             user_ref.update({
                 "password_changed_at": datetime.utcnow(),
                 "updated_at": datetime.utcnow(),

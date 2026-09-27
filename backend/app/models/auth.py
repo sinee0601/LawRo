@@ -3,9 +3,10 @@ Authentication Models
 Request and response models for authentication endpoints
 """
 
-from pydantic import BaseModel, EmailStr, Field
-from typing import Optional
 from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel, EmailStr, Field
 
 
 # Request Models

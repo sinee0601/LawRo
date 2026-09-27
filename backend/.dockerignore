@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+tests/
+data/
+storage/
+venv/
+.venv/
+.env
+*.env
+firebase-credentials.json
+*.md
+deploy-amazon-linux.sh
+scripts/
