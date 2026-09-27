@@ -1,0 +1,42 @@
+# OCI VM 운영용 Compose. CI 가 이 파일과 Caddyfile 을 ~/lawro 로 복사한 뒤 pull/up 한다.
+# 서버의 ~/lawro 에는 .env, backend.env, firebase-credentials.json 이 미리 있어야 한다 (deploy/README.md).
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      # 도메인을 넣으면 Let's Encrypt 인증서를 자동 발급한다. 비우면 :80 평문으로 동작
+      SITE_ADDRESS: ${SITE_ADDRESS:-}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+      - frontend
+
+  backend:
+    image: ghcr.io/${GHCR_OWNER}/lawro-backend:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    env_file: backend.env
+    environment:
+      ENVIRONMENT: production
+    volumes:
+      - ./firebase-credentials.json:/app/firebase-credentials.json:ro
+      - chroma_data:/app/data
+      - contract_storage:/app/storage
+
+  frontend:
+    image: ghcr.io/${GHCR_OWNER}/lawro-frontend:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
+  chroma_data:
+  contract_storage:
