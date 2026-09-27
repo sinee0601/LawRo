@@ -37,7 +37,7 @@ OCI VM (Ampere A1, Always Free)
    scp backend/.env ubuntu@<IP>:~/lawro/backend.env
    scp backend/firebase-credentials.json ubuntu@<IP>:~/lawro/
    ```
-   `backend.env` 에서 운영 값 확인: `CORS_ORIGINS`, `FRONTEND_URL`(=`https://<도메인>`), `JWT_SECRET_KEY`, `DEBUG=false`.
+   항목은 [backend.env.example](backend.env.example) 참고. `JWT_SECRET_KEY` 는 반드시 새 랜덤 값으로.
 
 > A1 인스턴스는 "Out of capacity" 로 생성이 실패하는 일이 잦다. 다른 AD 를 고르거나 시간을 두고 재시도한다.
 > Always Free 인스턴스가 7일간 CPU/네트워크/메모리 사용률이 매우 낮으면 회수될 수 있다. 계정을 Pay As You Go 로 전환하면(프리티어 범위 안에서는 과금 없음) 회수 대상에서 빠진다.
