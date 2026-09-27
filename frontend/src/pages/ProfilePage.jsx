@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { settingsAPI } from '../services/api';
 import { User, Mail } from 'lucide-react';
@@ -7,12 +6,11 @@ import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
 
 export default function ProfilePage() {
-  const navigate = useNavigate();
   const { user } = useAuthStore();
   const [editName, setEditName] = useState(false);
   const [fullName, setFullName] = useState(user?.full_name || '');
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [, setError] = useState('');
 
   const handleSave = async () => {
     setIsSaving(true);

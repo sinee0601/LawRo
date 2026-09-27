@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
 import { settingsAPI } from '../services/api';
 import { Check, Sun, Moon, Info } from 'lucide-react';
 import MobileHeader from '../components/MobileHeader';
@@ -8,7 +7,6 @@ import BottomNav from '../components/BottomNav';
 
 export default function ThemePage() {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
   const [selectedTheme, setSelectedTheme] = useState('light');
   const [isSaving, setIsSaving] = useState(false);
 

@@ -381,7 +381,7 @@ export default function AnalysisHistoryPage() {
                           </div>
                         );
                       }
-                    } catch (e) {
+                    } catch {
                       // If JSON parsing fails, show as plain text
                     }
 

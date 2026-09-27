@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   MapPin,
   Phone,
@@ -32,7 +31,6 @@ const centerTypeColors = {
 };
 
 export default function SupportCenterPage() {
-  const navigate = useNavigate();
 
   const [centers, setCenters] = useState([]);
   const [emergencyContacts, setEmergencyContacts] = useState([]);

@@ -1,6 +1,6 @@
 # LawRo 프론트엔드 이미지 (Vite 빌드 → nginx 정적 서빙)
 
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /app
 
 # 의존성 레이어를 분리해 소스 변경 시 재설치를 피한다

@@ -1,10 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import { Info, AlertCircle } from 'lucide-react';
 import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
 
 export default function AboutPage() {
-  const navigate = useNavigate();
 
   const handleComingSoon = () => {
     alert('이 기능은 추후 업데이트 예정입니다. 기다려주세요!');
