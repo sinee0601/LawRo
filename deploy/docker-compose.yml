@@ -11,7 +11,8 @@ services:
       - "443:443/udp"
     environment:
       # 도메인을 넣으면 Let's Encrypt 인증서를 자동 발급한다. 비우면 :80 평문으로 동작
-      SITE_ADDRESS: ${SITE_ADDRESS:-}
+      # (빈 문자열을 넘기면 Caddyfile 첫 줄이 `{` 가 되어 전역 옵션으로 파싱되므로 여기서 기본값을 채운다)
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
