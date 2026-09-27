@@ -1,0 +1,171 @@
+name: deploy
+
+# main 에 머지되면 변경된 쪽(backend/frontend)만 검증 → arm64 이미지 빌드 → OCI VM 에 배포한다
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - "deploy/**"
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/frontend-ci.yml"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+# 배포는 겹치지 않게 순서대로, 진행 중인 배포는 취소하지 않는다
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend == 'true' || github.event_name == 'workflow_dispatch' }}
+      frontend: ${{ steps.filter.outputs.frontend == 'true' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - "backend/**"
+              - ".github/workflows/ci.yml"
+            frontend:
+              - "frontend/**"
+              - ".github/workflows/frontend-ci.yml"
+
+  backend-ci:
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
+    uses: ./.github/workflows/ci.yml
+
+  frontend-ci:
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    uses: ./.github/workflows/frontend-ci.yml
+
+  build-backend:
+    needs: backend-ci
+    # OCI 프리티어 Ampere A1 은 arm64 이므로 arm 러너에서 네이티브 빌드한다
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Image name
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/lawro-backend" >> "$GITHUB_ENV"
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          platforms: linux/arm64
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
+          cache-from: type=gha,scope=backend-arm64
+          cache-to: type=gha,scope=backend-arm64,mode=max
+
+  build-frontend:
+    needs: frontend-ci
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Image name
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/lawro-frontend" >> "$GITHUB_ENV"
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          platforms: linux/arm64
+          push: true
+          build-args: |
+            VITE_API_URL=/api
+          tags: |
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
+          cache-from: type=gha,scope=frontend-arm64
+          cache-to: type=gha,scope=frontend-arm64,mode=max
+
+  deploy:
+    needs: [build-backend, build-frontend]
+    # 한쪽만 바뀌어 다른 쪽 빌드가 skip 되어도 배포는 진행한다. 실패/취소가 있으면 중단
+    if: ${{ always() && !failure() && !cancelled() }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy compose files
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.OCI_HOST }}
+          username: ${{ secrets.OCI_USER }}
+          key: ${{ secrets.OCI_SSH_KEY }}
+          source: "deploy/docker-compose.yml,deploy/Caddyfile"
+          target: "~/lawro"
+          strip_components: 1
+
+      - name: Pull and restart
+        uses: appleboy/ssh-action@v1
+        env:
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_OWNER: ${{ github.repository_owner }}
+          SITE_ADDRESS: ${{ vars.SITE_ADDRESS }}
+        with:
+          host: ${{ secrets.OCI_HOST }}
+          username: ${{ secrets.OCI_USER }}
+          key: ${{ secrets.OCI_SSH_KEY }}
+          envs: GHCR_USER,GHCR_TOKEN,GHCR_OWNER,SITE_ADDRESS
+          script_stop: true
+          script: |
+            set -eu
+            cd ~/lawro
+
+            # 운영 시크릿은 서버에만 둔다. 없으면 배포를 멈춘다
+            for f in backend.env firebase-credentials.json; do
+              [ -f "$f" ] || { echo "::error::~/lawro/$f 가 없습니다 (deploy/README.md 참고)"; exit 1; }
+            done
+
+            # Compose 변수 파일 (CI 가 매번 다시 쓴다)
+            {
+              echo "GHCR_OWNER=$(echo "$GHCR_OWNER" | tr '[:upper:]' '[:lower:]')"
+              echo "SITE_ADDRESS=${SITE_ADDRESS}"
+            } > .env
+
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker logout ghcr.io
+            docker image prune -f
+
+            # 백엔드가 요청을 받을 때까지 최대 60초 대기
+            for i in $(seq 1 30); do
+              if docker compose exec -T backend python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=3)" 2>/dev/null; then
+                echo "backend is up"
+                docker compose ps
+                exit 0
+              fi
+              sleep 2
+            done
+            echo "::error::backend did not become ready"
+            docker compose logs --tail=100 backend
+            exit 1

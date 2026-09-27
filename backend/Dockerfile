@@ -19,8 +19,10 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY app ./app
 COPY prompts ./prompts
 
-# 비root 실행
-RUN useradd --create-home --uid 10001 lawro && chown -R lawro:lawro /app
+# 비root 실행. 볼륨 마운트 지점을 미리 만들어 named volume 이 소유권을 이어받게 한다
+RUN useradd --create-home --uid 10001 lawro \
+    && mkdir -p data/chroma storage/contracts \
+    && chown -R lawro:lawro /app
 USER lawro
 
 EXPOSE 8000

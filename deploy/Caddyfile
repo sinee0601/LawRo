@@ -1,0 +1,14 @@
+# SITE_ADDRESS 가 비어 있으면 :80 으로, 도메인이면 HTTPS 자동 발급으로 동작한다
+{$SITE_ADDRESS::80} {
+	encode gzip
+
+	# 프론트는 VITE_API_URL=/api 로 빌드된다. 프리픽스를 떼고 백엔드로 넘긴다
+	# (SPA 경로 /chat, /contract 와 API 경로가 겹치기 때문에 분리)
+	handle_path /api/* {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		reverse_proxy frontend:80
+	}
+}
