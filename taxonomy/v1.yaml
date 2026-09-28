@@ -1,0 +1,295 @@
+# LawRo 노동 법률 콘텐츠 분류 체계 v1
+# 라벨 정의·경계 사례·판단 기준은 GUIDE.md 를 따른다. 이 파일과 GUIDE.md 는 항상 함께 버전을 올린다.
+#
+# 적용 대상(content_type)
+#   query          : 사용자 상담 질문 (챗봇 입력)
+#   contract_clause: OCR 로 추출한 근로계약서 조항 1개
+#   law_article    : 법령 조문 1개 (backend/data/raw_laws, 12개 법령)
+
+version: "1.2.0"
+released: "2026-09-28"
+
+content_types: [query, contract_clause, law_article]
+
+# ---------------------------------------------------------------------------
+# 카테고리: 2단계(대분류 → 세분류)
+#   - primary  : 정확히 1개 (세분류 id). 판단받고 싶은 "최종 쟁점" 기준
+#   - secondary: 0~2개 (세분류 id). 함께 언급되지만 결론을 좌우하지 않는 쟁점
+# ---------------------------------------------------------------------------
+categories:
+  - id: WAGE
+    name: 임금·수당
+    description: 받을 돈의 금액, 지급 시기·방법, 공제, 체불
+    children:
+      - id: WAGE.MINIMUM
+        name: 최저임금
+      - id: WAGE.ALLOWANCE
+        name: 가산수당·주휴수당·휴업수당
+        description: 연장·야간·휴일근로 가산금, 주휴수당, 사용자 사정으로 쉴 때의 휴업수당
+      - id: WAGE.PAYMENT
+        name: 지급 원칙·공제
+        description: 정기지급, 전액지급, 임금에서의 공제(기숙사비·식비·벌금 등), 일방적 감액
+      - id: WAGE.UNPAID
+        name: 임금체불·대지급금
+        description: 이미 받지 못한 임금의 구제 수단. 체불 진정, 도산 시 대지급금(임금채권보장법)
+      - id: WAGE.SETTLEMENT
+        name: 퇴직 시 금품청산
+        description: 퇴직할 때 정산받을 항목·금액·기한. 미사용 연차수당, 마지막 달 임금, 14일 내 지급(근로기준법 제36조). 퇴직금은 RETIREMENT
+
+  - id: WORKTIME
+    name: 근로시간·휴게
+    description: 일할 수 있는 시간의 한도와 휴게. 돈이 아니라 "시간" 자체가 쟁점일 때
+    children:
+      - id: WORKTIME.LIMIT
+        name: 법정근로시간·연장근로 한도
+      - id: WORKTIME.BREAK
+        name: 휴게시간
+      - id: WORKTIME.SHIFT
+        name: 야간·휴일근로 제한, 교대제
+
+  - id: LEAVE
+    name: 휴일·휴가
+    description: 쉬는 날의 부여 여부와 일수
+    children:
+      - id: LEAVE.WEEKLY_HOLIDAY
+        name: 주휴일·공휴일
+      - id: LEAVE.ANNUAL
+        name: 연차유급휴가
+      - id: LEAVE.MATERNITY_FAMILY
+        name: 출산전후휴가·육아휴직·가족돌봄
+      - id: LEAVE.SICK
+        name: 병가·기타 휴가
+
+  - id: CONTRACT
+    name: 근로계약·근로조건
+    description: 계약의 체결·내용·기간, 계약서에 넣을 수 없는 조건
+    children:
+      - id: CONTRACT.WRITTEN
+        name: 근로계약서 작성·교부·근로조건 명시
+      - id: CONTRACT.PROBATION
+        name: 수습·시용 기간 자체
+        description: 수습 기간의 길이·효력. 수습 중 임금·해고 쟁점은 해당 카테고리로
+      - id: CONTRACT.FIXED_TERM
+        name: 기간제·단시간 계약
+        description: 계약기간 2년 제한, 무기계약 전환, 단시간근로자 차별
+      - id: CONTRACT.PROHIBITED_TERMS
+        name: 금지 조항
+        description: 위약금·손해배상 예정, 강제저금, 전차금 상계 등 계약에 둘 수 없는 조항
+      - id: CONTRACT.RULES
+        name: 취업규칙·근로조건 변경
+
+  - id: TERMINATION
+    name: 해고·퇴사
+    description: 근로관계가 끝나는 과정 자체
+    children:
+      - id: TERMINATION.DISMISSAL
+        name: 해고 제한·해고예고
+      - id: TERMINATION.UNFAIR_REMEDY
+        name: 부당해고 구제
+      - id: TERMINATION.RESIGNATION
+        name: 자진 퇴사·권고사직·계약 만료
+
+  - id: RETIREMENT
+    name: 퇴직금·퇴직연금
+    description: 퇴직 시 받는 퇴직급여 (EPS 출국만기보험 포함)
+    children:
+      - id: RETIREMENT.SEVERANCE
+        name: 퇴직금 요건·계산·지급기한
+      - id: RETIREMENT.PENSION_PLAN
+        name: 퇴직연금 (DB·DC·IRP)
+        description: 퇴직연금 가입, 적립금 운용, 중도인출
+      - id: RETIREMENT.EPS_DEPARTURE
+        name: 출국만기보험
+        description: 외국인근로자 퇴직금 대체 보험의 수령 시기·방법
+
+  - id: SOCIAL_INSURANCE
+    name: 사회보험
+    description: 국민연금·건강보험·고용보험의 가입, 보험료, 급여. 산재보험은 제외(INJURY)
+    children:
+      - id: SOCIAL_INSURANCE.ENROLLMENT
+        name: 4대보험 가입 전반
+        description: 특정 보험이 아니라 4대보험 가입 의무·미가입을 묶어서 묻는 경우 (산재보험이 포함돼도 여기)
+      - id: SOCIAL_INSURANCE.PENSION
+        name: 국민연금 (반환일시금 포함)
+      - id: SOCIAL_INSURANCE.HEALTH
+        name: 건강보험
+      - id: SOCIAL_INSURANCE.EMPLOYMENT
+        name: 고용보험·실업급여
+        description: 실업급여, 고용보험에서 나오는 육아휴직·출산전후휴가 급여 포함
+      - id: SOCIAL_INSURANCE.EPS
+        name: 고용허가제 전용 보험
+        description: 귀국비용보험, 상해보험. 출국만기보험은 RETIREMENT, 보증보험은 WAGE.UNPAID (기능 기준, R8)
+
+  - id: INJURY
+    name: 산재·안전
+    description: 업무상 재해의 보상과 사고 예방
+    children:
+      - id: INJURY.COMPENSATION
+        name: 산재 인정·보상
+        description: 요양·휴업·장해급여, 산재 신청 절차
+      - id: INJURY.SAFETY
+        name: 산업안전·보건
+        description: 안전장비, 위험작업 거부, 안전교육, 사업주 안전조치 의무
+
+  - id: STAY
+    name: 체류·고용허가
+    description: 외국인근로자의 체류 자격과 고용허가제(EPS) 절차
+    children:
+      - id: STAY.EPS_PROCESS
+        name: 고용허가·입국·취업교육
+        description: 고용허가제로 들어오기까지의 절차 (구직자 명부, 고용허가, 사증발급인정, 취업교육)
+      - id: STAY.WORKPLACE_CHANGE
+        name: 사업장 변경
+      - id: STAY.EXTENSION
+        name: 체류기간 연장·재고용·재입국
+      - id: STAY.DOCUMENTS
+        name: 여권·외국인등록증 보관, 신분증 관련
+        description: 외국인등록, 체류지 변경신고, 사용자의 여권·등록증 보관·담보 금지
+      - id: STAY.STATUS
+        name: 체류자격·불법체류·출국
+        description: 체류자격 변경, 불법고용, 강제퇴거·보호, 출국명령
+
+  - id: HOUSING
+    name: 숙식·기숙사
+    description: 기숙사 시설 기준, 제공 숙식의 조건. 비용 공제가 쟁점이면 WAGE.PAYMENT
+    children:
+      - id: HOUSING.DORMITORY
+        name: 기숙사 시설·생활
+
+  - id: MISTREATMENT
+    name: 괴롭힘·차별·강요
+    description: 인격권·평등권 침해
+    children:
+      - id: MISTREATMENT.HARASSMENT
+        name: 직장 내 괴롭힘·폭행·폭언
+        description: 사용자·동료에 의한 것. 고객의 폭언은 INJURY.SAFETY (산업안전보건법 제41조)
+      - id: MISTREATMENT.DISCRIMINATION
+        name: 국적·성별 등 차별
+        description: 고용형태(기간제·단시간)를 이유로 한 차별은 CONTRACT.FIXED_TERM
+      - id: MISTREATMENT.FORCED_LABOR
+        name: 강제근로·중간착취·감금
+        description: 강제근로, 브로커 등 제3자의 중간착취, 감금
+
+  # --- 범위 밖 / 메타 -------------------------------------------------------
+  - id: OUT_OF_SCOPE
+    name: 범위 밖
+    description: 노동·체류와 무관한 콘텐츠. law_article 에도 쓴다 (출입국관리법의 선박·난민·국민 출국금지 조문 등)
+    children:
+      - id: OUT_OF_SCOPE.OTHER_LEGAL
+        name: 노동 외 법률 문제
+        description: 임대차, 교통사고, 형사 등. 법률 질문이지만 LawRo 코퍼스 밖
+      - id: OUT_OF_SCOPE.NON_LEGAL
+        name: 법률과 무관
+        description: 날씨, 맛집, 잡담 등
+
+  - id: META
+    name: 법령 일반 조항
+    description: 목적·정의·벌칙·과태료·권한 위임 등 특정 쟁점에 속하지 않는 조문
+    applies_to: [law_article]
+    children:
+      - id: META.GENERAL
+        name: 목적·정의·적용 범위
+      - id: META.PENALTY
+        name: 벌칙·과태료
+      - id: META.ADMIN
+        name: 행정 절차·기관·위임
+        description: 공단·위원회 조직, 기금·회계, 권한 위임, 기관 지정·인증·등록, 사업주 대상 지원사업 (R9)
+
+# ---------------------------------------------------------------------------
+# 속성: 텍스트에 "명시된 경우에만" 값을 채운다. 추측 금지, 모르면 unknown
+#   source: llm  → LLM 이 추출
+#           rule → 규칙·라이브러리로 계산 (LLM 에 맡기지 않는다)
+# ---------------------------------------------------------------------------
+attributes:
+  - id: intent
+    name: 질문 의도
+    applies_to: [query]
+    source: llm
+    values:
+      - id: info
+        description: 일반적인 규정·권리가 궁금함 ("연차는 며칠인가요?")
+      - id: calculation
+        description: 금액·일수·시간을 계산하고 싶음 ("주휴수당 얼마 받아요?")
+      - id: procedure
+        description: 신고·신청·서류 등 방법을 알고 싶음 ("어디에 신청하나요?")
+      - id: dispute
+        description: 이미 문제가 발생해 대응하려 함 ("사장이 월급을 안 줘요")
+
+  - id: urgency
+    name: 긴급도
+    applies_to: [query]
+    source: llm
+    values:
+      - id: high
+        description: 신체 위험·진행 중인 폭행·여권 압수·감금·출국 임박 등 즉시 조치가 필요함
+      - id: medium
+        description: 권리 침해가 이미 발생했으나 즉각적 위해는 없음 (체불, 해고 통보 등)
+      - id: low
+        description: 문제 발생 전 정보 탐색
+    default: low
+
+  - id: employment_type
+    name: 고용 형태
+    applies_to: [query, contract_clause]
+    source: llm
+    values: [regular, fixed_term, part_time, probation, daily, unknown]
+    default: unknown
+
+  - id: worker_status
+    name: 근로 단계
+    applies_to: [query]
+    source: llm
+    values:
+      - id: pre_employment
+        description: 구직 중, 계약 체결 전
+      - id: employed
+        description: 재직 중
+      - id: left
+        description: 퇴사·해고 이후
+      - id: unknown
+    default: unknown
+
+  - id: workplace_size
+    name: 사업장 규모
+    applies_to: [query, contract_clause]
+    source: llm
+    # 근로기준법 일부 규정(해고 제한, 가산수당, 연차 등)은 상시 5인 미만 사업장에 적용되지 않는다.
+    # 답이 달라지는 유일한 규모 경계라서 5인 기준만 둔다.
+    values: [under_5, 5_or_more, unknown]
+    default: unknown
+
+  - id: visa_type
+    name: 체류 자격
+    applies_to: [query]
+    source: llm
+    values: [E-9, H-2, E-7, F-series, other, unknown]
+    default: unknown
+
+  - id: language
+    name: 작성 언어
+    applies_to: [query, contract_clause]
+    source: rule
+    values: [ko, en, zh, vi, ja, th, other]
+
+  - id: legal_refs
+    name: 관련 법령 조문
+    applies_to: [query, contract_clause, law_article]
+    source: llm
+    # 형식: {law: <_manifest.json 의 law_name>, article: "제N조"} 의 목록.
+    # 코퍼스 12개 법령 밖의 법령은 넣지 않는다 (검증 단계에서 manifest 대조로 걸러낸다)
+    type: list
+    max_items: 3
+
+  - id: compliance
+    name: 조항 적법성
+    applies_to: [contract_clause]
+    source: llm
+    values:
+      - id: violation
+        description: 법 기준에 명백히 미달하거나 금지된 조항 (최저임금 미달, 위약금 예정 등)
+      - id: needs_review
+        description: 사실관계에 따라 위법일 수 있음 (포괄임금, 모호한 공제 등)
+      - id: compliant
+        description: 법 기준을 충족
+      - id: not_applicable
+        description: 적법성 판단 대상이 아님 (당사자 정보, 서명란 등)
