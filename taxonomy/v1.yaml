@@ -6,7 +6,7 @@
 #   contract_clause: OCR 로 추출한 근로계약서 조항 1개
 #   law_article    : 법령 조문 1개 (backend/data/raw_laws, 12개 법령)
 
-version: "1.1.0"
+version: "1.2.0"
 released: "2026-09-28"
 
 content_types: [query, contract_clause, law_article]
@@ -31,7 +31,10 @@ categories:
         description: 정기지급, 전액지급, 임금에서의 공제(기숙사비·식비·벌금 등), 일방적 감액
       - id: WAGE.UNPAID
         name: 임금체불·대지급금
-        description: 체불 대응, 진정, 도산 시 대지급금(임금채권보장법)
+        description: 이미 받지 못한 임금의 구제 수단. 체불 진정, 도산 시 대지급금(임금채권보장법)
+      - id: WAGE.SETTLEMENT
+        name: 퇴직 시 금품청산
+        description: 퇴직할 때 정산받을 항목·금액·기한. 미사용 연차수당, 마지막 달 임금, 14일 내 지급(근로기준법 제36조). 퇴직금은 RETIREMENT
 
   - id: WORKTIME
     name: 근로시간·휴게
