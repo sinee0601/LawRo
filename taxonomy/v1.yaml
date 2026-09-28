@@ -6,7 +6,7 @@
 #   contract_clause: OCR 로 추출한 근로계약서 조항 1개
 #   law_article    : 법령 조문 1개 (backend/data/raw_laws, 12개 법령)
 
-version: "1.0.0"
+version: "1.1.0"
 released: "2026-09-28"
 
 content_types: [query, contract_clause, law_article]
@@ -24,8 +24,8 @@ categories:
       - id: WAGE.MINIMUM
         name: 최저임금
       - id: WAGE.ALLOWANCE
-        name: 가산수당·주휴수당
-        description: 연장·야간·휴일근로 가산금, 주휴수당의 발생 여부와 계산
+        name: 가산수당·주휴수당·휴업수당
+        description: 연장·야간·휴일근로 가산금, 주휴수당, 사용자 사정으로 쉴 때의 휴업수당
       - id: WAGE.PAYMENT
         name: 지급 원칙·공제
         description: 정기지급, 전액지급, 임금에서의 공제(기숙사비·식비·벌금 등), 일방적 감액
@@ -92,6 +92,9 @@ categories:
     children:
       - id: RETIREMENT.SEVERANCE
         name: 퇴직금 요건·계산·지급기한
+      - id: RETIREMENT.PENSION_PLAN
+        name: 퇴직연금 (DB·DC·IRP)
+        description: 퇴직연금 가입, 적립금 운용, 중도인출
       - id: RETIREMENT.EPS_DEPARTURE
         name: 출국만기보험
         description: 외국인근로자 퇴직금 대체 보험의 수령 시기·방법
@@ -109,6 +112,10 @@ categories:
         name: 건강보험
       - id: SOCIAL_INSURANCE.EMPLOYMENT
         name: 고용보험·실업급여
+        description: 실업급여, 고용보험에서 나오는 육아휴직·출산전후휴가 급여 포함
+      - id: SOCIAL_INSURANCE.EPS
+        name: 고용허가제 전용 보험
+        description: 귀국비용보험, 상해보험. 출국만기보험은 RETIREMENT, 보증보험은 WAGE.UNPAID (기능 기준, R8)
 
   - id: INJURY
     name: 산재·안전
@@ -125,14 +132,19 @@ categories:
     name: 체류·고용허가
     description: 외국인근로자의 체류 자격과 고용허가제(EPS) 절차
     children:
+      - id: STAY.EPS_PROCESS
+        name: 고용허가·입국·취업교육
+        description: 고용허가제로 들어오기까지의 절차 (구직자 명부, 고용허가, 사증발급인정, 취업교육)
       - id: STAY.WORKPLACE_CHANGE
         name: 사업장 변경
       - id: STAY.EXTENSION
         name: 체류기간 연장·재고용·재입국
       - id: STAY.DOCUMENTS
         name: 여권·외국인등록증 보관, 신분증 관련
+        description: 외국인등록, 체류지 변경신고, 사용자의 여권·등록증 보관·담보 금지
       - id: STAY.STATUS
         name: 체류자격·불법체류·출국
+        description: 체류자격 변경, 불법고용, 강제퇴거·보호, 출국명령
 
   - id: HOUSING
     name: 숙식·기숙사
@@ -147,15 +159,18 @@ categories:
     children:
       - id: MISTREATMENT.HARASSMENT
         name: 직장 내 괴롭힘·폭행·폭언
+        description: 사용자·동료에 의한 것. 고객의 폭언은 INJURY.SAFETY (산업안전보건법 제41조)
       - id: MISTREATMENT.DISCRIMINATION
         name: 국적·성별 등 차별
+        description: 고용형태(기간제·단시간)를 이유로 한 차별은 CONTRACT.FIXED_TERM
       - id: MISTREATMENT.FORCED_LABOR
-        name: 강제근로·감금
+        name: 강제근로·중간착취·감금
+        description: 강제근로, 브로커 등 제3자의 중간착취, 감금
 
   # --- 범위 밖 / 메타 -------------------------------------------------------
   - id: OUT_OF_SCOPE
     name: 범위 밖
-    description: 노동·체류와 무관한 콘텐츠
+    description: 노동·체류와 무관한 콘텐츠. law_article 에도 쓴다 (출입국관리법의 선박·난민·국민 출국금지 조문 등)
     children:
       - id: OUT_OF_SCOPE.OTHER_LEGAL
         name: 노동 외 법률 문제
@@ -175,6 +190,7 @@ categories:
         name: 벌칙·과태료
       - id: META.ADMIN
         name: 행정 절차·기관·위임
+        description: 공단·위원회 조직, 기금·회계, 권한 위임, 기관 지정·인증·등록, 사업주 대상 지원사업 (R9)
 
 # ---------------------------------------------------------------------------
 # 속성: 텍스트에 "명시된 경우에만" 값을 채운다. 추측 금지, 모르면 unknown

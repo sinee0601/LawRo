@@ -1,4 +1,4 @@
-# LawRo 분류 체계 가이드 v1
+# LawRo 분류 체계 가이드 v1.1
 
 `v1.yaml` 의 각 라벨을 **어떻게 붙이는지**에 대한 기준이다.
 사람 라벨링(골든셋)과 LLM 추출 프롬프트가 이 문서를 같은 기준으로 쓴다.
@@ -59,6 +59,14 @@ LawRo 에 들어오는 세 종류의 콘텐츠를 **하나의 분류 체계**로
 ### D8. META 는 law_article 에만 쓴다
 - 법령에는 "목적", "정의", "벌칙"처럼 특정 쟁점에 속하지 않는 조문이 많다 (산업안전보건법·출입국관리법의 상당수가 행정 절차).
 - 이것들을 억지로 쟁점 카테고리에 넣으면 검색 필터가 오히려 부정확해진다. 질문과 계약서에는 이런 성격이 없으므로 쓰지 않는다.
+- 조문 제목 키워드로 대략 세어 보면 1,318건 중 **최소 375건(28%)** 이 목적·정의·벌칙·조직·기금·위임 같은 조문이다
+  (법령별 19~51%. 임금채권보장법·최저임금법은 절반 가까이가 기금·위원회 조문. 제목이 빈 삭제 조문 11건은 제외).
+  키워드에 걸리지 않는 인증·지정 조문까지 치면 더 많다. 이 조문들이 검색 결과에 섞이면 질문에 대한 답이 되지 못한다.
+
+### D12. 코퍼스 안에도 범위 밖 조문이 있다
+- 출입국관리법에는 선박 검색, 승무원 상륙허가, 난민, 국민의 출국금지처럼 외국인근로자와 무관한 조문이 30여 개 있다.
+- META 는 "쟁점과 무관한 형식 조항"이고, 이 조문들은 "쟁점이 있지만 LawRo 범위 밖"이라 성격이 다르다.
+  그래서 law_article 에도 `OUT_OF_SCOPE.OTHER_LEGAL` 을 쓴다. 이후 검색 색인에서 뺄지 판단하는 근거가 된다.
 
 ### D9. 속성은 "명시된 경우에만" 채운다
 - `workplace_size`, `visa_type` 등은 답을 바꾸는 중요한 정보지만, 질문에 없으면 LLM 이 그럴듯하게 추측하기 쉽다.
@@ -91,12 +99,16 @@ LawRo 에 들어오는 세 종류의 콘텐츠를 **하나의 분류 체계**로
 | # | 규칙 | 예 |
 |---|---|---|
 | R1 | 쟁점이 **돈의 액수·지급**이면 WAGE, **시간의 길이·한도**면 WORKTIME | "연장근로 수당 얼마?" → WAGE.ALLOWANCE / "연장근로 주 몇 시간까지?" → WORKTIME.LIMIT |
-| R2 | 쉬는 날의 **부여 여부·일수**는 LEAVE, 그날에 대한 **돈**은 WAGE | "주휴일을 줘야 하나?" → LEAVE.WEEKLY_HOLIDAY / "주휴수당 받나?" → WAGE.ALLOWANCE |
+| R2 | 쉬는 날의 **부여 여부·일수**는 LEAVE, 그날에 대해 **사용자가 주는 돈**은 WAGE, **보험에서 나오는 급여**는 SOCIAL_INSURANCE | "주휴일을 줘야 하나?" → LEAVE.WEEKLY_HOLIDAY / "주휴수당 받나?" → WAGE.ALLOWANCE / "육아휴직 급여 얼마?" → SOCIAL_INSURANCE.EMPLOYMENT |
 | R3 | 무언가를 임금에서 **빼는 것**이 쟁점이면 무엇을 빼든 WAGE.PAYMENT | 기숙사비·식비·벌금·유니폼비 공제 |
 | R4 | 대상(수습·기간제·단시간·일용)은 카테고리가 아니라 `employment_type` 속성 | "알바도 주휴수당?" → WAGE.ALLOWANCE + part_time |
 | R5 | 해고 **이후 받을 돈**(퇴직금·실업급여·체불임금)이 쟁점이면 그 돈의 카테고리 | "해고됐는데 실업급여 받나?" → SOCIAL_INSURANCE.EMPLOYMENT, secondary TERMINATION.DISMISSAL |
 | R6 | 서로 독립된 질문이 여러 개면, 첫 질문 기준으로 primary 를 정하고 나머지는 secondary. 3개 이상이면 `notes` 에 "multi_question" 표시 | 이후 파이프라인에서 질문 분리 대상으로 쓴다 |
 | R7 | 진짜로 우열을 가릴 수 없을 때만 우선순위: MISTREATMENT > INJURY > STAY > TERMINATION > WAGE > 나머지 | 위해가 크고 시급한 쪽을 먼저. 이 규칙을 쓴 경우 `notes` 에 "tie_break" 표시 |
+
+| R8 | 보험·제도는 **이름이 아니라 기능**으로 분류한다 | 출국만기보험(퇴직금 대체) → RETIREMENT.EPS_DEPARTURE / 보증보험(체불 대비) → WAGE.UNPAID / 귀국비용보험·상해보험 → SOCIAL_INSURANCE.EPS |
+| R9 | (law_article) 근로자가 **직접 주장·이용하는 권리·의무**면 쟁점 카테고리, 기관 조직·기금·인증·등록·사업주 지원사업이면 META.ADMIN | 산업안전보건법 제52조(근로자의 작업중지) → INJURY.SAFETY / 제84조(안전인증) → META.ADMIN |
+| R10 | 심사청구·재심사 같은 **불복 절차**는 해당 제도의 카테고리 | 산재 심사청구 → INJURY.COMPENSATION / 고용보험 심사청구 → SOCIAL_INSURANCE.EMPLOYMENT |
 
 R7 을 자주 쓰게 된다면 규칙이 아니라 분류 체계가 잘못된 것이다. 골든셋 라벨링 중 R7 사용 비율을 기록한다.
 
@@ -125,6 +137,17 @@ R7 을 자주 쓰게 된다면 규칙이 아니라 분류 체계가 잘못된 �
 | 사장이 한국인 직원보다 월급을 적게 줘요 | MISTREATMENT.DISCRIMINATION, secondary WAGE.PAYMENT | 쟁점은 금액이 아니라 국적에 따른 차별(근로기준법 제6조) |
 | 전세 보증금을 못 돌려받고 있어요 | OUT_OF_SCOPE.OTHER_LEGAL | D7 |
 | (조문) 근로기준법 제109조 벌칙 | META.PENALTY | D8 |
+| 손님이 매일 욕을 해요 | INJURY.SAFETY, secondary MISTREATMENT.HARASSMENT | 직장 내 괴롭힘(근로기준법 제76조의2)은 사용자·동료가 가해자일 때다. 고객 폭언은 사업주의 건강장해 예방 의무(산업안전보건법 제41조) |
+| 쉴 곳이 없어서 창고 바닥에서 쉬어요 | INJURY.SAFETY | 휴게**시설**(산업안전보건법 제128조의2)은 시설 문제. 휴게**시간**의 길이가 쟁점이면 WORKTIME.BREAK |
+| 위험한 작업도 하루 8시간 넘게 시켜요 | WORKTIME.LIMIT, secondary INJURY.SAFETY | R1: 시간의 한도가 쟁점. 근거는 산업안전보건법 제139조지만 질문자가 묻는 건 시간 |
+| 계약직이라고 상여금을 안 줘요 | CONTRACT.FIXED_TERM | 고용형태 차별은 기간제법 차별 시정(노동위원회)으로 다룬다. 국적·성별 차별만 MISTREATMENT.DISCRIMINATION |
+| 지각했다고 월급에서 10만원을 뺐어요 | WAGE.PAYMENT | R3. 감급 제재의 한도(근로기준법 제95조)도 결국 임금에서 빼는 문제 |
+| 사장이 외국인등록증을 돈 빌려준 담보로 가져갔어요 | STAY.DOCUMENTS, urgency=high | 등록증을 채무 담보로 잡는 것 자체가 금지(출입국관리법 제33조의3). 진행 중이라 high |
+| 한국에 올 때 브로커한테 수수료를 냈어요 | MISTREATMENT.FORCED_LABOR | 중간착취의 배제(근로기준법 제9조) |
+| 육아휴직 급여는 얼마 받나요? | SOCIAL_INSURANCE.EMPLOYMENT, secondary LEAVE.MATERNITY_FAMILY | R2: 보험에서 나오는 급여 |
+| 회사가 문 닫았는데 보증보험으로 월급 받을 수 있나요? | WAGE.UNPAID | R8: 보증보험은 체불 대비 |
+| (조문) 출입국관리법 제69조 선박등의 검색 및 심사 | OUT_OF_SCOPE.OTHER_LEGAL | D12 |
+| (조문) 고용보험법 제20조 고용창출의 지원 | META.ADMIN | R9: 사업주 대상 지원사업 |
 
 ---
 
@@ -175,6 +198,8 @@ R7 을 자주 쓰게 된다면 규칙이 아니라 분류 체계가 잘못된 �
   MISTREATMENT, LEAVE.MATERNITY_FAMILY 질문은 분류는 되지만 `legal_refs` 를 채우지 못하는 경우가 생긴다.
   골든셋에서 이 비율을 재서 코퍼스 확장 우선순위의 근거로 쓴다.
 - **HOUSING 규모**: D6 참고. 실제 분포를 보고 v2 에서 유지 여부를 결정한다.
+- **대상 축이 고용 형태뿐이다**: 근로기준법에는 연소자(제64~72조)·임산부(제74조) 보호 조문이 있지만 v1 에는 이 대상을 표현할 속성이 없다.
+  당분간 연소자의 근로시간 제한은 WORKTIME, 취직 최저연령은 CONTRACT.WRITTEN 으로 둔다. 질문 데이터에서 자주 나오면 `protected_group` 속성을 검토한다.
 - **INJURY.SAFETY 와 조문 수의 불균형**: 산업안전보건법(184조)의 대부분이 이 세분류나 META 로 가서 조문 기준 분포가 크게 치우친다.
   카테고리별 성능은 콘텐츠 종류별로 따로 본다.
 
@@ -191,3 +216,8 @@ R7 을 자주 쓰게 된다면 규칙이 아니라 분류 체계가 잘못된 �
 ### 변경 이력
 - 1.0.0 (2026-09-28): 최초 버전. 기존 벤치 라벨 11개를 대분류 13개·세분류 40개로 재설계.
   벤치 질의 100건을 다시 라벨링하며 SOCIAL_INSURANCE.ENROLLMENT 를 추가했다 (`seed/bench_v1.jsonl`)
+- 1.1.0 (2026-09-28): 12개 법령 조문 1,318건의 제목을 전수 검토해 빈틈을 채웠다.
+  - 세분류 추가: RETIREMENT.PENSION_PLAN(퇴직연금), SOCIAL_INSURANCE.EPS(귀국비용·상해보험), STAY.EPS_PROCESS(고용허가·입국·취업교육)
+  - 범위 확장: WAGE.ALLOWANCE 에 휴업수당, MISTREATMENT.FORCED_LABOR 에 중간착취, OUT_OF_SCOPE 를 law_article 에도 사용(D12)
+  - 규칙 추가: R8(기능 기준), R9(권리·의무 vs 행정), R10(불복 절차), R2 보완(보험 급여)
+  - 경계 사례 11개 추가. 기존 라벨의 의미는 바뀌지 않아 MINOR (시드 100건 재라벨링 불필요)
