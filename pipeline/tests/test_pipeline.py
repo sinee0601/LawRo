@@ -96,3 +96,31 @@ def test_sources():
     assert len(seeds) == 161 and all(it.gold for it in seeds)
     laws = load_law_items()
     assert 1250 < len(laws) <= 1318
+
+
+def test_splits_file_is_current_and_families_do_not_cross():
+    from pipeline.splits import assign, family_key, load_splits
+
+    items = load_seed_items()
+    splits = load_splits()
+    assert assign(items, splits) == splits, "python -m pipeline.splits 로 splits.json 을 갱신하세요"
+    by_family: dict[str, set[str]] = {}
+    for it in items:
+        by_family.setdefault(family_key(it), set()).add(splits[it.id])
+    assert all(len(s) == 1 for s in by_family.values())
+
+
+def test_bench_translations_share_a_family():
+    from pipeline.splits import family_key
+
+    items = {it.id: it for it in load_seed_items()}
+    # q001(ko)·q031(en)·q045(zh) 은 모두 "최저임금은 얼마인가요?"
+    assert family_key(items["q001"]) == family_key(items["q031"]) == family_key(items["q045"])
+
+
+def test_bootstrap_ci_contains_point_estimate():
+    from pipeline.evaluate import bootstrap_ci
+
+    hits = [True] * 90 + [False] * 10
+    lo, hi = bootstrap_ci(hits)
+    assert lo < 0.9 < hi and hi - lo < 0.15

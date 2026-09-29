@@ -9,16 +9,19 @@ store 에 저장된 결과 중 현재 taxonomy·프롬프트로 만든 것만 �
 from __future__ import annotations
 
 import argparse
+import json
+import random
 import re
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
 from pipeline.extract import plan_jobs
-from pipeline.prompt import PROMPT_VERSION
+from pipeline.prompt import PROMPT_VERSION, prompt_fingerprint
 from pipeline.sources import Item, load_seed_items
+from pipeline.splits import load_splits
 from pipeline.store import DEFAULT_DB, Store
-from pipeline.taxonomy import REPO_ROOT, load_guide_sections, load_taxonomy
+from pipeline.taxonomy import CONTENT_TYPES, REPO_ROOT, load_guide_sections, load_taxonomy
 
 REPORT_DIR = REPO_ROOT / "pipeline" / "reports"
 ATTRS = ("intent", "urgency", "employment_type", "worker_status", "workplace_size", "visa_type", "compliance")
@@ -56,6 +59,36 @@ def leaked_ids(items: list[Item]) -> set[str]:
     return exact | resolved
 
 
+def bootstrap_ci(hits: list[bool], n_boot: int = 2000, seed: int = 0) -> tuple[float, float]:
+    """정확도의 95% 구간. 시드 100여 건이면 폭이 10%p 가까이 된다 — 작은 차이를 개선으로 읽지 않기 위한 기준."""
+    if not hits:
+        return 0.0, 0.0
+    rng = random.Random(seed)
+    n = len(hits)
+    stats = sorted(sum(hits[rng.randrange(n)] for _ in range(n)) / n for _ in range(n_boot))
+    return stats[int(0.025 * n_boot)], stats[int(0.975 * n_boot) - 1]
+
+
+def per_label_table(pairs: list[tuple[str, str]]) -> tuple[list[str], float]:
+    """대분류 단위 정밀도·재현율·F1. macro-F1 은 정답에 한 번이라도 나온 대분류의 평균이다."""
+    gold_c, pred_c, tp_c = Counter(), Counter(), Counter()
+    for gold, pred in pairs:
+        g, p = _parent(gold), _parent(pred)
+        gold_c[g] += 1
+        pred_c[p] += 1
+        tp_c[g] += g == p
+    rows = ["| 대분류 | 정답 수 | 예측 수 | P | R | F1 |", "|---|---:|---:|---:|---:|---:|"]
+    f1s = []
+    for label in sorted(gold_c, key=lambda k: -gold_c[k]):
+        tp = tp_c[label]
+        p = tp / pred_c[label] if pred_c[label] else 0.0
+        r = tp / gold_c[label]
+        f1 = 2 * p * r / (p + r) if p + r else 0.0
+        f1s.append(f1)
+        rows.append(f"| {label} | {gold_c[label]} | {pred_c[label]} | {p:.2f} | {r:.2f} | {f1:.2f} |")
+    return rows, sum(f1s) / len(f1s) if f1s else 0.0
+
+
 def evaluate(pairs: list[tuple[Item, dict]]) -> tuple[str, dict]:
     """(시드, 추출 결과) 쌍으로 지표를 계산해 마크다운과 요약 수치를 돌려준다."""
     leaked = leaked_ids([it for it, _ in pairs])
@@ -79,6 +112,15 @@ def evaluate(pairs: list[tuple[Item, dict]]) -> tuple[str, dict]:
             summary.update(n=n, primary_exact=exact / n, primary_parent=parent / n)
         if name == "가이드 예시 아님":
             summary.update(n_clean=n, primary_exact_clean=exact / n)
+
+    hits = [r["labels"]["primary"] == it.gold["primary"] for it, r in groups["전체"]]
+    lo, hi = bootstrap_ci(hits)
+    summary.update(primary_exact_ci=(lo, hi), macro_f1_parent=0.0)
+    lines += ["", f"primary 세분류 정확도 95% 신뢰구간 (bootstrap, 표본 단위): {lo:.1%} ~ {hi:.1%}", ""]
+
+    table, macro = per_label_table([(it.gold["primary"], r["labels"]["primary"]) for it, r in groups["전체"]])
+    summary["macro_f1_parent"] = macro
+    lines += ["## 대분류별 (primary)", "", f"macro-F1 {macro:.3f}", "", *table, ""]
 
     # secondary: 라벨 집합 기준 micro P/R
     tp = fp = fn = 0
@@ -132,10 +174,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--model", default="solar-pro2")
     parser.add_argument("--db", default=str(DEFAULT_DB))
+    parser.add_argument("--split", choices=["dev", "test", "all"], default="dev")
     args = parser.parse_args(argv)
 
     tax = load_taxonomy()
     items = load_seed_items()
+    if args.split != "all":
+        splits = load_splits()
+        items = [it for it in items if splits.get(it.id) == args.split]
     jobs = plan_jobs(tax, items, args.model)
     results = Store(Path(args.db)).fetch([j.key for j in jobs])
     pairs = [(j.item, results[j.key]) for j in jobs if j.key in results and results[j.key]["status"] == "ok"]
@@ -146,12 +192,31 @@ def main(argv: list[str] | None = None) -> int:
 
     body, summary = evaluate(pairs)
     header = (
-        f"# 추출 평가: {args.model} / taxonomy v{tax.version} / prompt {PROMPT_VERSION}\n\n"
+        f"# 추출 평가: {args.model} / taxonomy v{tax.version} / prompt {PROMPT_VERSION} / split {args.split}\n\n"
         f"시드 {len(jobs)}건 중 평가 {len(pairs)}건 (결과 없음·실패 {missing}건)\n"
     )
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    out = REPORT_DIR / f"eval_{args.model}_{PROMPT_VERSION}.md"
+    stem = f"eval_{args.model}_{PROMPT_VERSION}_{args.split}"
+    out = REPORT_DIR / f"{stem}.md"
     out.write_text(header + "\n" + body + "\n", encoding="utf-8")
+    # 회귀 게이트가 읽는 요약. 어떤 프롬프트로 만든 점수인지 지문을 함께 남긴다
+    (REPORT_DIR / f"{stem}.json").write_text(
+        json.dumps(
+            {
+                "model": args.model,
+                "split": args.split,
+                "taxonomy_version": tax.version,
+                "prompt_version": PROMPT_VERSION,
+                "prompt_fp": {ct: prompt_fingerprint(tax, ct) for ct in CONTENT_TYPES},
+                "missing": missing,
+                **summary,
+            },
+            ensure_ascii=False,
+            indent=1,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     print(header)
     print({k: round(v, 3) if isinstance(v, float) else v for k, v in summary.items()})
     print(f"리포트: {out.relative_to(REPO_ROOT)}")

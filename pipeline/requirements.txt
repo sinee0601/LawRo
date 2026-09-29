@@ -1,0 +1,5 @@
+# pipeline/ 전용 의존성 (백엔드 런타임과 분리)
+openai==2.48.0
+pydantic==2.13.4
+python-dotenv
+PyYAML==6.0.3

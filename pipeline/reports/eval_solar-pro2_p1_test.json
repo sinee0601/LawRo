@@ -1,0 +1,29 @@
+{
+ "model": "solar-pro2",
+ "split": "test",
+ "taxonomy_version": "1.2.0",
+ "prompt_version": "p1",
+ "prompt_fp": {
+  "query": "86c232c8d220",
+  "contract_clause": "f318eb9dc3bf",
+  "law_article": "eadd70b5cc97"
+ },
+ "missing": 0,
+ "n": 79,
+ "primary_exact": 0.9113924050632911,
+ "primary_parent": 0.9367088607594937,
+ "n_clean": 73,
+ "primary_exact_clean": 0.9041095890410958,
+ "primary_exact_ci": [
+  0.8481012658227848,
+  0.9620253164556962
+ ],
+ "macro_f1_parent": 0.9197313711433633,
+ "attr_intent": 0.7758620689655172,
+ "attr_urgency": 0.7931034482758621,
+ "attr_employment_type": 0.9682539682539683,
+ "attr_worker_status": 0.6842105263157895,
+ "attr_workplace_size": 1.0,
+ "attr_visa_type": 0.8421052631578947,
+ "attr_compliance": 0.8
+}
