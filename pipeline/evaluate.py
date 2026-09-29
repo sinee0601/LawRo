@@ -230,7 +230,7 @@ def main(argv: list[str] | None = None) -> int:
         encoding="utf-8",
     )
     print(header)
-    print({k: round(v, 3) if isinstance(v, float) else v for k, v in summary.items()})
+    print({k: round(v, 3) if isinstance(v, float) else v for k, v in summary.items() if k != "item_hits"})
     print(f"리포트: {out.relative_to(REPO_ROOT)}")
     return 0
 
