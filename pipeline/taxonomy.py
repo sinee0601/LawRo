@@ -1,4 +1,4 @@
-"""taxonomy/v1.yaml 과 GUIDE.md 를 읽어 파이프라인이 쓰는 형태로 바꾼다.
+"""taxonomy/v2.yaml 과 GUIDE.md 를 읽어 파이프라인이 쓰는 형태로 바꾼다.
 
 라벨 정의는 yaml 한 곳에만 두고, 프롬프트·스키마·검증이 모두 여기서 파생된다.
 """
@@ -62,7 +62,7 @@ class Taxonomy:
 
 
 @lru_cache
-def load_taxonomy(path: Path = TAXONOMY_DIR / "v1.yaml") -> Taxonomy:
+def load_taxonomy(path: Path = TAXONOMY_DIR / "v2.yaml") -> Taxonomy:
     raw = yaml.safe_load(path.read_text(encoding="utf-8"))
     labels: dict[str, Label] = {}
     parent_applies_to: dict[str, tuple[str, ...]] = {}

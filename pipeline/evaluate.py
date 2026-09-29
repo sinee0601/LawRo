@@ -18,13 +18,15 @@ from pathlib import Path
 
 from pipeline.extract import plan_jobs
 from pipeline.prompt import PROMPT_VERSION, prompt_fingerprint
-from pipeline.sources import Item, load_seed_items
+from pipeline.sources import Item, load_law_gold_items, load_seed_items
 from pipeline.splits import load_splits
 from pipeline.store import DEFAULT_DB, Store
 from pipeline.taxonomy import CONTENT_TYPES, REPO_ROOT, load_guide_sections, load_taxonomy
 
 REPORT_DIR = REPO_ROOT / "pipeline" / "reports"
-ATTRS = ("intent", "urgency", "employment_type", "worker_status", "workplace_size", "visa_type", "compliance")
+ATTRS = (
+    "intent", "urgency", "employment_type", "worker_status", "workplace_size", "visa_type", "compliance", "provision_type",
+)
 
 
 def _parent(label: str) -> str:
@@ -167,7 +169,7 @@ def evaluate(pairs: list[tuple[Item, dict]], show_errors: bool = True) -> tuple[
     lines += ["## primary 오답", ""]
     if not show_errors:
         # test 오답을 보고 프롬프트를 고치면 test 가 dev 가 된다
-        lines.append(f"test 분할이라 오답 {len(errors)}건의 내용은 표시하지 않는다.")
+        lines.append(f"평가 전용 세트라 오답 {len(errors)}건의 내용은 표시하지 않는다.")
         return "\n".join(lines), summary
     lines += ["| id | 본문 | 정답 | 예측 | 모델이 쓴 쟁점 |", "|---|---|---|---|---|"]
     for it, r in errors:
@@ -182,12 +184,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--model", default="solar-pro2")
     parser.add_argument("--db", default=str(DEFAULT_DB))
-    parser.add_argument("--split", choices=["dev", "test", "all"], default="dev")
+    parser.add_argument("--split", choices=["dev", "test", "all", "laws"], default="dev",
+                        help="laws = 무작위 조문 표본 60건 정답")
     args = parser.parse_args(argv)
 
     tax = load_taxonomy()
-    items = load_seed_items()
-    if args.split != "all":
+    items = load_law_gold_items() if args.split == "laws" else load_seed_items()
+    if args.split in ("dev", "test"):
         splits = load_splits()
         items = [it for it in items if splits.get(it.id) == args.split]
     jobs = plan_jobs(tax, items, args.model)
@@ -198,7 +201,8 @@ def main(argv: list[str] | None = None) -> int:
         print("평가할 결과가 없습니다. 먼저 python -m pipeline.run --source seeds 를 실행하세요.")
         return 1
 
-    body, summary = evaluate(pairs, show_errors=args.split != "test")
+    # test 와 조문 표본은 프롬프트를 고칠 때 보지 않는다
+    body, summary = evaluate(pairs, show_errors=args.split not in ("test", "laws"))
     header = (
         f"# 추출 평가: {args.model} / taxonomy v{tax.version} / prompt {PROMPT_VERSION} / split {args.split}\n\n"
         f"시드 {len(jobs)}건 중 평가 {len(pairs)}건 (결과 없음·실패 {missing}건)\n"

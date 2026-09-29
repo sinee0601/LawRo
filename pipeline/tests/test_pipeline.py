@@ -15,12 +15,12 @@ def tax():
     return load_taxonomy()
 
 
-def test_meta_labels_only_for_law_articles(tax):
+def test_law_wide_label_only_for_law_articles(tax):
     query_labels = {label.id for label in tax.labels_for("query")}
     law_labels = {label.id for label in tax.labels_for("law_article")}
-    assert "META.PENALTY" in law_labels
-    assert not any(label.startswith("META.") for label in query_labels)
-    assert "OUT_OF_SCOPE.OTHER_LEGAL" in law_labels  # GUIDE D12
+    assert "GENERAL.LAW_WIDE" in law_labels and "GENERAL.LAW_WIDE" not in query_labels
+    assert not any(label.startswith("META.") for label in law_labels)  # v2 에서 삭제 (GUIDE D13)
+    assert "OUT_OF_SCOPE.OTHER_LEGAL" in law_labels  # GUIDE R13
 
 
 def test_schema_enums_match_applicable_attributes(tax):
@@ -29,6 +29,7 @@ def test_schema_enums_match_applicable_attributes(tax):
     assert "intent" in query and "compliance" not in query
     assert "compliance" in clause and "intent" not in clause
     assert "language" not in query  # 규칙으로 계산 (GUIDE D10)
+    assert "provision_type" in output_schema(tax, "law_article")["properties"] and "provision_type" not in query
 
 
 def test_validate_cleans_secondary_and_hallucinated_refs(tax):
@@ -56,12 +57,15 @@ def test_validate_cleans_secondary_and_hallucinated_refs(tax):
 
 def test_validate_rejects_label_from_other_content_type(tax):
     with pytest.raises(ValueError):
-        validate(tax, "query", {"primary": "META.PENALTY"})
+        validate(tax, "query", {"primary": "GENERAL.LAW_WIDE"})
 
 
 def test_out_of_scope_drops_attributes(tax):
     v = validate(tax, "query", {"primary": "OUT_OF_SCOPE.NON_LEGAL", "secondary": [], "intent": "info", "legal_refs": []})
     assert "intent" not in v.labels
+    # 조문의 성격은 범위 밖이어도 남긴다
+    law = {"primary": "OUT_OF_SCOPE.OTHER_LEGAL", "secondary": [], "provision_type": "administration", "legal_refs": []}
+    assert validate(tax, "law_article", law).labels["provision_type"] == "administration"
 
 
 def test_language_rule_matches_seed_labels():

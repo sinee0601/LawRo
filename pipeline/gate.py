@@ -103,6 +103,11 @@ def main(argv: list[str] | None = None) -> int:
         print("기준선이 없습니다. python -m pipeline.gate --promote 로 만드세요.")
         return 1
     base = json.loads(BASELINE.read_text(encoding="utf-8"))
+    # MAJOR 변경은 라벨 자체가 바뀌어 기준선과 비교할 수 없다. 의도한 변경이면 기준선을 새로 만든다
+    if base["taxonomy_version"].split(".")[0] != current["taxonomy_version"].split(".")[0]:
+        print(f"taxonomy MAJOR 변경 ({base['taxonomy_version']} → {current['taxonomy_version']}): 기준선과 비교할 수 없습니다.")
+        print("  변경 근거를 PR 에 적고 python -m pipeline.gate --promote 로 기준선을 새로 만드세요.")
+        return 1
     failures, notes = compare(base, current)
     print(f"기준선 {base['model']}/{base['prompt_version']} vs 현재 {current['_path']}")
     for n in notes:
