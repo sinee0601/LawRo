@@ -1,0 +1,79 @@
+{
+  "fetched_at": "2026-08-10T05:55:43.488388+00:00",
+  "law_count": 12,
+  "article_total": 1318,
+  "laws": [
+    {
+      "law_name": "근로기준법",
+      "mst": "265959",
+      "article_count": 131,
+      "enforce_date": "20251023"
+    },
+    {
+      "law_name": "최저임금법",
+      "mst": "218303",
+      "article_count": 32,
+      "enforce_date": "20200526"
+    },
+    {
+      "law_name": "외국인근로자의 고용 등에 관한 법률",
+      "mst": "276857",
+      "article_count": 44,
+      "enforce_date": "20251001"
+    },
+    {
+      "law_name": "산업안전보건법",
+      "mst": "283449",
+      "article_count": 184,
+      "enforce_date": "20260601"
+    },
+    {
+      "law_name": "산업재해보상보험법",
+      "mst": "283459",
+      "article_count": 160,
+      "enforce_date": "20260701"
+    },
+    {
+      "law_name": "고용보험법",
+      "mst": "279807",
+      "article_count": 143,
+      "enforce_date": "20260512"
+    },
+    {
+      "law_name": "국민건강보험법",
+      "mst": "276651",
+      "article_count": 149,
+      "enforce_date": "20260102"
+    },
+    {
+      "law_name": "국민연금법",
+      "mst": "280269",
+      "article_count": 160,
+      "enforce_date": "20260101"
+    },
+    {
+      "law_name": "임금채권보장법",
+      "mst": "279735",
+      "article_count": 37,
+      "enforce_date": "20260512"
+    },
+    {
+      "law_name": "근로자퇴직급여 보장법",
+      "mst": "284455",
+      "article_count": 68,
+      "enforce_date": "20260701"
+    },
+    {
+      "law_name": "기간제 및 단시간근로자 보호 등에 관한 법률",
+      "mst": "232201",
+      "article_count": 26,
+      "enforce_date": "20210518"
+    },
+    {
+      "law_name": "출입국관리법",
+      "mst": "272921",
+      "article_count": 184,
+      "enforce_date": "20260123"
+    }
+  ]
+}

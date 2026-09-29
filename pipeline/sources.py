@@ -72,3 +72,20 @@ def load_law_items() -> list[Item]:
         # 삭제된 조문은 제목·본문이 비어 있다
         if a["text"].strip() and a.get("article_title", "").strip()
     ]
+
+
+def load_law_gold_items() -> list[Item]:
+    """무작위 조문 표본의 정답 (Claude 블라인드 라벨 + 사람 판정). 조문 정확도 추정용."""
+    path = TAXONOMY_DIR / "gold" / "laws_sample_v1.jsonl"
+    articles = load_law_articles()
+    return [
+        Item(
+            id=g["id"],
+            content_type="law_article",
+            text=articles[(g["law"], g["article"])]["text"],
+            source="gold:laws",
+            meta={"law": g["law"], "article": g["article"]},
+            gold=g,
+        )
+        for g in _read_jsonl(path)
+    ]

@@ -23,9 +23,9 @@
 {"query_id": "q023", "lang": "ko", "legacy_category": "probation", "primary": "CONTRACT.PROBATION", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "probation", "notes": ""}
 {"query_id": "q024", "lang": "ko", "legacy_category": "housing", "primary": "WAGE.PAYMENT", "secondary": ["HOUSING.DORMITORY"], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "R3: 대분류 변경"}
 {"query_id": "q025", "lang": "ko", "legacy_category": "housing", "primary": "HOUSING.DORMITORY", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
-{"query_id": "q026", "lang": "ko", "legacy_category": "injury", "primary": "INJURY.COMPENSATION", "secondary": [], "intent": "dispute", "urgency": "medium", "employment_type": "unknown", "notes": "이미 다친 상태. 즉각적 신체 위험은 아니라 medium"}
+{"query_id": "q026", "lang": "ko", "legacy_category": "injury", "primary": "INJURY.COMPENSATION", "secondary": [], "intent": "info", "urgency": "medium", "employment_type": "unknown", "notes": "v2: D15 상대방 행위 없는 사고라 dispute 아님"}
 {"query_id": "q027", "lang": "ko", "legacy_category": "injury", "primary": "INJURY.COMPENSATION", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "D4"}
-{"query_id": "q028", "lang": "ko", "legacy_category": "visa", "primary": "STAY.DOCUMENTS", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "보관 중이라는 말이 없어 high 아님"}
+{"query_id": "q028", "lang": "ko", "legacy_category": "visa", "primary": "MISTREATMENT.FORCED_LABOR", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "v2: R14 (STAY.DOCUMENTS 에서 이동)"}
 {"query_id": "q029", "lang": "ko", "legacy_category": "visa", "primary": "STAY.WORKPLACE_CHANGE", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q030", "lang": "ko", "legacy_category": "severance", "primary": "RETIREMENT.SEVERANCE", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q031", "lang": "en", "legacy_category": "wage", "primary": "WAGE.MINIMUM", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
@@ -40,7 +40,7 @@
 {"query_id": "q040", "lang": "en", "legacy_category": "probation", "primary": "CONTRACT.PROBATION", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "probation", "notes": ""}
 {"query_id": "q041", "lang": "en", "legacy_category": "housing", "primary": "WAGE.PAYMENT", "secondary": ["HOUSING.DORMITORY"], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "R3: 대분류 변경"}
 {"query_id": "q042", "lang": "en", "legacy_category": "injury", "primary": "INJURY.COMPENSATION", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "가정형(if I get injured). q026 과 달리 low"}
-{"query_id": "q043", "lang": "en", "legacy_category": "visa", "primary": "STAY.DOCUMENTS", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
+{"query_id": "q043", "lang": "en", "legacy_category": "visa", "primary": "MISTREATMENT.FORCED_LABOR", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "v2: R14 (STAY.DOCUMENTS 에서 이동)"}
 {"query_id": "q044", "lang": "en", "legacy_category": "severance", "primary": "RETIREMENT.SEVERANCE", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q045", "lang": "zh", "legacy_category": "wage", "primary": "WAGE.MINIMUM", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q046", "lang": "zh", "legacy_category": "wage", "primary": "WAGE.UNPAID", "secondary": [], "intent": "procedure", "urgency": "low", "employment_type": "unknown", "notes": "가정형"}
@@ -52,7 +52,7 @@
 {"query_id": "q052", "lang": "zh", "legacy_category": "probation", "primary": "WAGE.MINIMUM", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "probation", "notes": "D3: 대분류 변경"}
 {"query_id": "q053", "lang": "zh", "legacy_category": "housing", "primary": "WAGE.PAYMENT", "secondary": ["HOUSING.DORMITORY"], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "R3: 대분류 변경"}
 {"query_id": "q054", "lang": "zh", "legacy_category": "injury", "primary": "INJURY.COMPENSATION", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
-{"query_id": "q055", "lang": "zh", "legacy_category": "visa", "primary": "STAY.DOCUMENTS", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
+{"query_id": "q055", "lang": "zh", "legacy_category": "visa", "primary": "MISTREATMENT.FORCED_LABOR", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "v2: R14 (STAY.DOCUMENTS 에서 이동)"}
 {"query_id": "q056", "lang": "zh", "legacy_category": "severance", "primary": "RETIREMENT.SEVERANCE", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q057", "lang": "vi", "legacy_category": "wage", "primary": "WAGE.MINIMUM", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q058", "lang": "vi", "legacy_category": "wage", "primary": "WAGE.UNPAID", "secondary": [], "intent": "procedure", "urgency": "low", "employment_type": "unknown", "notes": "가정형"}
@@ -64,7 +64,7 @@
 {"query_id": "q064", "lang": "vi", "legacy_category": "probation", "primary": "WAGE.MINIMUM", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "probation", "notes": "D3: 대분류 변경"}
 {"query_id": "q065", "lang": "vi", "legacy_category": "housing", "primary": "WAGE.PAYMENT", "secondary": ["HOUSING.DORMITORY"], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "R3: 대분류 변경"}
 {"query_id": "q066", "lang": "vi", "legacy_category": "injury", "primary": "INJURY.COMPENSATION", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "가정형(khi bị)"}
-{"query_id": "q067", "lang": "vi", "legacy_category": "visa", "primary": "STAY.DOCUMENTS", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
+{"query_id": "q067", "lang": "vi", "legacy_category": "visa", "primary": "MISTREATMENT.FORCED_LABOR", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "v2: R14 (STAY.DOCUMENTS 에서 이동)"}
 {"query_id": "q068", "lang": "vi", "legacy_category": "severance", "primary": "RETIREMENT.SEVERANCE", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q069", "lang": "ja", "legacy_category": "wage", "primary": "WAGE.MINIMUM", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q070", "lang": "ja", "legacy_category": "wage", "primary": "WAGE.ALLOWANCE", "secondary": [], "intent": "calculation", "urgency": "low", "employment_type": "unknown", "notes": ""}
@@ -75,7 +75,7 @@
 {"query_id": "q075", "lang": "ja", "legacy_category": "probation", "primary": "WAGE.MINIMUM", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "probation", "notes": "D3: 대분류 변경"}
 {"query_id": "q076", "lang": "ja", "legacy_category": "housing", "primary": "WAGE.PAYMENT", "secondary": ["HOUSING.DORMITORY"], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "R3: 대분류 변경"}
 {"query_id": "q077", "lang": "ja", "legacy_category": "injury", "primary": "INJURY.COMPENSATION", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
-{"query_id": "q078", "lang": "ja", "legacy_category": "visa", "primary": "STAY.DOCUMENTS", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
+{"query_id": "q078", "lang": "ja", "legacy_category": "visa", "primary": "MISTREATMENT.FORCED_LABOR", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "v2: R14 (STAY.DOCUMENTS 에서 이동)"}
 {"query_id": "q079", "lang": "ja", "legacy_category": "severance", "primary": "RETIREMENT.SEVERANCE", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q080", "lang": "th", "legacy_category": "wage", "primary": "WAGE.MINIMUM", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
 {"query_id": "q081", "lang": "th", "legacy_category": "wage", "primary": "WAGE.ALLOWANCE", "secondary": [], "intent": "calculation", "urgency": "low", "employment_type": "unknown", "notes": ""}
@@ -86,7 +86,7 @@
 {"query_id": "q086", "lang": "th", "legacy_category": "probation", "primary": "WAGE.MINIMUM", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "probation", "notes": "D3: 대분류 변경"}
 {"query_id": "q087", "lang": "th", "legacy_category": "housing", "primary": "WAGE.PAYMENT", "secondary": ["HOUSING.DORMITORY"], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "R3: 대분류 변경"}
 {"query_id": "q088", "lang": "th", "legacy_category": "injury", "primary": "INJURY.COMPENSATION", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
-{"query_id": "q089", "lang": "th", "legacy_category": "visa", "primary": "STAY.DOCUMENTS", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": ""}
+{"query_id": "q089", "lang": "th", "legacy_category": "visa", "primary": "MISTREATMENT.FORCED_LABOR", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "v2: R14 (STAY.DOCUMENTS 에서 이동)"}
 {"query_id": "q090", "lang": "th", "legacy_category": "severance", "primary": "RETIREMENT.SEVERANCE", "secondary": [], "intent": "info", "urgency": "low", "employment_type": "unknown", "notes": "เงินชดเชย 는 해고수당으로도 읽히나 ลาออก(퇴사) 맥락이라 퇴직금으로 판단"}
 {"query_id": "q091", "lang": "ko", "legacy_category": "irrelevant", "primary": "OUT_OF_SCOPE.NON_LEGAL", "secondary": [], "notes": ""}
 {"query_id": "q092", "lang": "ko", "legacy_category": "irrelevant", "primary": "OUT_OF_SCOPE.NON_LEGAL", "secondary": [], "notes": ""}

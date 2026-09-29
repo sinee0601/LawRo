@@ -80,10 +80,11 @@ def validate(tax: Taxonomy, content_type: str, raw: dict) -> Validated:
 
     labels: dict = {"issue": raw.get("issue", ""), "primary": primary, "secondary": secondary}
 
-    # 범위 밖이면 속성을 채우지 않는다 (GUIDE §3 의 1번 단계)
+    # 범위 밖이면 질문·계약서 속성은 채우지 않는다 (GUIDE §3 의 1번 단계).
+    # 조문의 성격(provision_type)은 주제와 별개 축이라 범위 밖 조문에도 남긴다 (GUIDE D13)
     out_of_scope = primary.startswith("OUT_OF_SCOPE.")
     for attr in tax.attributes_for(content_type):
-        if not attr.values or out_of_scope:
+        if not attr.values or (out_of_scope and attr.id != "provision_type"):
             continue
         value = raw.get(attr.id)
         if value not in attr.values:

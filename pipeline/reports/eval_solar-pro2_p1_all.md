@@ -1,4 +1,4 @@
-# 추출 평가: solar-pro2 / taxonomy v1.2.0 / prompt p1
+# 추출 평가: solar-pro2 / taxonomy v1.2.0 / prompt p1 / split all
 
 시드 161건 중 평가 161건 (결과 없음·실패 0건)
 
@@ -16,6 +16,29 @@
 | source=seed:hard | 61 | 80.3% (49/61) | 85.2% (52/61) |
 | content_type=contract_clause | 10 | 80.0% (8/10) | 90.0% (9/10) |
 | content_type=law_article | 8 | 87.5% (7/8) | 87.5% (7/8) |
+
+primary 세분류 정확도 95% 신뢰구간 (bootstrap, 표본 단위): 86.3% ~ 94.4%
+
+## 대분류별 (primary)
+
+macro-F1 0.906
+
+| 대분류 | 정답 수 | 예측 수 | P | R | F1 |
+|---|---:|---:|---:|---:|---:|
+| WAGE | 43 | 43 | 0.98 | 0.98 | 0.98 |
+| STAY | 16 | 17 | 0.94 | 1.00 | 0.97 |
+| OUT_OF_SCOPE | 15 | 16 | 0.81 | 0.87 | 0.84 |
+| WORKTIME | 13 | 13 | 1.00 | 1.00 | 1.00 |
+| SOCIAL_INSURANCE | 13 | 13 | 0.85 | 0.85 | 0.85 |
+| LEAVE | 12 | 12 | 0.92 | 0.92 | 0.92 |
+| INJURY | 12 | 12 | 0.92 | 0.92 | 0.92 |
+| TERMINATION | 11 | 11 | 1.00 | 1.00 | 1.00 |
+| RETIREMENT | 10 | 8 | 0.88 | 0.70 | 0.78 |
+| CONTRACT | 8 | 7 | 1.00 | 0.88 | 0.93 |
+| MISTREATMENT | 4 | 4 | 0.75 | 0.75 | 0.75 |
+| META | 3 | 4 | 0.75 | 1.00 | 0.86 |
+| HOUSING | 1 | 1 | 1.00 | 1.00 | 1.00 |
+
 
 secondary (micro): P 0.42 / R 0.79 / F1 0.55
 

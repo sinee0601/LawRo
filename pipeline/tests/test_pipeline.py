@@ -15,12 +15,12 @@ def tax():
     return load_taxonomy()
 
 
-def test_meta_labels_only_for_law_articles(tax):
+def test_law_wide_label_only_for_law_articles(tax):
     query_labels = {label.id for label in tax.labels_for("query")}
     law_labels = {label.id for label in tax.labels_for("law_article")}
-    assert "META.PENALTY" in law_labels
-    assert not any(label.startswith("META.") for label in query_labels)
-    assert "OUT_OF_SCOPE.OTHER_LEGAL" in law_labels  # GUIDE D12
+    assert "GENERAL.LAW_WIDE" in law_labels and "GENERAL.LAW_WIDE" not in query_labels
+    assert not any(label.startswith("META.") for label in law_labels)  # v2 에서 삭제 (GUIDE D13)
+    assert "OUT_OF_SCOPE.OTHER_LEGAL" in law_labels  # GUIDE R13
 
 
 def test_schema_enums_match_applicable_attributes(tax):
@@ -29,6 +29,7 @@ def test_schema_enums_match_applicable_attributes(tax):
     assert "intent" in query and "compliance" not in query
     assert "compliance" in clause and "intent" not in clause
     assert "language" not in query  # 규칙으로 계산 (GUIDE D10)
+    assert "provision_type" in output_schema(tax, "law_article")["properties"] and "provision_type" not in query
 
 
 def test_validate_cleans_secondary_and_hallucinated_refs(tax):
@@ -56,12 +57,15 @@ def test_validate_cleans_secondary_and_hallucinated_refs(tax):
 
 def test_validate_rejects_label_from_other_content_type(tax):
     with pytest.raises(ValueError):
-        validate(tax, "query", {"primary": "META.PENALTY"})
+        validate(tax, "query", {"primary": "GENERAL.LAW_WIDE"})
 
 
 def test_out_of_scope_drops_attributes(tax):
     v = validate(tax, "query", {"primary": "OUT_OF_SCOPE.NON_LEGAL", "secondary": [], "intent": "info", "legal_refs": []})
     assert "intent" not in v.labels
+    # 조문의 성격은 범위 밖이어도 남긴다
+    law = {"primary": "OUT_OF_SCOPE.OTHER_LEGAL", "secondary": [], "provision_type": "administration", "legal_refs": []}
+    assert validate(tax, "law_article", law).labels["provision_type"] == "administration"
 
 
 def test_language_rule_matches_seed_labels():
@@ -96,3 +100,54 @@ def test_sources():
     assert len(seeds) == 161 and all(it.gold for it in seeds)
     laws = load_law_items()
     assert 1250 < len(laws) <= 1318
+
+
+def test_splits_file_is_current_and_families_do_not_cross():
+    from pipeline.splits import assign, family_key, load_splits
+
+    items = load_seed_items()
+    splits = load_splits()
+    assert assign(items, splits) == splits, "python -m pipeline.splits 로 splits.json 을 갱신하세요"
+    by_family: dict[str, set[str]] = {}
+    for it in items:
+        by_family.setdefault(family_key(it), set()).add(splits[it.id])
+    assert all(len(s) == 1 for s in by_family.values())
+
+
+def test_bench_translations_share_a_family():
+    from pipeline.splits import family_key
+
+    items = {it.id: it for it in load_seed_items()}
+    # q001(ko)·q031(en)·q045(zh) 은 모두 "최저임금은 얼마인가요?"
+    assert family_key(items["q001"]) == family_key(items["q031"]) == family_key(items["q045"])
+
+
+def test_bootstrap_ci_contains_point_estimate():
+    from pipeline.evaluate import bootstrap_ci
+
+    hits = [True] * 90 + [False] * 10
+    lo, hi = bootstrap_ci(hits)
+    assert lo < 0.9 < hi and hi - lo < 0.15
+
+
+def test_gate_blocks_paired_regression_and_passes_noise():
+    from pipeline.gate import compare, sign_test_p
+
+    ids = [f"t{i}" for i in range(80)]
+    base = {"item_hits": {i: n < 72 for n, i in enumerate(ids)}, "primary_exact": 0.9, "macro_f1_parent": 0.9}
+    # 맞던 것 1건이 틀리고 틀리던 것 1건이 맞음 → 잡음
+    noisy = {**base, "item_hits": {**base["item_hits"], "t0": False, "t75": True}}
+    assert compare(base, noisy)[0] == []
+    # 맞던 것 6건이 틀림 → 정확도 -7.5%p, 부호 검정 p=0.016
+    worse = {"item_hits": {i: n < 66 for n, i in enumerate(ids)}, "primary_exact": 0.825, "macro_f1_parent": 0.88}
+    failures = compare(base, worse)[0]
+    assert any("정확도" in f for f in failures) and any("유의" in f for f in failures)
+    assert sign_test_p(0, 0) == 1.0 and sign_test_p(6, 0) < 0.05
+
+
+def test_cohen_kappa():
+    from pipeline.annotate import cohen_kappa
+
+    assert cohen_kappa(["a", "b", "a", "b"], ["a", "b", "a", "b"]) == 1.0
+    # 일치율 50% 인데 우연 일치도 50% 면 kappa 0
+    assert abs(cohen_kappa(["a", "a", "b", "b"], ["a", "b", "a", "b"])) < 1e-9

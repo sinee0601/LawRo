@@ -1,13 +1,16 @@
-# LawRo 노동 법률 콘텐츠 분류 체계 v1
+# LawRo 노동 법률 콘텐츠 분류 체계 v2
 # 라벨 정의·경계 사례·판단 기준은 GUIDE.md 를 따른다. 이 파일과 GUIDE.md 는 항상 함께 버전을 올린다.
 #
 # 적용 대상(content_type)
 #   query          : 사용자 상담 질문 (챗봇 입력)
 #   contract_clause: OCR 로 추출한 근로계약서 조항 1개
 #   law_article    : 법령 조문 1개 (backend/data/raw_laws, 12개 법령)
+#
+# 카테고리는 "무엇에 관한 것인가(주제)", 조문의 provision_type 은 "어떤 성격의 조항인가"를 뜻한다.
+# v1 은 두 축을 META 한 카테고리에 섞어 라벨러마다 판단이 갈렸다 (GUIDE D13).
 
-version: "1.2.0"
-released: "2026-09-28"
+version: "2.0.0"
+released: "2026-09-29"
 
 content_types: [query, contract_clause, law_article]
 
@@ -143,8 +146,8 @@ categories:
       - id: STAY.EXTENSION
         name: 체류기간 연장·재고용·재입국
       - id: STAY.DOCUMENTS
-        name: 여권·외국인등록증 보관, 신분증 관련
-        description: 외국인등록, 체류지 변경신고, 사용자의 여권·등록증 보관·담보 금지
+        name: 외국인등록·신분증 행정
+        description: 외국인등록, 등록증 발급·재발급·반납, 체류지 변경신고. 사용자가 여권·등록증을 가져가는 것은 MISTREATMENT.FORCED_LABOR
       - id: STAY.STATUS
         name: 체류자격·불법체류·출국
         description: 체류자격 변경, 불법고용, 강제퇴거·보호, 출국명령
@@ -167,8 +170,8 @@ categories:
         name: 국적·성별 등 차별
         description: 고용형태(기간제·단시간)를 이유로 한 차별은 CONTRACT.FIXED_TERM
       - id: MISTREATMENT.FORCED_LABOR
-        name: 강제근로·중간착취·감금
-        description: 강제근로, 브로커 등 제3자의 중간착취, 감금
+        name: 강제근로·중간착취·감금·신분증 압수
+        description: 강제근로, 브로커 등 제3자의 중간착취, 감금, 사용자의 여권·외국인등록증 보관·담보 (ILO 강제노동 지표)
 
   # --- 범위 밖 / 메타 -------------------------------------------------------
   - id: OUT_OF_SCOPE
@@ -182,18 +185,14 @@ categories:
         name: 법률과 무관
         description: 날씨, 맛집, 잡담 등
 
-  - id: META
-    name: 법령 일반 조항
-    description: 목적·정의·벌칙·과태료·권한 위임 등 특정 쟁점에 속하지 않는 조문
+  - id: GENERAL
+    name: 법률 전반
+    description: 특정 주제를 정할 수 없고 법률 전체에 걸친 조문
     applies_to: [law_article]
     children:
-      - id: META.GENERAL
-        name: 목적·정의·적용 범위
-      - id: META.PENALTY
-        name: 벌칙·과태료
-      - id: META.ADMIN
-        name: 행정 절차·기관·위임
-        description: 공단·위원회 조직, 기금·회계, 권한 위임, 기관 지정·인증·등록, 사업주 대상 지원사업 (R9)
+      - id: GENERAL.LAW_WIDE
+        name: 법률 전체에 걸친 조항
+        description: 여러 주제를 아우르는 법률의 목적·정의, 여러 조항을 나열한 벌칙·과태료 등. 한 주제로 정할 수 있으면 그 주제 (R9)
 
 # ---------------------------------------------------------------------------
 # 속성: 텍스트에 "명시된 경우에만" 값을 채운다. 추측 금지, 모르면 unknown
@@ -205,15 +204,16 @@ attributes:
     name: 질문 의도
     applies_to: [query]
     source: llm
+    # 먼저 dispute 여부를 본문에 드러난 사실로 가르고, 아니면 나머지 셋 중 고른다 (GUIDE §6)
     values:
-      - id: info
-        description: 일반적인 규정·권리가 궁금함 ("연차는 며칠인가요?")
-      - id: calculation
-        description: 금액·일수·시간을 계산하고 싶음 ("주휴수당 얼마 받아요?")
-      - id: procedure
-        description: 신고·신청·서류 등 방법을 알고 싶음 ("어디에 신청하나요?")
       - id: dispute
-        description: 이미 문제가 발생해 대응하려 함 ("사장이 월급을 안 줘요")
+        description: 사용자 등 상대방의 행위로 질문자에게 불이익이 이미 일어났거나 진행 중이라고 본문에 쓰여 있음. 의문문이어도 dispute ("사장이 월급을 안 줘요", "안 준대요, 받을 수 있나요?")
+      - id: info
+        description: 아직 일어나지 않은 일이나 일반 규정을 물음 ("연차는 며칠인가요?", "회사가 도산하면 받을 수 있나요?")
+      - id: calculation
+        description: 일어나지 않은 일에 대해 금액·일수·시간을 계산하려 함 ("주휴수당 얼마 받아요?")
+      - id: procedure
+        description: 일어나지 않은 일에 대해 신고·신청·서류 방법을 물음 ("어디에 신청하나요?")
 
   - id: urgency
     name: 긴급도
@@ -279,6 +279,23 @@ attributes:
     # 코퍼스 12개 법령 밖의 법령은 넣지 않는다 (검증 단계에서 manifest 대조로 걸러낸다)
     type: list
     max_items: 3
+
+  - id: provision_type
+    name: 조문 성격
+    applies_to: [law_article]
+    source: llm
+    # 검색 필터용. 근로자 질문에 답이 되는 것은 right_duty·procedure 다
+    values:
+      - id: right_duty
+        description: 근로자·사용자의 권리와 의무, 급여의 요건·금액·기간 ("요양급여는 … 지급한다", "사용자는 … 하여야 한다")
+      - id: procedure
+        description: 근로자·사용자가 밟는 신청·신고·불복(심사청구·재심사) 절차
+      - id: administration
+        description: 공단·위원회·기금의 조직과 운영, 기관 지정·인증·등록, 행정기관의 조사·지원사업, 권한 위임
+      - id: penalty
+        description: 벌칙·과태료·양벌규정·과징금
+      - id: general
+        description: 목적·정의·적용 범위·다른 법률과의 관계
 
   - id: compliance
     name: 조항 적법성

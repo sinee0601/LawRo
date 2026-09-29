@@ -11,7 +11,7 @@ import hashlib
 from pipeline.taxonomy import Taxonomy, load_guide_sections
 
 # 프롬프트 문구를 바꾸면 올린다. 결과마다 기록되어 어떤 프롬프트로 만든 라벨인지 추적한다
-PROMPT_VERSION = "p1"
+PROMPT_VERSION = "p2"
 
 _CONTENT_TYPE_NAMES = {
     "query": "사용자 상담 질문",
@@ -62,7 +62,7 @@ def system_prompt(tax: Taxonomy, content_type: str) -> str:
 # 출력
 - issue 에 질문자가 판단받고 싶은 최종 쟁점을 한국어 한 문장으로 먼저 쓰고, 그 쟁점에 맞춰 라벨을 고르세요.
 - 입력이 한국어가 아니어도 번역하지 말고 원문 그대로 판단하세요.
-- 범위 밖(OUT_OF_SCOPE)이면 속성은 기본값으로 두고 legal_refs 는 비우세요."""
+- 질문·계약서가 범위 밖(OUT_OF_SCOPE)이면 속성은 기본값으로 두고 legal_refs 는 비우세요. 조문은 범위 밖이어도 provision_type 을 고르세요."""
 
 
 def user_prompt(content_type: str, text: str, meta: dict | None = None) -> str:
