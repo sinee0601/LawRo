@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LawRo 라벨 판정</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --card: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --line: #e3e2dd;
+    --accent: #2f6f5e; --accent-soft: #e4f0ec; --warn: #9a5b12;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161615; --card: #1f1f1d; --text: #ecebe6; --muted: #a09f98; --line: #34332f;
+      --accent: #7fc4ae; --accent-soft: #23332e; --warn: #e0a55c; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.6 -apple-system, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+    padding: 12px 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  header h1 { font-size: 16px; margin: 0 auto 0 0; }
+  .progress { color: var(--muted); font-size: 13px; }
+  button { font: inherit; border: 1px solid var(--line); background: var(--card); color: var(--text);
+    padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+  button.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  main { max-width: 860px; margin: 0 auto; padding: 16px; }
+  h2 { font-size: 15px; margin: 28px 0 4px; }
+  .help { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 10px 0; }
+  .card.done { border-color: var(--accent); }
+  .id { font-size: 12px; color: var(--muted); }
+  .text { white-space: pre-wrap; margin: 6px 0 10px; }
+  .text.law { max-height: 9.5em; overflow: auto; font-size: 14px; }
+  .choices { display: flex; flex-direction: column; gap: 6px; }
+  label.choice { display: flex; gap: 8px; align-items: baseline; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+  label.choice:has(input:checked) { background: var(--accent-soft); }
+  .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+  .row > span { font-size: 13px; color: var(--muted); min-width: 64px; }
+  select, input[type=text], textarea { font: inherit; color: var(--text); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 8px; padding: 5px 8px; max-width: 100%; }
+  select { min-width: 0; width: 100%; }
+  .pill { display: inline-flex; gap: 4px; align-items: center; font-size: 14px; }
+  textarea { width: 100%; height: 120px; font-family: ui-monospace, monospace; font-size: 12px; }
+  .warn { color: var(--warn); font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>LawRo 라벨 판정</h1>
+  <span class="progress" id="progress"></span>
+  <button class="primary" id="export">결과 복사</button>
+</header>
+<main>
+  <h2>1. 조문 라벨 판정</h2>
+  <p class="help">두 라벨러가 다르게 붙인 조문입니다. 후보의 출처는 숨겼고 순서도 섞었습니다.
+    둘 다 틀렸으면 "다른 라벨"을 고르세요. 기준은 taxonomy/GUIDE.md (특히 R9·R10) 입니다.</p>
+  <div id="adjudicate"></div>
+
+  <h2>2. 일치도 측정 (정답 비공개)</h2>
+  <p class="help">가이드대로 primary·의도·긴급도를 골라 주세요. 제가 붙인 시드 라벨과의 일치도(Cohen's kappa)를 계산합니다.</p>
+  <div id="iaa"></div>
+
+  <h2>결과</h2>
+  <p class="help">"결과 복사"를 누르면 아래 JSON 이 클립보드에 복사됩니다. 채팅에 그대로 붙여 주세요.
+    입력 내용은 이 브라우저에 자동 저장됩니다.</p>
+  <p class="warn" id="missing"></p>
+  <textarea id="out" readonly></textarea>
+</main>
+<script>
+const DATA = /*__DATA__*/null;
+const KEY = "lawro-annotate-" + DATA.version;
+let state = { adjudicate: {}, iaa: {} };
+try { state = JSON.parse(localStorage.getItem(KEY)) || state; } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} render(); };
+
+const labelName = Object.fromEntries([...DATA.lawOptions, ...DATA.queryOptions].map(o => [o.id, o.name]));
+function selectHtml(options, value, attrs) {
+  const groups = {};
+  options.forEach(o => (groups[o.group] ||= []).push(o));
+  return `<select ${attrs}><option value="">선택…</option>` + Object.entries(groups).map(([g, os]) =>
+    `<optgroup label="${g}">` + os.map(o => `<option value="${o.id}" ${o.id === value ? "selected" : ""}>${o.id} ${o.name}</option>`).join("") + `</optgroup>`
+  ).join("") + `</select>`;
+}
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function renderAdjudicate() {
+  document.getElementById("adjudicate").innerHTML = DATA.adjudicate.map(t => {
+    const s = state.adjudicate[t.id] || {};
+    const other = s.choice && !t.candidates.includes(s.choice);
+    return `<div class="card ${s.choice ? "done" : ""}">
+      <div class="id">${esc(t.id)}</div>
+      <div class="text law">${esc(t.text)}</div>
+      <div class="choices">
+        ${t.candidates.map((c, i) => `<label class="choice"><input type="radio" name="a-${t.id}" data-a="${t.id}" value="${c}" ${s.choice === c ? "checked" : ""}>
+          <span>후보 ${i + 1}: <b>${c}</b> ${labelName[c] || ""}</span></label>`).join("")}
+        <label class="choice"><input type="radio" name="a-${t.id}" data-a-other="${t.id}" ${other ? "checked" : ""}><span>다른 라벨</span></label>
+        ${other || s.otherOpen ? selectHtml(DATA.lawOptions, other ? s.choice : "", `data-a-select="${t.id}"`) : ""}
+      </div>
+      <div class="row"><span>메모</span><input type="text" data-a-note="${t.id}" value="${esc(s.note || "")}" placeholder="판단 근거 (선택)" style="flex:1"></div>
+    </div>`;
+  }).join("") || `<p class="help">판정할 항목이 없습니다.</p>`;
+}
+
+function renderIaa() {
+  document.getElementById("iaa").innerHTML = DATA.iaa.map((t, i) => {
+    const s = state.iaa[t.id] || {};
+    const radios = (attr) => DATA.attrs[attr].map(v =>
+      `<label class="pill"><input type="radio" name="${attr}-${t.id}" data-i="${t.id}" data-attr="${attr}" value="${v}" ${s[attr] === v ? "checked" : ""}>${v}</label>`).join("");
+    const done = s.primary && (s.primary.startsWith("OUT_OF_SCOPE") || (s.intent && s.urgency));
+    return `<div class="card ${done ? "done" : ""}">
+      <div class="id">${i + 1} / ${DATA.iaa.length}</div>
+      <div class="text">${esc(t.text)}</div>
+      <div class="row"><span>primary</span><div style="flex:1">${selectHtml(DATA.queryOptions, s.primary || "", `data-i-primary="${t.id}"`)}</div></div>
+      <div class="row"><span>의도</span>${radios("intent")}</div>
+      <div class="row"><span>긴급도</span>${radios("urgency")}</div>
+    </div>`;
+  }).join("");
+}
+
+function result() {
+  return {
+    adjudicate: DATA.adjudicate.filter(t => state.adjudicate[t.id]?.choice)
+      .map(t => ({ id: t.id, choice: state.adjudicate[t.id].choice, note: state.adjudicate[t.id].note || "" })),
+    iaa: DATA.iaa.filter(t => state.iaa[t.id]?.primary).map(t => ({ id: t.id, ...state.iaa[t.id] })),
+  };
+}
+
+function render() {
+  renderAdjudicate(); renderIaa();
+  const r = result();
+  document.getElementById("progress").textContent =
+    `판정 ${r.adjudicate.length}/${DATA.adjudicate.length} · 일치도 ${r.iaa.length}/${DATA.iaa.length}`;
+  const left = DATA.adjudicate.length - r.adjudicate.length + DATA.iaa.length - r.iaa.length;
+  document.getElementById("missing").textContent = left ? `아직 ${left}건이 비어 있습니다. 채운 것만 복사됩니다.` : "";
+  document.getElementById("out").value = JSON.stringify(r);
+}
+
+document.addEventListener("change", e => {
+  const el = e.target, d = el.dataset;
+  if (d.a) { state.adjudicate[d.a] = { ...state.adjudicate[d.a], choice: el.value, otherOpen: false }; }
+  else if (d.aOther) { state.adjudicate[d.aOther] = { ...state.adjudicate[d.aOther], choice: "", otherOpen: true }; }
+  else if (d.aSelect) { state.adjudicate[d.aSelect] = { ...state.adjudicate[d.aSelect], choice: el.value, otherOpen: true }; }
+  else if (d.aNote) { state.adjudicate[d.aNote] = { ...state.adjudicate[d.aNote], note: el.value }; }
+  else if (d.iPrimary) { state.iaa[d.iPrimary] = { ...state.iaa[d.iPrimary], primary: el.value }; }
+  else if (d.attr) { state.iaa[d.i] = { ...state.iaa[d.i], [d.attr]: el.value }; }
+  else return;
+  save();
+});
+
+document.getElementById("export").addEventListener("click", async () => {
+  const text = document.getElementById("out").value;
+  try { await navigator.clipboard.writeText(text); document.getElementById("export").textContent = "복사됨"; }
+  catch (e) { document.getElementById("out").select(); document.getElementById("export").textContent = "직접 복사하세요"; }
+  setTimeout(() => (document.getElementById("export").textContent = "결과 복사"), 1500);
+});
+render();
+</script>
+</body>
+</html>

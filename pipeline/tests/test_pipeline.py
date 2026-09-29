@@ -139,3 +139,11 @@ def test_gate_blocks_paired_regression_and_passes_noise():
     failures = compare(base, worse)[0]
     assert any("정확도" in f for f in failures) and any("유의" in f for f in failures)
     assert sign_test_p(0, 0) == 1.0 and sign_test_p(6, 0) < 0.05
+
+
+def test_cohen_kappa():
+    from pipeline.annotate import cohen_kappa
+
+    assert cohen_kappa(["a", "b", "a", "b"], ["a", "b", "a", "b"]) == 1.0
+    # 일치율 50% 인데 우연 일치도 50% 면 kappa 0
+    assert abs(cohen_kappa(["a", "a", "b", "b"], ["a", "b", "a", "b"])) < 1e-9
