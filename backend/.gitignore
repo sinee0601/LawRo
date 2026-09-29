@@ -44,7 +44,9 @@ firebase-credentials.json
 Thumbs.db
 
 # Data
-data/
+# 벡터 DB 등 생성 데이터는 제외하고, 법령 원문(공개 법령, 파이프라인 입력)만 추적한다
+data/*
+!data/raw_laws/
 *.db
 *.sqlite
 
