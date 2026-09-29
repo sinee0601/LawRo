@@ -89,7 +89,7 @@ def per_label_table(pairs: list[tuple[str, str]]) -> tuple[list[str], float]:
     return rows, sum(f1s) / len(f1s) if f1s else 0.0
 
 
-def evaluate(pairs: list[tuple[Item, dict]]) -> tuple[str, dict]:
+def evaluate(pairs: list[tuple[Item, dict]], show_errors: bool = True) -> tuple[str, dict]:
     """(시드, 추출 결과) 쌍으로 지표를 계산해 마크다운과 요약 수치를 돌려준다."""
     leaked = leaked_ids([it for it, _ in pairs])
     groups: dict[str, list[tuple[Item, dict]]] = defaultdict(list)
@@ -160,8 +160,16 @@ def evaluate(pairs: list[tuple[Item, dict]]) -> tuple[str, dict]:
         "",
     ]
 
+    # 게이트의 대응 비교(같은 항목의 정오 변화)용
+    summary["item_hits"] = {it.id: r["labels"]["primary"] == it.gold["primary"] for it, r in groups["전체"]}
+
     errors = [(it, r) for it, r in groups["전체"] if r["labels"]["primary"] != it.gold["primary"]]
-    lines += ["## primary 오답", "", "| id | 본문 | 정답 | 예측 | 모델이 쓴 쟁점 |", "|---|---|---|---|---|"]
+    lines += ["## primary 오답", ""]
+    if not show_errors:
+        # test 오답을 보고 프롬프트를 고치면 test 가 dev 가 된다
+        lines.append(f"test 분할이라 오답 {len(errors)}건의 내용은 표시하지 않는다.")
+        return "\n".join(lines), summary
+    lines += ["| id | 본문 | 정답 | 예측 | 모델이 쓴 쟁점 |", "|---|---|---|---|---|"]
     for it, r in errors:
         text = it.text.replace("\n", " ").replace("|", "/")[:60]
         issue = r["labels"].get("issue", "").replace("|", "/")[:80]
@@ -190,7 +198,7 @@ def main(argv: list[str] | None = None) -> int:
         print("평가할 결과가 없습니다. 먼저 python -m pipeline.run --source seeds 를 실행하세요.")
         return 1
 
-    body, summary = evaluate(pairs)
+    body, summary = evaluate(pairs, show_errors=args.split != "test")
     header = (
         f"# 추출 평가: {args.model} / taxonomy v{tax.version} / prompt {PROMPT_VERSION} / split {args.split}\n\n"
         f"시드 {len(jobs)}건 중 평가 {len(pairs)}건 (결과 없음·실패 {missing}건)\n"

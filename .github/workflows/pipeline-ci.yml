@@ -48,3 +48,10 @@ jobs:
 
       - name: Run tests
         run: pytest pipeline/tests -q -p no:cacheprovider
+
+      - name: Splits up to date
+        run: python -m pipeline.splits --check
+
+      # 프롬프트·taxonomy 가 바뀌었는데 test 평가가 없거나 기준선보다 나빠지면 실패
+      - name: Regression gate
+        run: python -m pipeline.gate

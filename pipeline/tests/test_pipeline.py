@@ -124,3 +124,18 @@ def test_bootstrap_ci_contains_point_estimate():
     hits = [True] * 90 + [False] * 10
     lo, hi = bootstrap_ci(hits)
     assert lo < 0.9 < hi and hi - lo < 0.15
+
+
+def test_gate_blocks_paired_regression_and_passes_noise():
+    from pipeline.gate import compare, sign_test_p
+
+    ids = [f"t{i}" for i in range(80)]
+    base = {"item_hits": {i: n < 72 for n, i in enumerate(ids)}, "primary_exact": 0.9, "macro_f1_parent": 0.9}
+    # 맞던 것 1건이 틀리고 틀리던 것 1건이 맞음 → 잡음
+    noisy = {**base, "item_hits": {**base["item_hits"], "t0": False, "t75": True}}
+    assert compare(base, noisy)[0] == []
+    # 맞던 것 6건이 틀림 → 정확도 -7.5%p, 부호 검정 p=0.016
+    worse = {"item_hits": {i: n < 66 for n, i in enumerate(ids)}, "primary_exact": 0.825, "macro_f1_parent": 0.88}
+    failures = compare(base, worse)[0]
+    assert any("정확도" in f for f in failures) and any("유의" in f for f in failures)
+    assert sign_test_p(0, 0) == 1.0 and sign_test_p(6, 0) < 0.05
