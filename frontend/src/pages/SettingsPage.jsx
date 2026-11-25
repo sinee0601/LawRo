@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { ChevronRight, User, Lock, Globe, Palette, HelpCircle, Shield } from 'lucide-react';
-import BottomNav from '../components/BottomNav';
-import MobileHeader from '../components/MobileHeader';
+import { Card } from '../components/ui';
+import AppLayout from '../components/layout/AppLayout';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -26,14 +26,11 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="설정" showBack={false} />
-
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8">
+    <AppLayout title="설정" width="narrow">
         {/* 계정 섹션 */}
         <div className="mb-6">
           <h2 className="text-lg font-bold text-ink mb-3 px-2">계정</h2>
-          <div className="bg-surface rounded-3xl shadow-sm overflow-hidden">
+          <Card padding="none" className="overflow-hidden">
             {accountSettings.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -54,13 +51,13 @@ export default function SettingsPage() {
                 </button>
               );
             })}
-          </div>
+          </Card>
         </div>
 
         {/* 정보 섹션 */}
         <div className="mb-6">
           <h2 className="text-lg font-bold text-ink mb-3 px-2">정보</h2>
-          <div className="bg-surface rounded-3xl shadow-sm overflow-hidden">
+          <Card padding="none" className="overflow-hidden">
             {infoSettings.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -81,13 +78,13 @@ export default function SettingsPage() {
                 </button>
               );
             })}
-          </div>
+          </Card>
         </div>
 
         {/* 로그아웃 버튼 */}
         <button
           onClick={handleLogout}
-          className="w-full bg-surface hover:bg-surface-muted text-red-600 dark:text-red-400 font-medium py-4 rounded-3xl shadow-sm transition-colors"
+          className="w-full bg-surface hover:bg-surface-muted text-red-600 dark:text-red-400 font-medium py-4 rounded-card shadow-card transition-colors"
         >
           로그아웃
         </button>
@@ -99,9 +96,6 @@ export default function SettingsPage() {
             <p className="mt-1">LawRo v1.0.0</p>
           </div>
         )}
-      </main>
-
-      <BottomNav />
-    </div>
+      </AppLayout>
   );
 }

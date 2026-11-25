@@ -6,9 +6,10 @@ export default function EmergencyContacts({ contacts }) {
   };
 
   return (
-    <div className="space-y-3">
+    <div>
       <h3 className="text-lg font-bold text-ink mb-4">긴급 연락처</h3>
 
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
       {contacts.map((contact, index) => (
         <div
           key={index}
@@ -55,6 +56,7 @@ export default function EmergencyContacts({ contacts }) {
           </div>
         </div>
       ))}
+      </div>
     </div>
   );
 }

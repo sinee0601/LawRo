@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { toast } from '../store/notifyStore';
+import { ArrowLeft } from 'lucide-react';
+import { Button, Input, cn } from '../components/ui';
+
+const EMAIL_DOMAINS = ['gmail.com', 'naver.com', 'kakao.com'];
 
 // 가입 시 실제로 검사하는 규칙 (Firebase Auth 최소 길이와 같음)
 const MIN_PASSWORD_LENGTH = 6;
@@ -68,88 +72,108 @@ export default function SignupPage() {
     }
   };
 
+  const emailLocal = formData.email.split('@')[0];
+  const emailDomain = formData.email.includes('@') ? formData.email.split('@').slice(1).join('@') : '';
+  const knownDomain = EMAIL_DOMAINS.includes(emailDomain) ? emailDomain : '';
+
+  // 도메인을 고르면 '@' 앞부분은 그대로 두고 뒤만 바꿉니다.
+  const handleDomainChange = (e) => {
+    const domain = e.target.value;
+    if (!domain) return;
+    setFormData({ ...formData, email: `${emailLocal}@${domain}` });
+    clearError();
+    setValidationError('');
+  };
+
   return (
-    <div className="min-h-screen bg-canvas py-8 px-4">
-      <div className="w-full max-w-md mx-auto">
-        <div className="mb-8">
-          <Link to="/login" className="inline-flex items-center text-ink-muted hover:text-ink">
-            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+    <div className="min-h-screen bg-surface sm:bg-canvas">
+      <main className="w-full max-w-sm mx-auto px-6 py-8 sm:max-w-md sm:px-0 sm:py-12">
+        <div className="flex items-center gap-2 mb-8">
+          <Link
+            to="/login"
+            aria-label="로그인으로 돌아가기"
+            className="w-10 h-10 -ml-2 flex items-center justify-center rounded-full text-ink-muted hover:bg-surface-muted hover:text-ink"
+          >
+            <ArrowLeft className="w-6 h-6" />
           </Link>
+          <h1 className="text-2xl font-bold text-ink tracking-tight">회원가입</h1>
         </div>
 
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-ink mb-2">회원가입</h1>
-        </div>
-
-        <div className="bg-surface rounded-3xl shadow-lg p-8 space-y-6">
+        <div className="sm:bg-surface sm:rounded-card sm:shadow-card sm:p-10 space-y-6">
           {(error || validationError) && (
-            <div className="p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-xl text-sm">
+            <div
+              role="alert"
+              className="p-3 bg-danger-soft border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-control text-sm"
+            >
               {error || validationError}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label htmlFor="full_name" className="block text-sm font-medium text-ink-muted mb-2">
-                이름
-              </label>
-              <input
-                type="text"
-                id="full_name"
-                name="full_name"
-                value={formData.full_name}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                placeholder="이름"
-                required
-              />
-            </div>
+            <Input
+              type="text"
+              id="full_name"
+              name="full_name"
+              label="이름"
+              autoComplete="name"
+              value={formData.full_name}
+              onChange={handleChange}
+              placeholder="이름"
+              required
+            />
 
-            <div>
-              <label htmlFor="preferred_language" className="block text-sm font-medium text-ink-muted mb-3">
-                언어 선택
-              </label>
-              <div className="grid grid-cols-2 gap-2">
+            <fieldset>
+              <legend className="block text-sm font-medium text-ink mb-2">언어 선택</legend>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {languages.map((lang) => (
                   <button
                     key={lang.code}
                     type="button"
+                    aria-pressed={formData.preferred_language === lang.code}
                     onClick={() => setFormData({ ...formData, preferred_language: lang.code })}
-                    className={`px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                    className={cn(
+                      'px-3 py-3 rounded-control font-medium transition-colors flex items-center justify-center gap-2 min-w-0',
                       formData.preferred_language === lang.code
-                        ? 'bg-primary-600 text-white ring-2 ring-primary-300'
+                        ? 'bg-primary text-primary-foreground ring-2 ring-primary-300 dark:ring-primary-500/50'
                         : 'bg-surface-muted text-ink-muted hover:bg-line'
-                    }`}
+                    )}
                   >
                     <span className="text-lg">{lang.flag}</span>
-                    <span className="text-xs">{lang.name}</span>
+                    <span className="text-xs truncate">{lang.name}</span>
                   </button>
                 ))}
               </div>
-            </div>
+            </fieldset>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-ink-muted mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-ink mb-2">
                 이메일
               </label>
+              {/* 좁은 화면에서도 넘치지 않도록 입력창은 줄어들고 도메인 선택은 고정 폭 */}
               <div className="flex gap-2">
-                <input
+                <Input
                   type="email"
                   id="email"
                   name="email"
+                  autoComplete="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="flex-1 px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                  className="min-w-0"
                   placeholder="이메일"
                   required
                 />
-                <select className="px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-surface">
-                  <option>선택</option>
-                  <option>gmail.com</option>
-                  <option>naver.com</option>
-                  <option>kakao.com</option>
+                <select
+                  aria-label="이메일 도메인 선택"
+                  value={knownDomain}
+                  onChange={handleDomainChange}
+                  className="w-32 sm:w-36 shrink-0 px-3 py-3 text-sm text-ink border border-line-strong rounded-control outline-none focus:shadow-focus focus:border-primary-500"
+                >
+                  <option value="">직접 입력</option>
+                  {EMAIL_DOMAINS.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
                 </select>
               </div>
               {formData.email && !formData.email.includes('@') && (
@@ -158,38 +182,38 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-ink-muted mb-2">
-                인증번호
+              <div className="flex items-center justify-between mb-2">
+                <label htmlFor="verify_code" className="text-sm font-medium text-ink">
+                  인증번호
+                </label>
                 <button
                   type="button"
                   onClick={() => toast.info('이메일 인증 기능은 준비 중이에요. 인증 없이 가입할 수 있어요.')}
-                  className="float-right text-primary-600 dark:text-primary-400 text-sm"
+                  className="text-primary-600 dark:text-primary-400 text-sm font-medium"
                 >
                   인증번호 전송
                 </button>
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                placeholder="인증번호 6자리"
-              />
+              </div>
               {/* 인증 API 가 아직 없어서 '인증 완료' 상태를 보여주지 않는다. 연동되면 실제 결과로 표시할 것. */}
-              <p className="text-xs text-ink-muted mt-2">이메일 인증은 준비 중이에요. 지금은 인증 없이 가입할 수 있어요.</p>
+              <Input
+                type="text"
+                inputMode="numeric"
+                id="verify_code"
+                name="verify_code"
+                placeholder="인증번호 6자리"
+                hint="이메일 인증은 준비 중이에요. 지금은 인증 없이 가입할 수 있어요."
+              />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-ink-muted mb-2">
-                비밀번호
-              </label>
-              <input
+              <Input
                 type="password"
                 id="password"
                 name="password"
+                label="비밀번호"
+                autoComplete="new-password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder={`비밀번호 (${MIN_PASSWORD_LENGTH}자 이상)`}
                 required
               />
@@ -205,16 +229,14 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-ink-muted mb-2">
-                비밀번호 확인
-              </label>
-              <input
+              <Input
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
+                label="비밀번호 확인"
+                autoComplete="new-password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder="비밀번호 확인"
                 required
               />
@@ -227,16 +249,19 @@ export default function SignupPage() {
               )}
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-primary-600 hover:bg-primary-hover text-white font-semibold py-4 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
-            >
+            <Button type="submit" size="xl" fullWidth disabled={isLoading} className="mt-6">
               {isLoading ? '가입 중...' : '회원가입'}
-            </button>
+            </Button>
           </form>
+
+          <p className="text-center text-sm text-ink-muted">
+            이미 계정이 있나요?{' '}
+            <Link to="/login" className="font-medium text-primary-600 dark:text-primary-400 hover:underline">
+              로그인
+            </Link>
+          </p>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

@@ -1,38 +1,33 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import { FileText, MessageCircle, Clock, Settings, Building2 } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { cn } from './ui';
+import { NAV_ITEMS, isNavActive } from './layout/navItems';
 
+/** 모바일·태블릿 하단 탭. PC(lg 이상)에서는 SideNav 가 대신합니다. */
 export default function BottomNav() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const navItems = [
-    { path: '/contract', icon: FileText, label: '계약서 분석' },
-    { path: '/chat', icon: MessageCircle, label: '챗봇' },
-    { path: '/support-center', icon: Building2, label: '지원' },
-    { path: '/work-time', icon: Clock, label: '근무시간' },
-    { path: '/settings', icon: Settings, label: '설정' },
-  ];
+  const { pathname } = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-surface border-t border-line shadow-lg z-50">
-      <div className="max-w-md mx-auto flex justify-around items-center h-14 sm:h-16">
-        {navItems.map((item) => {
+    <nav
+      className="lg:hidden fixed bottom-0 inset-x-0 bg-surface border-t border-line shadow-lg z-40 pb-[env(safe-area-inset-bottom)]"
+      aria-label="주 메뉴"
+    >
+      <div className="max-w-xl mx-auto flex justify-around items-center h-14 sm:h-16">
+        {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-
+          const active = isNavActive(item, pathname);
           return (
-            <button
+            <NavLink
               key={item.path}
-              onClick={() => navigate(item.path)}
-              className={`flex flex-col items-center justify-center flex-1 h-full transition-colors ${
-                isActive
-                  ? 'text-primary-600 dark:text-primary-400'
-                  : 'text-ink-muted hover:text-ink-muted'
-              }`}
+              to={item.path}
+              aria-current={active ? 'page' : undefined}
+              className={cn(
+                'flex flex-col items-center justify-center flex-1 h-full transition-colors',
+                active ? 'text-primary-600 dark:text-primary-400' : 'text-ink-muted hover:text-ink'
+              )}
             >
-              <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${isActive ? 'fill-current' : ''}`} />
-              <span className="text-[10px] sm:text-xs mt-0.5 sm:mt-1 leading-tight">{item.label}</span>
-            </button>
+              <Icon className={cn('w-5 h-5 sm:w-6 sm:h-6', active && 'fill-current')} />
+              <span className="text-[10px] sm:text-xs mt-0.5 sm:mt-1 leading-tight">{item.shortLabel ?? item.label}</span>
+            </NavLink>
           );
         })}
       </div>

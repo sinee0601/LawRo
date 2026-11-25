@@ -1,6 +1,6 @@
 import { Info, AlertCircle } from 'lucide-react';
-import MobileHeader from '../components/MobileHeader';
-import BottomNav from '../components/BottomNav';
+import { Card } from '../components/ui';
+import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
 
 export default function AboutPage() {
@@ -9,12 +9,9 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="앱 설명" showBack={true} />
-
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8">
+    <AppLayout title="앱 설명" showBack width="narrow">
         {/* 로고 및 기본 정보 */}
-        <div className="bg-surface rounded-3xl shadow-sm p-8 mb-6 text-center">
+        <Card padding="lg" className="mb-6 text-center">
           <div className="w-24 h-24 bg-primary-100 dark:bg-primary-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-4xl font-bold text-primary-600 dark:text-primary-400">LR</span>
           </div>
@@ -23,10 +20,10 @@ export default function AboutPage() {
             외국인 노동자를 위한 AI 법률 상담 플랫폼
           </p>
           <p className="text-xs text-ink-muted">Version 1.0.0</p>
-        </div>
+        </Card>
 
         {/* 소개 섹션 */}
-        <div className="bg-surface rounded-3xl shadow-sm p-6 mb-6">
+        <Card className="mb-6">
           <h2 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
             <Info className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             LawRo 소개
@@ -48,12 +45,12 @@ export default function AboutPage() {
               <span>6개 언어를 지원합니다</span>
             </li>
           </ul>
-        </div>
+        </Card>
 
         {/* 주요 기능 */}
-        <div className="bg-surface rounded-3xl shadow-sm p-6 mb-6">
+        <Card className="mb-6">
           <h2 className="text-lg font-bold text-ink mb-4">주요 기능</h2>
-          <div className="space-y-3">
+          <div className="grid gap-3 sm:grid-cols-3">
             <div className="p-3 bg-blue-50 dark:bg-blue-500/10 rounded-lg">
               <p className="font-medium text-blue-900 dark:text-blue-200 text-sm mb-1">법률 상담 챗봇</p>
               <p className="text-xs text-blue-800 dark:text-blue-200">
@@ -73,7 +70,7 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* 업데이트 예정 기능 */}
         <div className="bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-200 dark:border-yellow-500/30 rounded-2xl p-4 mb-6 flex items-start gap-3">
@@ -89,7 +86,7 @@ export default function AboutPage() {
         </div>
 
         {/* 문의 섹션 */}
-        <div className="bg-surface rounded-3xl shadow-sm p-6">
+        <Card>
           <h2 className="text-lg font-bold text-ink mb-4">문의 및 피드백</h2>
           <p className="text-sm text-ink-muted mb-4">
             LawRo에 대한 문의사항이나 피드백은 언제든지 환영합니다.
@@ -100,10 +97,7 @@ export default function AboutPage() {
           >
             문의하기
           </button>
-        </div>
-      </main>
-
-      <BottomNav />
-    </div>
+        </Card>
+      </AppLayout>
   );
 }

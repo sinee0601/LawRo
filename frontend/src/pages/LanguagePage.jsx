@@ -4,8 +4,8 @@ import useAuthStore from '../store/authStore';
 import useTranslation from '../hooks/useTranslation';
 import { settingsAPI } from '../services/api';
 import { Check, Globe } from 'lucide-react';
-import MobileHeader from '../components/MobileHeader';
-import BottomNav from '../components/BottomNav';
+import { Card } from '../components/ui';
+import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
 
 export default function LanguagePage() {
@@ -52,11 +52,8 @@ export default function LanguagePage() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="언어 선택" showBack={true} />
-
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8">
-        <div className="bg-surface rounded-3xl shadow-sm overflow-hidden">
+    <AppLayout title="언어 선택" showBack width="narrow">
+        <Card padding="none" className="overflow-hidden">
           {languages.map((lang, index) => (
             <button
               key={lang.code}
@@ -85,7 +82,7 @@ export default function LanguagePage() {
               )}
             </button>
           ))}
-        </div>
+        </Card>
 
         {/* 정보 메시지 */}
         <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-start gap-3">
@@ -94,9 +91,6 @@ export default function LanguagePage() {
             {t('settings.languageDescription')}
           </p>
         </div>
-      </main>
-
-      <BottomNav />
-    </div>
+      </AppLayout>
   );
 }

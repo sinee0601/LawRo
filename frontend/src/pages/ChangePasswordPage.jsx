@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { settingsAPI } from '../services/api';
 import { Lock, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
-import MobileHeader from '../components/MobileHeader';
-import BottomNav from '../components/BottomNav';
+import { Card } from '../components/ui';
+import AppLayout from '../components/layout/AppLayout';
 
 export default function ChangePasswordPage() {
   const navigate = useNavigate();
@@ -65,24 +65,19 @@ export default function ChangePasswordPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-canvas pb-20 flex flex-col items-center justify-center">
-        <MobileHeader title="비밀번호 변경" showBack={true} />
-        <div className="flex flex-col items-center justify-center flex-1 px-4">
+      <AppLayout title="비밀번호 변경" showBack width="narrow">
+        <div className="flex flex-col items-center justify-center text-center py-20">
           <CheckCircle className="w-16 h-16 text-green-600 dark:text-green-400 mb-4" />
           <p className="text-lg font-bold text-ink mb-2">비밀번호가 변경되었습니다</p>
           <p className="text-sm text-ink-muted">잠시 후 설정 페이지로 이동합니다.</p>
         </div>
-        <BottomNav />
-      </div>
+      </AppLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="비밀번호 변경" showBack={true} />
-
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8">
-        <div className="bg-surface rounded-3xl shadow-sm p-6 mb-6">
+    <AppLayout title="비밀번호 변경" showBack width="narrow">
+        <Card className="mb-6">
           <p className="text-sm text-ink-muted mb-6">
             보안을 위해 강력한 비밀번호를 설정해주세요.
           </p>
@@ -192,10 +187,7 @@ export default function ChangePasswordPage() {
               {isLoading ? '변경 중...' : '변경'}
             </button>
           </div>
-        </div>
-      </main>
-
-      <BottomNav />
-    </div>
+        </Card>
+      </AppLayout>
   );
 }

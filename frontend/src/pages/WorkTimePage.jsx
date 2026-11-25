@@ -5,12 +5,11 @@
 
 
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Clock, Save, Trash2, AlertCircle, CheckCircle, Navigation, X } from 'lucide-react';
+import { MapPin, Clock, Save, Trash2, AlertCircle, CheckCircle, Navigation } from 'lucide-react';
 import { worktimeAPI } from '../services/api';
-import BottomNav from '../components/BottomNav';
-import MobileHeader from '../components/MobileHeader';
+import AppLayout from '../components/layout/AppLayout';
 import NaverMap from '../components/NaverMap';
-import { Button, Card, Input } from '../components/ui';
+import { Button, Card, Input, Sheet } from '../components/ui';
 import { toast, confirm } from '../store/notifyStore';
 
 export default function WorkTimePage() {
@@ -267,23 +266,16 @@ export default function WorkTimePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-canvas pb-20">
-        <MobileHeader title="근무 시간 기록" showBack={false} />
-        <main className="max-w-md mx-auto px-4 pt-20 pb-8 flex items-center justify-center">
+      <AppLayout title="근무 시간 기록" width="wide" className="flex items-center justify-center py-20">
           <div className="animate-spin">
             <div className="w-8 h-8 border-4 border-primary-200 dark:border-primary-500/30 border-t-primary-600 rounded-full" />
           </div>
-        </main>
-        <BottomNav />
-      </div>
+        </AppLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="근무 시간 기록" showBack={false} />
-
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8 space-y-6">
+    <AppLayout title="근무 시간 기록" subtitle="근무지 반경 안에서 근무 시간을 재고 기록해요" width="wide" className="space-y-6">
         {/* 에러 메시지 */}
         {error && (
           <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-2xl flex items-start gap-3">
@@ -292,190 +284,196 @@ export default function WorkTimePage() {
           </div>
         )}
 
-        {/* 근무지 정보 카드 */}
-        <Card>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-ink">📍 근무지 정보</h3>
-            {workplace && (
-              <button
-                onClick={() => setShowWorkplaceModal(true)}
-                className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
-              >
-                변경
-              </button>
-            )}
-          </div>
+        <div className="grid gap-6 lg:grid-cols-5 lg:items-start">
+          {/* 모바일에서는 근무지 정보가 먼저, PC에서는 오른쪽 칸 */}
+          <div className="space-y-6 lg:col-span-2 lg:order-2 lg:sticky lg:top-24">
+            {/* 근무지 정보 카드 */}
+            <Card>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-ink">📍 근무지 정보</h3>
+                {workplace && (
+                  <button
+                    onClick={() => setShowWorkplaceModal(true)}
+                    className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
+                  >
+                    변경
+                  </button>
+                )}
+              </div>
 
-          {workplace ? (
-            <div className="space-y-3 text-sm">
-              {workplace.address && (
-                <p className="text-ink">{workplace.address}</p>
-              )}
-              <p className="text-xs text-ink-muted font-mono">
-                📌 {workplace.latitude.toFixed(6)}, {workplace.longitude.toFixed(6)}
-              </p>
-              <p className="text-xs text-ink-muted">
-                반경: {workplace.radius_meters}m
-              </p>
-            </div>
-          ) : (
-            <Button variant="secondary" size="lg" fullWidth onClick={() => setShowWorkplaceModal(true)}>
-              근무지 등록하기
-            </Button>
-          )}
-        </Card>
-
-        {/* 현재 위치 및 상태 */}
-        {currentLocation.latitude && (
-          <Card>
-            <div className="flex items-center gap-2 mb-4">
-              <Navigation className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-              <h3 className="font-semibold text-ink">내 위치</h3>
-            </div>
-
-            <div className="space-y-3">
-              <p className="text-xs text-ink-muted font-mono">
-                {currentLocation.latitude.toFixed(6)}, {currentLocation.longitude.toFixed(6)}
-              </p>
-
-              {locationStatus && (
-                <div className={`p-4 rounded-2xl ${
-                  locationStatus.is_within_workplace
-                    ? 'bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30'
-                    : 'bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30'
-                }`}>
-                  <div className="flex items-center gap-2 mb-2">
-                    {locationStatus.is_within_workplace ? (
-                      <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                    ) : (
-                      <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                    )}
-                    <span className={`font-medium ${
-                      locationStatus.is_within_workplace
-                        ? 'text-green-900 dark:text-green-200'
-                        : 'text-orange-900 dark:text-orange-200'
-                    }`}>
-                      {locationStatus.is_within_workplace ? '근무지 내' : '근무지 외'}
-                    </span>
-                  </div>
-                  <p className={`text-sm ${
-                    locationStatus.is_within_workplace
-                      ? 'text-green-700 dark:text-green-300'
-                      : 'text-orange-700 dark:text-orange-300'
-                  }`}>
-                    거리: {locationStatus.distance_meters.toFixed(0)}m
+              {workplace ? (
+                <div className="space-y-3 text-sm">
+                  {workplace.address && (
+                    <p className="text-ink">{workplace.address}</p>
+                  )}
+                  <p className="text-xs text-ink-muted font-mono">
+                    📌 {workplace.latitude.toFixed(6)}, {workplace.longitude.toFixed(6)}
+                  </p>
+                  <p className="text-xs text-ink-muted">
+                    반경: {workplace.radius_meters}m
                   </p>
                 </div>
+              ) : (
+                <Button variant="secondary" size="lg" fullWidth onClick={() => setShowWorkplaceModal(true)}>
+                  근무지 등록하기
+                </Button>
               )}
-            </div>
-          </Card>
-        )}
+            </Card>
 
-        {/* 근무시간 측정 카드 */}
-        <Card padding="lg">
-          <div className="text-center mb-6">
-            <h2 className="text-lg font-bold text-ink mb-4">근무시간 측정</h2>
-
-            {/* 타이머 */}
-            <div className="text-5xl sm:text-6xl font-bold text-ink mb-8 font-mono tabular-nums tracking-tight sm:tracking-wider whitespace-nowrap">
-              {String(time.hours).padStart(2, '0')}:{String(time.minutes).padStart(2, '0')}:{String(time.seconds).padStart(2, '0')}
-            </div>
-
-            {/* 상태 표시 */}
-            {!workplace && (
-              <div className="mb-6 p-3 bg-yellow-50 dark:bg-yellow-500/10 rounded-xl border border-yellow-200 dark:border-yellow-500/30">
-                <p className="text-sm text-yellow-700 dark:text-yellow-300">근무지를 먼저 등록해주세요</p>
-              </div>
-            )}
-
-            {workplace && !locationStatus?.is_within_workplace && (
-              <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-500/10 rounded-xl border border-orange-200 dark:border-orange-500/30">
-                <p className="text-sm text-orange-700 dark:text-orange-300">근무지 반경 내에 있어야 측정할 수 있습니다</p>
-              </div>
-            )}
-
-            {workplace && locationStatus?.is_within_workplace && (
-              <div className="mb-6 p-3 bg-green-50 dark:bg-green-500/10 rounded-xl border border-green-200 dark:border-green-500/30">
-                <p className="text-sm text-green-700 dark:text-green-300">✓ 근무시간 측정 가능합니다</p>
-              </div>
-            )}
-
-            {/* 측정 버튼 */}
-            <div className="grid grid-cols-2 gap-3">
-              <Button
-                size="xl"
-                variant={isTracking ? 'danger' : 'primary'}
-                onClick={handleToggleTracking}
-                disabled={!workplace || !locationStatus?.is_within_workplace}
-                className="shadow-raised"
-              >
-                {isTracking ? '정지' : '시작'}
-              </Button>
-              <Button
-                size="xl"
-                variant="outline"
-                onClick={handleSaveRecord}
-                disabled={!currentSessionStart || (time.hours === 0 && time.minutes === 0 && time.seconds === 0)}
-              >
-                <Save className="w-5 h-5" />
-                저장
-              </Button>
-            </div>
-          </div>
-        </Card>
-
-        {/* 근무 기록 */}
-        <Card>
-          <div className="flex items-center gap-2 mb-4">
-            <Clock className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-            <h3 className="font-bold text-ink">근무 내역</h3>
-            {workRecords.length > 0 && (
-              <span className="ml-auto text-sm font-medium text-primary-600 dark:text-primary-400">
-                {workRecords.length}건
-              </span>
-            )}
-          </div>
-
-          {workRecords.length === 0 ? (
-            <div className="text-center py-8">
-              <Clock className="w-12 h-12 text-line-strong mx-auto mb-3" />
-              <p className="text-ink-muted text-sm">아직 근무 기록이 없습니다</p>
-              <p className="text-xs text-ink-subtle mt-2">
-                근무를 시작하면 기록이 저장됩니다
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {workRecords.map((record) => (
-                <div key={record.id} className="bg-canvas rounded-2xl p-4 border border-line">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-ink">
-                        {formatDate(record.start_time)}
-                      </p>
-                      <p className="text-lg font-bold text-primary-600 dark:text-primary-400 mt-1">
-                        {formatDuration(record.duration_seconds)}
-                      </p>
-                      {record.location?.address && (
-                        <p className="text-xs text-ink-muted mt-2">
-                          📍 {record.location.address}
-                        </p>
-                      )}
-                    </div>
-                    <button
-                      onClick={() => handleDeleteRecord(record.id)}
-                      className="text-red-400 hover:text-red-600 dark:hover:text-red-400 transition-colors p-2"
-                      title="삭제"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </div>
+            {/* 현재 위치 및 상태 */}
+            {currentLocation.latitude && (
+              <Card>
+                <div className="flex items-center gap-2 mb-4">
+                  <Navigation className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                  <h3 className="font-semibold text-ink">내 위치</h3>
                 </div>
-              ))}
-            </div>
-          )}
-        </Card>
-      </main>
+
+                <div className="space-y-3">
+                  <p className="text-xs text-ink-muted font-mono">
+                    {currentLocation.latitude.toFixed(6)}, {currentLocation.longitude.toFixed(6)}
+                  </p>
+
+                  {locationStatus && (
+                    <div className={`p-4 rounded-2xl ${
+                      locationStatus.is_within_workplace
+                        ? 'bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30'
+                        : 'bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30'
+                    }`}>
+                      <div className="flex items-center gap-2 mb-2">
+                        {locationStatus.is_within_workplace ? (
+                          <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        ) : (
+                          <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                        )}
+                        <span className={`font-medium ${
+                          locationStatus.is_within_workplace
+                            ? 'text-green-900 dark:text-green-200'
+                            : 'text-orange-900 dark:text-orange-200'
+                        }`}>
+                          {locationStatus.is_within_workplace ? '근무지 내' : '근무지 외'}
+                        </span>
+                      </div>
+                      <p className={`text-sm ${
+                        locationStatus.is_within_workplace
+                          ? 'text-green-700 dark:text-green-300'
+                          : 'text-orange-700 dark:text-orange-300'
+                      }`}>
+                        거리: {locationStatus.distance_meters.toFixed(0)}m
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            )}
+          </div>
+
+          <div className="space-y-6 lg:col-span-3 lg:order-1">
+            {/* 근무시간 측정 카드 */}
+            <Card padding="lg">
+              <div className="text-center mb-6">
+                <h2 className="text-lg font-bold text-ink mb-4">근무시간 측정</h2>
+
+                {/* 타이머 */}
+                <div className="text-5xl sm:text-6xl font-bold text-ink mb-8 font-mono tabular-nums tracking-tight sm:tracking-wider whitespace-nowrap">
+                  {String(time.hours).padStart(2, '0')}:{String(time.minutes).padStart(2, '0')}:{String(time.seconds).padStart(2, '0')}
+                </div>
+
+                {/* 상태 표시 */}
+                {!workplace && (
+                  <div className="mb-6 p-3 bg-yellow-50 dark:bg-yellow-500/10 rounded-xl border border-yellow-200 dark:border-yellow-500/30">
+                    <p className="text-sm text-yellow-700 dark:text-yellow-300">근무지를 먼저 등록해주세요</p>
+                  </div>
+                )}
+
+                {workplace && !locationStatus?.is_within_workplace && (
+                  <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-500/10 rounded-xl border border-orange-200 dark:border-orange-500/30">
+                    <p className="text-sm text-orange-700 dark:text-orange-300">근무지 반경 내에 있어야 측정할 수 있습니다</p>
+                  </div>
+                )}
+
+                {workplace && locationStatus?.is_within_workplace && (
+                  <div className="mb-6 p-3 bg-green-50 dark:bg-green-500/10 rounded-xl border border-green-200 dark:border-green-500/30">
+                    <p className="text-sm text-green-700 dark:text-green-300">✓ 근무시간 측정 가능합니다</p>
+                  </div>
+                )}
+
+                {/* 측정 버튼 */}
+                <div className="grid grid-cols-2 gap-3">
+                  <Button
+                    size="xl"
+                    variant={isTracking ? 'danger' : 'primary'}
+                    onClick={handleToggleTracking}
+                    disabled={!workplace || !locationStatus?.is_within_workplace}
+                    className="shadow-raised"
+                  >
+                    {isTracking ? '정지' : '시작'}
+                  </Button>
+                  <Button
+                    size="xl"
+                    variant="outline"
+                    onClick={handleSaveRecord}
+                    disabled={!currentSessionStart || (time.hours === 0 && time.minutes === 0 && time.seconds === 0)}
+                  >
+                    <Save className="w-5 h-5" />
+                    저장
+                  </Button>
+                </div>
+              </div>
+            </Card>
+
+            {/* 근무 기록 */}
+            <Card>
+              <div className="flex items-center gap-2 mb-4">
+                <Clock className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                <h3 className="font-bold text-ink">근무 내역</h3>
+                {workRecords.length > 0 && (
+                  <span className="ml-auto text-sm font-medium text-primary-600 dark:text-primary-400">
+                    {workRecords.length}건
+                  </span>
+                )}
+              </div>
+
+              {workRecords.length === 0 ? (
+                <div className="text-center py-8">
+                  <Clock className="w-12 h-12 text-line-strong mx-auto mb-3" />
+                  <p className="text-ink-muted text-sm">아직 근무 기록이 없습니다</p>
+                  <p className="text-xs text-ink-subtle mt-2">
+                    근무를 시작하면 기록이 저장됩니다
+                  </p>
+                </div>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {workRecords.map((record) => (
+                    <div key={record.id} className="bg-canvas rounded-2xl p-4 border border-line">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-ink">
+                            {formatDate(record.start_time)}
+                          </p>
+                          <p className="text-lg font-bold text-primary-600 dark:text-primary-400 mt-1">
+                            {formatDuration(record.duration_seconds)}
+                          </p>
+                          {record.location?.address && (
+                            <p className="text-xs text-ink-muted mt-2">
+                              📍 {record.location.address}
+                            </p>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => handleDeleteRecord(record.id)}
+                          className="text-red-400 hover:text-red-600 dark:hover:text-red-400 transition-colors p-2"
+                          title="삭제"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </div>
+        </div>
 
       {/* 근무지 등록 모달 */}
       {showWorkplaceModal && (
@@ -487,8 +485,7 @@ export default function WorkTimePage() {
         />
       )}
 
-      <BottomNav />
-    </div>
+    </AppLayout>
   );
 }
 
@@ -513,21 +510,21 @@ function WorkplaceModal({ onSave, onClose, mapLocation, setMapLocation }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
-      <div className="bg-surface w-full rounded-t-sheet max-h-[90vh] overflow-y-auto">
-        {/* 헤더 */}
-        <div className="sticky top-0 bg-surface border-b border-line p-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-ink">근무지 등록</h2>
-          <button
-            onClick={onClose}
-            className="text-ink-subtle hover:text-ink-muted"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-
-        {/* 콘텐츠 */}
-        <div className="p-6 space-y-4">
+    <Sheet
+      title="근무지 등록"
+      onClose={onClose}
+      footer={
+        <>
+          <Button size="lg" fullWidth onClick={handleSave} disabled={!mapLocation || isSaving}>
+            {isSaving ? '저장 중...' : '근무지 등록'}
+          </Button>
+          <Button variant="outline" size="lg" fullWidth onClick={onClose}>
+            취소
+          </Button>
+        </>
+      }
+    >
+        <div className="space-y-4">
           {/* 네이버 지도 */}
           <NaverMap
             latitude={mapLocation?.latitude}
@@ -559,17 +556,6 @@ function WorkplaceModal({ onSave, onClose, mapLocation, setMapLocation }) {
             근무지로부터 500m 반경 내에서만 근무시간을 측정할 수 있습니다.
           </p>
         </div>
-
-        {/* 하단 버튼 */}
-        <div className="sticky bottom-0 bg-surface border-t border-line p-4 space-y-3">
-          <Button size="lg" fullWidth onClick={handleSave} disabled={!mapLocation || isSaving}>
-            {isSaving ? '저장 중...' : '근무지 등록'}
-          </Button>
-          <Button variant="outline" size="lg" fullWidth onClick={onClose}>
-            취소
-          </Button>
-        </div>
-      </div>
-    </div>
+    </Sheet>
   );
 }

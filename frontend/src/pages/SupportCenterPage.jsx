@@ -9,7 +9,8 @@ import {
   AlertCircle,
   Loader2,
 } from 'lucide-react';
-import BottomNav from '../components/BottomNav';
+import AppLayout from '../components/layout/AppLayout';
+import { Card } from '../components/ui';
 import SupportCenterMap from '../components/SupportCenterMap';
 import EmergencyContacts from '../components/EmergencyContacts';
 import { supportCenterAPI } from '../services/api';
@@ -137,32 +138,22 @@ export default function SupportCenterPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 dark:from-primary-500/10 to-blue-50 dark:to-blue-500/10 flex items-center justify-center pb-20">
-        <div className="text-center">
+      <AppLayout title="법률 지원 기관" width="wide">
+        <div className="text-center py-20">
           <Loader2 className="w-12 h-12 text-primary-600 dark:text-primary-400 animate-spin mx-auto mb-4" />
           <p className="text-ink-muted">지원 기관 정보를 불러오는 중...</p>
         </div>
-        <BottomNav />
-      </div>
+      </AppLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 dark:from-primary-500/10 to-blue-50 dark:to-blue-500/10 pb-20">
-      {/* 헤더 */}
-      <header className="bg-surface shadow-sm sticky top-0 z-10">
-        <div className="max-w-md mx-auto px-6 py-4">
-          <h1 className="text-2xl font-bold text-ink flex items-center gap-2">
-            <Building2 className="w-7 h-7 text-primary-600 dark:text-primary-400" />
-            법률 지원 기관
-          </h1>
-          <p className="text-sm text-ink-muted mt-1">
-            가까운 노동청, 법률구조공단 찾기
-          </p>
-        </div>
-      </header>
-
-      <div className="max-w-md mx-auto px-6 py-6 space-y-6">
+    <AppLayout
+      title="법률 지원 기관"
+      subtitle="가까운 노동청, 법률구조공단 찾기"
+      width="wide"
+      className="space-y-6"
+    >
         {/* 에러 메시지 */}
         {error && (
           <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-2xl p-4 flex items-start gap-3">
@@ -172,7 +163,7 @@ export default function SupportCenterPage() {
         )}
 
         {/* 필터 & 정렬 */}
-        <div className="bg-surface rounded-3xl p-4 shadow-sm space-y-3">
+        <Card padding="sm" className="space-y-3 lg:space-y-0 lg:flex lg:items-end lg:gap-8">
           {/* 유형 필터 */}
           <div>
             <label className="text-sm font-semibold text-ink-muted mb-2 flex items-center gap-2">
@@ -209,7 +200,7 @@ export default function SupportCenterPage() {
           {/* 정렬 */}
           <div>
             <label className="text-sm font-semibold text-ink-muted mb-2 block">정렬</label>
-            <div className="flex gap-2">
+            <div className="flex gap-2 lg:w-64">
               <button
                 onClick={() => setSortBy('distance')}
                 className={`flex-1 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
@@ -235,33 +226,38 @@ export default function SupportCenterPage() {
           </div>
 
           {/* 결과 수 */}
-          <p className="text-sm text-ink-muted text-center pt-2">
+          <p className="text-sm text-ink-muted text-center pt-2 lg:pt-0 lg:ml-auto lg:pb-2">
             총 <span className="font-bold text-primary-600 dark:text-primary-400">{filteredCenters.length}</span>개
             기관
           </p>
-        </div>
+        </Card>
 
+        {/* PC: 왼쪽 지도(스크롤해도 고정), 오른쪽 목록 */}
+        <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
         {/* 지도 */}
-        <SupportCenterMap
-          centers={filteredCenters}
-          userLocation={userLocation}
-          onCenterClick={setSelectedCenter}
-        />
+        <div className="lg:sticky lg:top-24">
+          <SupportCenterMap
+            centers={filteredCenters}
+            userLocation={userLocation}
+            onCenterClick={setSelectedCenter}
+          />
+        </div>
 
         {/* 지원 기관 리스트 */}
         <div className="space-y-4">
           <h2 className="text-lg font-bold text-ink">지원 기관 목록</h2>
 
           {filteredCenters.length === 0 ? (
-            <div className="bg-surface rounded-3xl p-8 text-center">
+            <Card padding="lg" className="text-center">
               <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-3" />
               <p className="text-ink-muted">해당하는 지원 기관이 없습니다</p>
-            </div>
+            </Card>
           ) : (
             filteredCenters.map((center) => (
-              <div
+              <Card
                 key={center.id}
-                className={`bg-surface rounded-3xl p-5 shadow-sm transition-all ${
+                padding="none"
+                className={`p-5 transition-all ${
                   selectedCenter?.id === center.id ? 'ring-2 ring-primary-500' : ''
                 }`}
               >
@@ -338,20 +334,18 @@ export default function SupportCenterPage() {
                     길찾기
                   </button>
                 </div>
-              </div>
+              </Card>
             ))
           )}
+        </div>
         </div>
 
         {/* 긴급 연락처 */}
         {emergencyContacts.length > 0 && (
-          <div className="mt-8">
+          <div className="pt-2">
             <EmergencyContacts contacts={emergencyContacts} />
           </div>
         )}
-      </div>
-
-      <BottomNav />
-    </div>
+    </AppLayout>
   );
 }
