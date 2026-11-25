@@ -7,27 +7,27 @@ export default function EmergencyContacts({ contacts }) {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">긴급 연락처</h3>
+      <h3 className="text-lg font-bold text-ink mb-4">긴급 연락처</h3>
 
       {contacts.map((contact, index) => (
         <div
           key={index}
-          className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-4 border border-red-100"
+          className="bg-gradient-to-br from-red-50 dark:from-red-500/10 to-orange-50 dark:to-orange-500/10 rounded-2xl p-4 border border-red-100 dark:border-red-500/20"
         >
           <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
-              <h4 className="font-bold text-gray-900 mb-1">{contact.name}</h4>
-              <p className="text-sm text-gray-600 mb-2">{contact.description}</p>
+              <h4 className="font-bold text-ink mb-1">{contact.name}</h4>
+              <p className="text-sm text-ink-muted mb-2">{contact.description}</p>
 
               {/* 운영시간 */}
-              <div className="flex items-center gap-2 text-xs text-gray-500 mb-1">
+              <div className="flex items-center gap-2 text-xs text-ink-muted mb-1">
                 <Clock className="w-4 h-4" />
                 <span>{contact.available_hours}</span>
               </div>
 
               {/* 지원 언어 */}
               {contact.languages && contact.languages.length > 0 && (
-                <div className="flex items-center gap-2 text-xs text-gray-500">
+                <div className="flex items-center gap-2 text-xs text-ink-muted">
                   <Globe className="w-4 h-4" />
                   <span>{contact.languages.join(', ')}</span>
                 </div>
@@ -45,10 +45,10 @@ export default function EmergencyContacts({ contacts }) {
           </div>
 
           {/* 전화번호 표시 */}
-          <div className="mt-3 pt-3 border-t border-red-200">
+          <div className="mt-3 pt-3 border-t border-red-200 dark:border-red-500/30">
             <a
               href={`tel:${contact.phone}`}
-              className="text-2xl font-bold text-red-600 hover:text-red-700"
+              className="text-2xl font-bold text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
             >
               {contact.phone}
             </a>

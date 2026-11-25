@@ -7,6 +7,21 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#f9fafb" />
+    <!-- 첫 화면이 그려지기 전에 다크 모드를 적용해 깜빡임을 막습니다 (src/theme.js 와 같은 규칙) -->
+    <script>
+      (function () {
+        var theme;
+        try { theme = localStorage.getItem('theme'); } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        var root = document.documentElement;
+        if (theme === 'dark') root.classList.add('dark');
+        root.style.colorScheme = theme;
+        if (theme === 'dark') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f1115');
+      })();
+    </script>
     <title>LawRo - 노동 법률 지원</title>
 
     <!-- Naver Maps API - Static loading via callback -->

@@ -64,10 +64,10 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-canvas py-8 px-4">
       <div className="w-full max-w-md mx-auto">
         <div className="mb-8">
-          <Link to="/login" className="inline-flex items-center text-gray-600 hover:text-gray-900">
+          <Link to="/login" className="inline-flex items-center text-ink-muted hover:text-ink">
             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -75,19 +75,19 @@ export default function SignupPage() {
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">회원가입</h1>
+          <h1 className="text-2xl font-bold text-ink mb-2">회원가입</h1>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-lg p-8 space-y-6">
+        <div className="bg-surface rounded-3xl shadow-lg p-8 space-y-6">
           {(error || validationError) && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm">
+            <div className="p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-xl text-sm">
               {error || validationError}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="full_name" className="block text-sm font-medium text-ink-muted mb-2">
                 이름
               </label>
               <input
@@ -96,14 +96,14 @@ export default function SignupPage() {
                 name="full_name"
                 value={formData.full_name}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder="이름"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="preferred_language" className="block text-sm font-medium text-gray-700 mb-3">
+              <label htmlFor="preferred_language" className="block text-sm font-medium text-ink-muted mb-3">
                 언어 선택
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -115,7 +115,7 @@ export default function SignupPage() {
                     className={`px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
                       formData.preferred_language === lang.code
                         ? 'bg-primary-600 text-white ring-2 ring-primary-300'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        : 'bg-surface-muted text-ink-muted hover:bg-line'
                     }`}
                   >
                     <span className="text-lg">{lang.flag}</span>
@@ -126,7 +126,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-ink-muted mb-2">
                 이메일
               </label>
               <div className="flex gap-2">
@@ -136,11 +136,11 @@ export default function SignupPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                  className="flex-1 px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                   placeholder="이메일"
                   required
                 />
-                <select className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-white">
+                <select className="px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-surface">
                   <option>선택</option>
                   <option>gmail.com</option>
                   <option>naver.com</option>
@@ -153,22 +153,22 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="phone" className="block text-sm font-medium text-ink-muted mb-2">
                 인증번호
-                <button type="button" className="float-right text-primary-600 text-sm">인증번호 전송</button>
+                <button type="button" className="float-right text-primary-600 dark:text-primary-400 text-sm">인증번호 전송</button>
               </label>
               <input
                 type="tel"
                 id="phone"
                 name="phone"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder="인증번호 6자리"
               />
               <p className="text-sm text-orange-500 mt-1">인증완료되었습니다.</p>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-ink-muted mb-2">
                 비밀번호
               </label>
               <input
@@ -177,7 +177,7 @@ export default function SignupPage() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder="비밀번호"
                 required
               />
@@ -187,7 +187,7 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-ink-muted mb-2">
                 비밀번호 확인
               </label>
               <input
@@ -196,11 +196,11 @@ export default function SignupPage() {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder="비밀번호 확인"
                 required
               />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-ink-muted mt-2">
                 8~20자/영문 대문자, 소문자, 숫자, 특수문자 중 2가지 이상 조합
               </p>
               {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
@@ -211,7 +211,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-4 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+              className="w-full bg-primary-600 hover:bg-primary-hover text-white font-semibold py-4 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
             >
               {isLoading ? '가입 중...' : '회원가입'}
             </button>

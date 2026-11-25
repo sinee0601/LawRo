@@ -95,8 +95,8 @@ export default function ChatPage() {
                  </div>
               ) : messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center py-12">
-                   <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mb-4">
-                     <Bot className="w-8 h-8 text-primary-600" />
+                   <div className="w-16 h-16 bg-primary-50 dark:bg-primary-500/10 rounded-full flex items-center justify-center mb-4">
+                     <Bot className="w-8 h-8 text-primary-600 dark:text-primary-400" />
                    </div>
                    <p className="text-ink font-medium mb-2">안녕하세요, 법률/노동 상담 챗봇입니다.</p>
                    <p className="text-sm text-ink-muted mb-6">새로운 채팅을 시작하거나, 왼쪽에서 이전 기록을 선택하세요.</p>
@@ -106,8 +106,8 @@ export default function ChatPage() {
                   {messages.map((msg, index) => (
                     <div key={index} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                       {msg.role === 'assistant' && (
-                        <div className="w-8 h-8 sm:w-9 sm:h-9 bg-primary-50 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600" />
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 bg-primary-50 dark:bg-primary-500/10 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600 dark:text-primary-400" />
                         </div>
                       )}
                       <div className={`max-w-[85%] sm:max-w-[75%] px-4 py-3 rounded-2xl break-words ${
@@ -128,8 +128,8 @@ export default function ChatPage() {
                   ))}
                   {isLoading && (
                     <div className="flex gap-3 justify-start">
-                      <div className="w-8 h-8 sm:w-9 sm:h-9 bg-primary-50 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600" />
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 bg-primary-50 dark:bg-primary-500/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600 dark:text-primary-400" />
                       </div>
                       <div className="px-4 py-3 rounded-2xl bg-surface shadow-card border border-line">
                         <div className="flex items-center gap-2 text-sm text-ink-muted">

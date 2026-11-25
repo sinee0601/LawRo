@@ -75,11 +75,11 @@ export default function AnalysisHistoryPage() {
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
             <div className="animate-spin">
-              <div className="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full" />
+              <div className="w-8 h-8 border-4 border-primary-200 dark:border-primary-500/30 border-t-primary-600 rounded-full" />
             </div>
           </div>
         ) : error ? (
-          <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl">
+          <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-xl">
             <AlertCircle className="w-5 h-5 mb-2" />
             {error}
           </div>
@@ -101,7 +101,7 @@ export default function AnalysisHistoryPage() {
                 {/* 헤더 */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-start gap-3 flex-1">
-                    <FileText className="w-6 h-6 text-primary-600 mt-1 flex-shrink-0" />
+                    <FileText className="w-6 h-6 text-primary-600 dark:text-primary-400 mt-1 flex-shrink-0" />
                     <div className="flex-1">
                       <p className="text-xs text-ink-muted flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
@@ -117,7 +117,7 @@ export default function AnalysisHistoryPage() {
                   </div>
                   <button
                     onClick={() => handleDelete(analysis.id)}
-                    className="text-ink-subtle hover:text-red-600 transition-colors"
+                    className="text-ink-subtle hover:text-red-600 dark:hover:text-red-400 transition-colors"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
@@ -155,7 +155,7 @@ export default function AnalysisHistoryPage() {
                   analysis.analysis_result.risks.length > 0 && (
                     <div className="mb-4">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertCircle className="w-4 h-4 text-red-600" />
+                        <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
                         <span className="text-xs font-semibold text-ink">
                           주의 사항 {analysis.analysis_result.risks.length}개
                         </span>
@@ -254,9 +254,9 @@ export default function AnalysisHistoryPage() {
                       {selectedAnalysis.analysis_result.key_terms.map((term, idx) => (
                         <div
                           key={idx}
-                          className="flex items-start gap-2 p-3 bg-primary-50 rounded-lg"
+                          className="flex items-start gap-2 p-3 bg-primary-50 dark:bg-primary-500/10 rounded-lg"
                         >
-                          <CheckCircle className="w-4 h-4 text-primary-600 flex-shrink-0 mt-0.5" />
+                          <CheckCircle className="w-4 h-4 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
                           <p className="text-sm text-ink">{term}</p>
                         </div>
                       ))}
@@ -273,9 +273,9 @@ export default function AnalysisHistoryPage() {
                       {selectedAnalysis.analysis_result.risks.map((risk, idx) => (
                         <div
                           key={idx}
-                          className="flex items-start gap-2 p-3 bg-red-50 border-l-4 border-red-500 rounded-lg"
+                          className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-500/10 border-l-4 border-red-500 rounded-lg"
                         >
-                          <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
+                          <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                           <p className="text-sm text-ink">{risk}</p>
                         </div>
                       ))}
@@ -298,11 +298,11 @@ export default function AnalysisHistoryPage() {
                           <div className="space-y-4">
                             {/* Score Section */}
                             {parsed.totalScore && (
-                              <div className="p-4 bg-gradient-to-r from-primary-50 to-primary-100 rounded-xl">
+                              <div className="p-4 bg-gradient-to-r from-primary-50 dark:from-primary-500/10 to-primary-100 dark:to-primary-500/20 rounded-xl">
                                 <div className="flex items-center justify-between">
                                   <span className="text-sm font-semibold text-ink">종합 안전도</span>
                                   <div className="flex items-center gap-2">
-                                    <div className="text-2xl font-bold text-primary-600">{parsed.totalScore}</div>
+                                    <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">{parsed.totalScore}</div>
                                     <span className="text-xs text-ink-muted">/100</span>
                                   </div>
                                 </div>
@@ -317,7 +317,7 @@ export default function AnalysisHistoryPage() {
 
                             {/* Summary */}
                             {parsed.summary && (
-                              <div className="p-4 bg-primary-50 rounded-xl">
+                              <div className="p-4 bg-primary-50 dark:bg-primary-500/10 rounded-xl">
                                 <h4 className="text-sm font-semibold text-ink mb-2">📋 요약</h4>
                                 <p className="text-sm text-ink leading-relaxed">{parsed.summary}</p>
                               </div>
@@ -325,12 +325,12 @@ export default function AnalysisHistoryPage() {
 
                             {/* Aware (주의 사항) */}
                             {parsed.aware && Array.isArray(parsed.aware) && parsed.aware.length > 0 && (
-                              <div className="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-xl">
+                              <div className="p-4 bg-yellow-50 dark:bg-yellow-500/10 border-l-4 border-yellow-500 rounded-xl">
                                 <h4 className="text-sm font-semibold text-ink mb-3">⚠️ 주의 사항</h4>
                                 <ul className="space-y-2">
                                   {parsed.aware.map((item, idx) => (
                                     <li key={idx} className="flex gap-2 text-sm text-ink">
-                                      <span className="flex-shrink-0 font-bold text-yellow-600">•</span>
+                                      <span className="flex-shrink-0 font-bold text-yellow-600 dark:text-yellow-400">•</span>
                                       <span>{item}</span>
                                     </li>
                                   ))}
@@ -340,12 +340,12 @@ export default function AnalysisHistoryPage() {
 
                             {/* Highlights */}
                             {parsed.highlights && Array.isArray(parsed.highlights) && parsed.highlights.length > 0 && (
-                              <div className="p-4 bg-green-50 rounded-xl">
+                              <div className="p-4 bg-green-50 dark:bg-green-500/10 rounded-xl">
                                 <h4 className="text-sm font-semibold text-ink mb-3">✅ 긍정 요소</h4>
                                 <ul className="space-y-2">
                                   {parsed.highlights.map((item, idx) => (
                                     <li key={idx} className="flex gap-2 text-sm text-ink">
-                                      <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                                      <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                                       <span>{item}</span>
                                     </li>
                                   ))}
@@ -355,7 +355,7 @@ export default function AnalysisHistoryPage() {
 
                             {/* Legal Interpretation */}
                             {parsed.legalInterpretation && Array.isArray(parsed.legalInterpretation) && parsed.legalInterpretation.length > 0 && (
-                              <div className="p-4 bg-purple-50 rounded-xl">
+                              <div className="p-4 bg-purple-50 dark:bg-purple-500/10 rounded-xl">
                                 <h4 className="text-sm font-semibold text-ink mb-3">⚖️ 법률 해석</h4>
                                 <div className="space-y-3">
                                   {parsed.legalInterpretation.map((item, idx) => (
@@ -376,7 +376,7 @@ export default function AnalysisHistoryPage() {
 
                     // Fallback to plain text display
                     return (
-                      <div className="p-4 bg-primary-50 rounded-xl">
+                      <div className="p-4 bg-primary-50 dark:bg-primary-500/10 rounded-xl">
                         <h3 className="font-semibold text-ink mb-2 text-sm">📋 법률 전문가 분석</h3>
                         <p className="text-sm text-ink whitespace-pre-wrap leading-relaxed">
                           {analysisText}

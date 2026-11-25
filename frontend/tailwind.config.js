@@ -12,6 +12,8 @@ const primaryScale = Object.fromEntries(
 );
 
 export default {
+  // <html class="dark"> 일 때 dark: 변형과 .dark 토큰이 적용됩니다 (src/theme.js).
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -23,7 +25,7 @@ export default {
           ...primaryScale,
           DEFAULT: withAlpha('primary-600'),
           hover: withAlpha('primary-700'),
-          soft: withAlpha('primary-50'),
+          soft: withAlpha('primary-soft'),
           foreground: withAlpha('on-primary'),
         },
         canvas: withAlpha('canvas'),

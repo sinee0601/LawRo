@@ -152,10 +152,10 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
 
   if (error) {
     return (
-      <div className="bg-gray-100 rounded-3xl aspect-video mb-6 flex items-center justify-center">
+      <div className="bg-surface-muted rounded-3xl aspect-video mb-6 flex items-center justify-center">
         <div className="text-center">
-          <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-          <p className="text-sm text-gray-600">{error}</p>
+          <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-2" />
+          <p className="text-sm text-ink-muted">{error}</p>
         </div>
       </div>
     );
@@ -163,10 +163,10 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
 
   if (!isLoaded) {
     return (
-      <div className="bg-gray-200 rounded-3xl aspect-video mb-6 flex items-center justify-center">
+      <div className="bg-line rounded-3xl aspect-video mb-6 flex items-center justify-center">
         <div className="text-center">
-          <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-2 animate-pulse" />
-          <p className="text-sm text-gray-600">지도 로드 중...</p>
+          <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-2 animate-pulse" />
+          <p className="text-sm text-ink-muted">지도 로드 중...</p>
         </div>
       </div>
     );
@@ -177,17 +177,17 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
       {/* 지도 컨테이너 */}
       <div
         ref={mapElement}
-        className="bg-gray-200 rounded-3xl aspect-video w-full"
+        className="bg-line rounded-3xl aspect-video w-full"
         style={{ minHeight: '300px' }}
       />
 
       {/* 현재 위치 버튼 */}
       <button
         onClick={moveToCurrentLocation}
-        className="absolute bottom-4 right-4 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
+        className="absolute bottom-4 right-4 bg-surface rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
         title="현재 위치로 이동"
       >
-        <MapPin className="w-6 h-6 text-primary-600" />
+        <MapPin className="w-6 h-6 text-primary-600 dark:text-primary-400" />
       </button>
     </div>
   );

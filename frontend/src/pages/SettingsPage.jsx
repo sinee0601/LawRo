@@ -26,31 +26,31 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-canvas pb-20">
       <MobileHeader title="설정" showBack={false} />
 
       <main className="max-w-md mx-auto px-4 pt-20 pb-8">
         {/* 계정 섹션 */}
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-3 px-2">계정</h2>
-          <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+          <h2 className="text-lg font-bold text-ink mb-3 px-2">계정</h2>
+          <div className="bg-surface rounded-3xl shadow-sm overflow-hidden">
             {accountSettings.map((item, index) => {
               const Icon = item.icon;
               return (
                 <button
                   key={index}
                   onClick={() => navigate(item.path)}
-                  className={`w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors ${
-                    index !== accountSettings.length - 1 ? 'border-b border-gray-100' : ''
+                  className={`w-full flex items-center justify-between p-4 hover:bg-surface-muted transition-colors ${
+                    index !== accountSettings.length - 1 ? 'border-b border-line' : ''
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                      <Icon className="w-5 h-5 text-primary-600" />
+                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-500/20 rounded-full flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                     </div>
-                    <span className="text-gray-900 font-medium">{item.label}</span>
+                    <span className="text-ink font-medium">{item.label}</span>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                  <ChevronRight className="w-5 h-5 text-ink-subtle" />
                 </button>
               );
             })}
@@ -59,25 +59,25 @@ export default function SettingsPage() {
 
         {/* 정보 섹션 */}
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-3 px-2">정보</h2>
-          <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+          <h2 className="text-lg font-bold text-ink mb-3 px-2">정보</h2>
+          <div className="bg-surface rounded-3xl shadow-sm overflow-hidden">
             {infoSettings.map((item, index) => {
               const Icon = item.icon;
               return (
                 <button
                   key={index}
                   onClick={() => navigate(item.path)}
-                  className={`w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors ${
-                    index !== infoSettings.length - 1 ? 'border-b border-gray-100' : ''
+                  className={`w-full flex items-center justify-between p-4 hover:bg-surface-muted transition-colors ${
+                    index !== infoSettings.length - 1 ? 'border-b border-line' : ''
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                      <Icon className="w-5 h-5 text-primary-600" />
+                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-500/20 rounded-full flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                     </div>
-                    <span className="text-gray-900 font-medium">{item.label}</span>
+                    <span className="text-ink font-medium">{item.label}</span>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                  <ChevronRight className="w-5 h-5 text-ink-subtle" />
                 </button>
               );
             })}
@@ -87,14 +87,14 @@ export default function SettingsPage() {
         {/* 로그아웃 버튼 */}
         <button
           onClick={handleLogout}
-          className="w-full bg-white hover:bg-gray-50 text-red-600 font-medium py-4 rounded-3xl shadow-sm transition-colors"
+          className="w-full bg-surface hover:bg-surface-muted text-red-600 dark:text-red-400 font-medium py-4 rounded-3xl shadow-sm transition-colors"
         >
           로그아웃
         </button>
 
         {/* 사용자 정보 */}
         {user && (
-          <div className="mt-6 text-center text-sm text-gray-500">
+          <div className="mt-6 text-center text-sm text-ink-muted">
             <p>{user.email}</p>
             <p className="mt-1">LawRo v1.0.0</p>
           </div>

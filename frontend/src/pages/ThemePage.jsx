@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
 import { settingsAPI } from '../services/api';
 import { Check, Sun, Moon, Info } from 'lucide-react';
 import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
+import { getTheme, setTheme } from '../theme';
 
 export default function ThemePage() {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
-  const [selectedTheme, setSelectedTheme] = useState('light');
+    const [selectedTheme, setSelectedTheme] = useState(getTheme);
   const [isSaving, setIsSaving] = useState(false);
 
   const themes = [
@@ -18,6 +17,7 @@ export default function ThemePage() {
       name: 'Light Mode (Light)',
       description: '밝은 테마',
       icon: Sun,
+      // 미리보기는 현재 테마와 상관없이 고정 색으로 보여 줍니다.
       bgColor: 'bg-white',
       textColor: 'text-gray-900',
       borderColor: 'border-gray-200',
@@ -33,41 +33,24 @@ export default function ThemePage() {
     },
   ];
 
-  useEffect(() => {
-    // localStorage에서 선택된 테마 로드
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setSelectedTheme(savedTheme);
-  }, []);
-
   const handleSaveTheme = async (theme) => {
+    // 화면에는 바로 적용하고, 계정 프로필 저장은 그 뒤에 시도합니다.
+    setTheme(theme);
+    setSelectedTheme(theme);
     setIsSaving(true);
     try {
-      // localStorage에 저장
-      localStorage.setItem('theme', theme);
-
-      // HTML에 테마 클래스 적용
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-
-      // Backend API 호출로 Firestore user profile 업데이트
       await settingsAPI.updateTheme(theme);
-
-      setSelectedTheme(theme);
-      setTimeout(() => {
-        navigate('/settings');
-      }, 500);
     } catch (error) {
-      alert('테마 설정에 실패했습니다.');
+      // 서버 저장에 실패해도 이 기기에서는 선택한 테마가 유지됩니다.
+      console.warn('테마를 계정에 저장하지 못했습니다.', error);
     } finally {
       setIsSaving(false);
     }
+    setTimeout(() => navigate('/settings'), 500);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-canvas pb-20">
       <MobileHeader title="앱 색상 변경" showBack={true} />
 
       <main className="max-w-md mx-auto px-4 pt-20 pb-8">
@@ -82,18 +65,18 @@ export default function ThemePage() {
                 disabled={isSaving}
                 className={`w-full p-4 rounded-2xl border-2 transition-all ${
                   selectedTheme === theme.code
-                    ? 'border-primary-600 bg-primary-50'
-                    : 'border-gray-200 bg-white hover:border-gray-300'
+                    ? 'border-primary-600 bg-primary-50 dark:bg-primary-500/10'
+                    : 'border-line bg-surface hover:border-line-strong'
                 } disabled:opacity-50`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center border-2 border-gray-200">
-                      <ThemeIcon className="w-6 h-6 text-gray-900" />
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center border-2 border-line">
+                      <ThemeIcon className="w-6 h-6 text-ink" />
                     </div>
                     <div className="text-left">
-                      <p className="text-gray-900 font-bold">{theme.name}</p>
-                      <p className="text-xs text-gray-500">{theme.description}</p>
+                      <p className="text-ink font-bold">{theme.name}</p>
+                      <p className="text-xs text-ink-muted">{theme.description}</p>
                     </div>
                   </div>
 
@@ -123,11 +106,11 @@ export default function ThemePage() {
         </div>
 
         {/* 정보 메시지 */}
-        <div className="p-4 bg-blue-50 rounded-2xl flex items-start gap-3">
-          <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+        <div className="p-4 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-start gap-3">
+          <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-medium text-blue-900 mb-1">테마 설정</p>
-            <p className="text-xs text-blue-800">
+            <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-1">테마 설정</p>
+            <p className="text-xs text-blue-800 dark:text-blue-200">
               선택한 테마가 즉시 적용됩니다. 아직은 라이트 모드와 다크 모드 2가지를 지원합니다.
             </p>
           </div>

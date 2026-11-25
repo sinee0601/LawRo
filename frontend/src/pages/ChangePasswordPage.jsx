@@ -65,12 +65,12 @@ export default function ChangePasswordPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gray-50 pb-20 flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-canvas pb-20 flex flex-col items-center justify-center">
         <MobileHeader title="비밀번호 변경" showBack={true} />
         <div className="flex flex-col items-center justify-center flex-1 px-4">
-          <CheckCircle className="w-16 h-16 text-green-600 mb-4" />
-          <p className="text-lg font-bold text-gray-900 mb-2">비밀번호가 변경되었습니다</p>
-          <p className="text-sm text-gray-600">잠시 후 설정 페이지로 이동합니다.</p>
+          <CheckCircle className="w-16 h-16 text-green-600 dark:text-green-400 mb-4" />
+          <p className="text-lg font-bold text-ink mb-2">비밀번호가 변경되었습니다</p>
+          <p className="text-sm text-ink-muted">잠시 후 설정 페이지로 이동합니다.</p>
         </div>
         <BottomNav />
       </div>
@@ -78,18 +78,18 @@ export default function ChangePasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-canvas pb-20">
       <MobileHeader title="비밀번호 변경" showBack={true} />
 
       <main className="max-w-md mx-auto px-4 pt-20 pb-8">
-        <div className="bg-white rounded-3xl shadow-sm p-6 mb-6">
-          <p className="text-sm text-gray-600 mb-6">
+        <div className="bg-surface rounded-3xl shadow-sm p-6 mb-6">
+          <p className="text-sm text-ink-muted mb-6">
             보안을 위해 강력한 비밀번호를 설정해주세요.
           </p>
 
           {/* 에러 메시지 */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-start gap-2">
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-xl flex items-start gap-2">
               <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
               <span className="text-sm">{error}</span>
             </div>
@@ -97,20 +97,20 @@ export default function ChangePasswordPage() {
 
           {/* 현재 비밀번호 */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600 mb-2">현재 비밀번호</label>
+            <label className="block text-sm font-medium text-ink-muted mb-2">현재 비밀번호</label>
             <div className="relative">
               <input
                 type={showPasswords.current ? 'text' : 'password'}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 pr-10 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder="현재 비밀번호 입력"
               />
               <button
                 onClick={() =>
                   setShowPasswords({ ...showPasswords, current: !showPasswords.current })
                 }
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-subtle hover:text-ink-muted"
               >
                 {showPasswords.current ? (
                   <EyeOff className="w-5 h-5" />
@@ -123,20 +123,20 @@ export default function ChangePasswordPage() {
 
           {/* 새 비밀번호 */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600 mb-2">새 비밀번호</label>
+            <label className="block text-sm font-medium text-ink-muted mb-2">새 비밀번호</label>
             <div className="relative">
               <input
                 type={showPasswords.new ? 'text' : 'password'}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 pr-10 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder="새 비밀번호 입력 (8자 이상)"
               />
               <button
                 onClick={() =>
                   setShowPasswords({ ...showPasswords, new: !showPasswords.new })
                 }
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-subtle hover:text-ink-muted"
               >
                 {showPasswords.new ? (
                   <EyeOff className="w-5 h-5" />
@@ -149,7 +149,7 @@ export default function ChangePasswordPage() {
 
           {/* 비밀번호 확인 */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-600 mb-2">
+            <label className="block text-sm font-medium text-ink-muted mb-2">
               새 비밀번호 확인
             </label>
             <div className="relative">
@@ -157,14 +157,14 @@ export default function ChangePasswordPage() {
                 type={showPasswords.confirm ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 pr-10 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder="새 비밀번호 다시 입력"
               />
               <button
                 onClick={() =>
                   setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })
                 }
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-subtle hover:text-ink-muted"
               >
                 {showPasswords.confirm ? (
                   <EyeOff className="w-5 h-5" />
@@ -179,14 +179,14 @@ export default function ChangePasswordPage() {
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => navigate('/settings')}
-              className="px-4 py-3 bg-white border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition-colors"
+              className="px-4 py-3 bg-surface border border-line-strong text-ink-muted rounded-xl font-medium hover:bg-surface-muted transition-colors"
             >
               취소
             </button>
             <button
               onClick={handleChangePassword}
               disabled={isLoading}
-              className="px-4 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+              className="px-4 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-hover disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
             >
               <Lock className="w-4 h-4" />
               {isLoading ? '변경 중...' : '변경'}
