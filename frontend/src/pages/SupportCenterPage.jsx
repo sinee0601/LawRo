@@ -25,10 +25,10 @@ const centerTypeLabels = {
 
 // 기관 유형별 색상
 const centerTypeColors = {
-  labor_office: 'bg-blue-100 text-blue-800 border-blue-200',
-  legal_aid: 'bg-green-100 text-green-800 border-green-200',
-  foreign_support: 'bg-red-100 text-red-800 border-red-200',
-  welfare: 'bg-purple-100 text-purple-800 border-purple-200',
+  labor_office: 'bg-blue-100 dark:bg-blue-500/20 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-500/30',
+  legal_aid: 'bg-green-100 dark:bg-green-500/20 text-green-800 dark:text-green-200 border-green-200 dark:border-green-500/30',
+  foreign_support: 'bg-red-100 dark:bg-red-500/20 text-red-800 dark:text-red-200 border-red-200 dark:border-red-500/30',
+  welfare: 'bg-purple-100 dark:bg-purple-500/20 text-purple-800 dark:text-purple-200 border-purple-200 dark:border-purple-500/30',
 };
 
 export default function SupportCenterPage() {
@@ -140,10 +140,10 @@ export default function SupportCenterPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-blue-50 flex items-center justify-center pb-20">
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 dark:from-primary-500/10 to-blue-50 dark:to-blue-500/10 flex items-center justify-center pb-20">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-primary-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">지원 기관 정보를 불러오는 중...</p>
+          <Loader2 className="w-12 h-12 text-primary-600 dark:text-primary-400 animate-spin mx-auto mb-4" />
+          <p className="text-ink-muted">지원 기관 정보를 불러오는 중...</p>
         </div>
         <BottomNav />
       </div>
@@ -151,15 +151,15 @@ export default function SupportCenterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-blue-50 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 dark:from-primary-500/10 to-blue-50 dark:to-blue-500/10 pb-20">
       {/* 헤더 */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
+      <header className="bg-surface shadow-sm sticky top-0 z-10">
         <div className="max-w-md mx-auto px-6 py-4">
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Building2 className="w-7 h-7 text-primary-600" />
+          <h1 className="text-2xl font-bold text-ink flex items-center gap-2">
+            <Building2 className="w-7 h-7 text-primary-600 dark:text-primary-400" />
             법률 지원 기관
           </h1>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-ink-muted mt-1">
             가까운 노동청, 법률구조공단 찾기
           </p>
         </div>
@@ -168,17 +168,17 @@ export default function SupportCenterPage() {
       <div className="max-w-md mx-auto px-6 py-6 space-y-6">
         {/* 에러 메시지 */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-red-800">{error}</p>
+          <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-2xl p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
           </div>
         )}
 
         {/* 필터 & 정렬 */}
-        <div className="bg-white rounded-3xl p-4 shadow-sm space-y-3">
+        <div className="bg-surface rounded-3xl p-4 shadow-sm space-y-3">
           {/* 유형 필터 */}
           <div>
-            <label className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <label className="text-sm font-semibold text-ink-muted mb-2 flex items-center gap-2">
               <Filter className="w-4 h-4" />
               기관 유형
             </label>
@@ -188,7 +188,7 @@ export default function SupportCenterPage() {
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   filterType === 'all'
                     ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-surface-muted text-ink-muted hover:bg-line'
                 }`}
               >
                 전체
@@ -200,7 +200,7 @@ export default function SupportCenterPage() {
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                     filterType === type
                       ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : 'bg-surface-muted text-ink-muted hover:bg-line'
                   }`}
                 >
                   {label}
@@ -211,14 +211,14 @@ export default function SupportCenterPage() {
 
           {/* 정렬 */}
           <div>
-            <label className="text-sm font-semibold text-gray-700 mb-2 block">정렬</label>
+            <label className="text-sm font-semibold text-ink-muted mb-2 block">정렬</label>
             <div className="flex gap-2">
               <button
                 onClick={() => setSortBy('distance')}
                 className={`flex-1 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
                   sortBy === 'distance'
-                    ? 'bg-primary-100 text-primary-700 border border-primary-300'
-                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                    ? 'bg-primary-100 dark:bg-primary-500/20 text-primary-700 dark:text-primary-300 border border-primary-300 dark:border-primary-500/40'
+                    : 'bg-canvas text-ink-muted hover:bg-surface-muted'
                 }`}
                 disabled={!userLocation}
               >
@@ -228,8 +228,8 @@ export default function SupportCenterPage() {
                 onClick={() => setSortBy('name')}
                 className={`flex-1 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
                   sortBy === 'name'
-                    ? 'bg-primary-100 text-primary-700 border border-primary-300'
-                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                    ? 'bg-primary-100 dark:bg-primary-500/20 text-primary-700 dark:text-primary-300 border border-primary-300 dark:border-primary-500/40'
+                    : 'bg-canvas text-ink-muted hover:bg-surface-muted'
                 }`}
               >
                 이름순
@@ -238,8 +238,8 @@ export default function SupportCenterPage() {
           </div>
 
           {/* 결과 수 */}
-          <p className="text-sm text-gray-600 text-center pt-2">
-            총 <span className="font-bold text-primary-600">{filteredCenters.length}</span>개
+          <p className="text-sm text-ink-muted text-center pt-2">
+            총 <span className="font-bold text-primary-600 dark:text-primary-400">{filteredCenters.length}</span>개
             기관
           </p>
         </div>
@@ -253,18 +253,18 @@ export default function SupportCenterPage() {
 
         {/* 지원 기관 리스트 */}
         <div className="space-y-4">
-          <h2 className="text-lg font-bold text-gray-800">지원 기관 목록</h2>
+          <h2 className="text-lg font-bold text-ink">지원 기관 목록</h2>
 
           {filteredCenters.length === 0 ? (
-            <div className="bg-white rounded-3xl p-8 text-center">
-              <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600">해당하는 지원 기관이 없습니다</p>
+            <div className="bg-surface rounded-3xl p-8 text-center">
+              <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-3" />
+              <p className="text-ink-muted">해당하는 지원 기관이 없습니다</p>
             </div>
           ) : (
             filteredCenters.map((center) => (
               <div
                 key={center.id}
-                className={`bg-white rounded-3xl p-5 shadow-sm transition-all ${
+                className={`bg-surface rounded-3xl p-5 shadow-sm transition-all ${
                   selectedCenter?.id === center.id ? 'ring-2 ring-primary-500' : ''
                 }`}
               >
@@ -278,31 +278,31 @@ export default function SupportCenterPage() {
                     {centerTypeLabels[center.type]}
                   </span>
                   {center.distance && (
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-ink-muted">
                       {center.distance.toFixed(1)} km
                     </span>
                   )}
                 </div>
 
                 {/* 기관명 */}
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{center.name}</h3>
+                <h3 className="text-lg font-bold text-ink mb-2">{center.name}</h3>
 
                 {/* 주소 */}
-                <div className="flex items-start gap-2 text-sm text-gray-600 mb-2">
+                <div className="flex items-start gap-2 text-sm text-ink-muted mb-2">
                   <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
                   <span>{center.address}</span>
                 </div>
 
                 {/* 연락처 */}
-                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                <div className="flex items-center gap-2 text-sm text-ink-muted mb-2">
                   <Phone className="w-4 h-4 flex-shrink-0" />
-                  <a href={`tel:${center.phone}`} className="text-primary-600 hover:underline">
+                  <a href={`tel:${center.phone}`} className="text-primary-600 dark:text-primary-400 hover:underline">
                     {center.phone}
                   </a>
                 </div>
 
                 {/* 운영시간 */}
-                <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                <div className="flex items-center gap-2 text-sm text-ink-muted mb-3">
                   <Clock className="w-4 h-4 flex-shrink-0" />
                   <span>{center.hours.weekday}</span>
                 </div>
@@ -310,12 +310,12 @@ export default function SupportCenterPage() {
                 {/* 제공 서비스 */}
                 {center.services && center.services.length > 0 && (
                   <div className="mb-3">
-                    <p className="text-xs font-semibold text-gray-700 mb-1">제공 서비스:</p>
+                    <p className="text-xs font-semibold text-ink-muted mb-1">제공 서비스:</p>
                     <div className="flex flex-wrap gap-1">
                       {center.services.map((service, idx) => (
                         <span
                           key={idx}
-                          className="px-2 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs"
+                          className="px-2 py-1 bg-surface-muted text-ink-muted rounded-lg text-xs"
                         >
                           {service}
                         </span>
@@ -328,14 +328,14 @@ export default function SupportCenterPage() {
                 <div className="flex gap-2 mt-4">
                   <button
                     onClick={() => handleCall(center.phone)}
-                    className="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
+                    className="flex-1 bg-primary-600 hover:bg-primary-hover text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
                   >
                     <Phone className="w-4 h-4" />
                     전화하기
                   </button>
                   <button
                     onClick={() => handleNavigate(center)}
-                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
+                    className="flex-1 bg-surface-muted hover:bg-line text-ink-muted font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
                   >
                     <Navigation2 className="w-4 h-4" />
                     길찾기

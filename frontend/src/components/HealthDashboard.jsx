@@ -45,8 +45,8 @@ const HealthDashboard = () => {
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-        <div className="flex items-center gap-2 text-red-800">
+      <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-lg p-4">
+        <div className="flex items-center gap-2 text-red-800 dark:text-red-200">
           <AlertCircle className="h-5 w-5" />
           <span>{error}</span>
         </div>
@@ -60,18 +60,18 @@ const HealthDashboard = () => {
   return (
     <div className="space-y-6">
       {/* Overall Status */}
-      <div className={`rounded-lg p-6 ${isHealthy ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+      <div className={`rounded-lg p-6 ${isHealthy ? 'bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30' : 'bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30'}`}>
         <div className="flex items-center gap-3">
           {isHealthy ? (
-            <CheckCircle className="h-8 w-8 text-green-600" />
+            <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
           ) : (
-            <AlertCircle className="h-8 w-8 text-red-600" />
+            <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
           )}
           <div>
-            <h3 className={`text-lg font-semibold ${isHealthy ? 'text-green-900' : 'text-red-900'}`}>
+            <h3 className={`text-lg font-semibold ${isHealthy ? 'text-green-900 dark:text-green-200' : 'text-red-900 dark:text-red-200'}`}>
               시스템 상태: {isHealthy ? '정상' : '오류'}
             </h3>
-            <p className={`text-sm ${isHealthy ? 'text-green-700' : 'text-red-700'}`}>
+            <p className={`text-sm ${isHealthy ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
               {isHealthy ? '모든 서비스가 정상적으로 작동 중입니다' : '일부 서비스에 문제가 있습니다'}
             </p>
           </div>
@@ -102,10 +102,10 @@ const HealthDashboard = () => {
 
       {/* Performance Metrics */}
       {backend?.performance && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-surface rounded-lg border border-line p-6">
           <div className="flex items-center gap-2 mb-4">
             <Zap className="h-5 w-5 text-yellow-500" />
-            <h3 className="text-lg font-semibold text-gray-900">성능 메트릭</h3>
+            <h3 className="text-lg font-semibold text-ink">성능 메트릭</h3>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <MetricCard
@@ -134,10 +134,10 @@ const HealthDashboard = () => {
 
       {/* Session Statistics */}
       {backend?.session_stats && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-surface rounded-lg border border-line p-6">
           <div className="flex items-center gap-2 mb-4">
             <Activity className="h-5 w-5 text-blue-500" />
-            <h3 className="text-lg font-semibold text-gray-900">세션 통계</h3>
+            <h3 className="text-lg font-semibold text-ink">세션 통계</h3>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <MetricCard
@@ -166,8 +166,8 @@ const HealthDashboard = () => {
 
       {/* Client Metrics */}
       {client?.clientMetrics && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">클라이언트 메트릭</h3>
+        <div className="bg-surface rounded-lg border border-line p-6">
+          <h3 className="text-lg font-semibold text-ink mb-4">클라이언트 메트릭</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <MetricCard
               label="총 요청 수"
@@ -190,8 +190,8 @@ const HealthDashboard = () => {
 
       {/* User Session Stats */}
       {client && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">사용자 세션 통계</h3>
+        <div className="bg-surface rounded-lg border border-line p-6">
+          <h3 className="text-lg font-semibold text-ink mb-4">사용자 세션 통계</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <MetricCard
               label="총 메시지"
@@ -214,30 +214,30 @@ const HealthDashboard = () => {
 
       {/* Configuration */}
       {backend?.config && (
-        <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">시스템 설정</h3>
+        <div className="bg-canvas rounded-lg border border-line p-6">
+          <h3 className="text-lg font-semibold text-ink mb-4">시스템 설정</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">LLM 모델:</span>
-              <span className="font-medium text-gray-900">{backend.config.model}</span>
+              <span className="text-ink-muted">LLM 모델:</span>
+              <span className="font-medium text-ink">{backend.config.model}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">임베딩 모델:</span>
-              <span className="font-medium text-gray-900">{backend.config.embedding_model}</span>
+              <span className="text-ink-muted">임베딩 모델:</span>
+              <span className="font-medium text-ink">{backend.config.embedding_model}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">검색 문서 수:</span>
-              <span className="font-medium text-gray-900">{backend.config.retrieval_k}</span>
+              <span className="text-ink-muted">검색 문서 수:</span>
+              <span className="font-medium text-ink">{backend.config.retrieval_k}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">유사도 임계값:</span>
-              <span className="font-medium text-gray-900">{backend.config.score_threshold}</span>
+              <span className="text-ink-muted">유사도 임계값:</span>
+              <span className="font-medium text-ink">{backend.config.score_threshold}</span>
             </div>
           </div>
         </div>
       )}
 
-      <div className="text-center text-sm text-gray-500">
+      <div className="text-center text-sm text-ink-muted">
         마지막 업데이트: {new Date().toLocaleTimeString('ko-KR')}
       </div>
     </div>
@@ -248,11 +248,11 @@ const StatusCard = ({ title, icon, status, description }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'healthy':
-        return 'bg-green-50 border-green-200 text-green-800';
+        return 'bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/30 text-green-800 dark:text-green-200';
       case 'unavailable':
-        return 'bg-gray-50 border-gray-200 text-gray-600';
+        return 'bg-canvas border-line text-ink-muted';
       default:
-        return 'bg-red-50 border-red-200 text-red-800';
+        return 'bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/30 text-red-800 dark:text-red-200';
     }
   };
 
@@ -281,13 +281,13 @@ const StatusCard = ({ title, icon, status, description }) => {
 
 const MetricCard = ({ label, value, color }) => {
   const colorClasses = {
-    blue: 'bg-blue-50 text-blue-900 border-blue-200',
-    green: 'bg-green-50 text-green-900 border-green-200',
-    red: 'bg-red-50 text-red-900 border-red-200',
-    yellow: 'bg-yellow-50 text-yellow-900 border-yellow-200',
-    purple: 'bg-purple-50 text-purple-900 border-purple-200',
-    indigo: 'bg-indigo-50 text-indigo-900 border-indigo-200',
-    gray: 'bg-gray-50 text-gray-900 border-gray-200',
+    blue: 'bg-blue-50 dark:bg-blue-500/10 text-blue-900 dark:text-blue-200 border-blue-200 dark:border-blue-500/30',
+    green: 'bg-green-50 dark:bg-green-500/10 text-green-900 dark:text-green-200 border-green-200 dark:border-green-500/30',
+    red: 'bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-200 border-red-200 dark:border-red-500/30',
+    yellow: 'bg-yellow-50 dark:bg-yellow-500/10 text-yellow-900 dark:text-yellow-200 border-yellow-200 dark:border-yellow-500/30',
+    purple: 'bg-purple-50 dark:bg-purple-500/10 text-purple-900 dark:text-purple-200 border-purple-200 dark:border-purple-500/30',
+    indigo: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-900 dark:text-indigo-200 border-indigo-200 dark:border-indigo-500/30',
+    gray: 'bg-canvas text-ink border-line',
   };
 
   return (

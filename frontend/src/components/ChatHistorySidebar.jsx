@@ -38,13 +38,13 @@ const ChatHistorySidebar = ({ onClose }) => {
   };
 
   return (
-    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col h-full">
-      <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-800">채팅 기록</h2>
+    <div className="w-64 bg-canvas border-r border-line flex flex-col h-full">
+      <div className="p-4 border-b border-line flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-ink">채팅 기록</h2>
         {onClose && (
           <button
             onClick={onClose}
-            className="md:hidden w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-200 rounded-lg"
+            className="md:hidden w-8 h-8 flex items-center justify-center text-ink-muted hover:bg-line rounded-lg"
           >
             <X className="w-5 h-5" />
           </button>
@@ -67,15 +67,15 @@ const ChatHistorySidebar = ({ onClose }) => {
                 onClick={() => handleSelectSession(session.session_id)}
                 className={`w-full text-left px-3 py-2.5 rounded-md text-sm transition-all flex items-start gap-3 ${
                   currentSessionId === session.session_id
-                    ? 'bg-blue-100 text-blue-800'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-800 dark:text-blue-200'
+                    : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
                 }`}
               >
                 <MessageSquareText size={16} className="mt-0.5 shrink-0" />
                 <div className="flex flex-col overflow-hidden pr-6">
                   <span className="font-medium truncate">{session.title}</span>
                   <span className={`text-xs ${
-                    currentSessionId === session.session_id ? 'text-blue-600' : 'text-gray-400'
+                    currentSessionId === session.session_id ? 'text-blue-600 dark:text-blue-400' : 'text-ink-subtle'
                   }`}>
                     {new Date(session.created_at).toLocaleDateString('ko-KR')}
                   </span>
@@ -83,7 +83,7 @@ const ChatHistorySidebar = ({ onClose }) => {
               </button>
               <button
                 onClick={(e) => handleDelete(e, session.session_id)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-gray-400 hover:text-gray-800 hover:bg-gray-200 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-ink-subtle hover:text-ink hover:bg-line opacity-0 group-hover:opacity-100 transition-opacity"
                 aria-label="Delete session"
               >
                 <Trash2 size={14} />

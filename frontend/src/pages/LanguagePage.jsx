@@ -50,29 +50,29 @@ export default function LanguagePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-canvas pb-20">
       <MobileHeader title="언어 선택" showBack={true} />
 
       <main className="max-w-md mx-auto px-4 pt-20 pb-8">
-        <div className="bg-white rounded-3xl shadow-sm overflow-hidden">
+        <div className="bg-surface rounded-3xl shadow-sm overflow-hidden">
           {languages.map((lang, index) => (
             <button
               key={lang.code}
               onClick={() => handleSaveLanguage(lang.code)}
               disabled={isSaving}
               className={`w-full flex items-center justify-between p-4 transition-colors ${
-                index !== languages.length - 1 ? 'border-b border-gray-100' : ''
+                index !== languages.length - 1 ? 'border-b border-line' : ''
               } ${
                 selectedLanguage === lang.code
-                  ? 'bg-primary-50 hover:bg-primary-100'
-                  : 'hover:bg-gray-50'
+                  ? 'bg-primary-50 dark:bg-primary-500/10 hover:bg-primary-100 dark:hover:bg-primary-500/20'
+                  : 'hover:bg-surface-muted'
               } disabled:opacity-50`}
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{lang.flag}</span>
                 <div className="text-left">
-                  <p className="text-gray-900 font-medium">{lang.name}</p>
-                  <p className="text-xs text-gray-500">{lang.code}</p>
+                  <p className="text-ink font-medium">{lang.name}</p>
+                  <p className="text-xs text-ink-muted">{lang.code}</p>
                 </div>
               </div>
 
@@ -86,9 +86,9 @@ export default function LanguagePage() {
         </div>
 
         {/* 정보 메시지 */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-2xl flex items-start gap-3">
-          <Globe className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-blue-900">
+        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-start gap-3">
+          <Globe className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-blue-900 dark:text-blue-200">
             {t('settings.languageDescription')}
           </p>
         </div>

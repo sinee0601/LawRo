@@ -121,40 +121,40 @@ export default function ContractPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-canvas pb-20">
       <MobileHeader title="새 계약서 분석" showBack={true} />
 
       {/* 메인 컨텐츠 */}
       <main className="max-w-md mx-auto px-4 pt-20 pb-8">
         {!result ? (
           <div>
-            <div className="bg-white rounded-3xl shadow-lg p-8 mb-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-2">근로계약서 분석</h2>
-              <p className="text-sm text-gray-600 mb-6">
+            <div className="bg-surface rounded-3xl shadow-lg p-8 mb-6">
+              <h2 className="text-lg font-bold text-ink mb-2">근로계약서 분석</h2>
+              <p className="text-sm text-ink-muted mb-6">
                 근로계약서의 사진을 찍거나, 파일을 업로드하여 계약조항이 법적으로 옳은지 확인해보세요!
               </p>
 
               {error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-start gap-2">
+                <div className="mb-4 p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-xl flex items-start gap-2">
                   <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
                   <span className="text-sm">{error}</span>
                 </div>
               )}
 
               {/* 계약서 미리보기 영역 */}
-              <div className="bg-gray-100 rounded-2xl aspect-[3/4] mb-6 flex items-center justify-center overflow-hidden">
+              <div className="bg-surface-muted rounded-2xl aspect-[3/4] mb-6 flex items-center justify-center overflow-hidden">
                 {file ? (
                   previewUrl ? (
                     <img src={previewUrl} alt="Preview" className="w-full h-full object-contain" />
                   ) : (
                     <div className="text-center p-4">
-                      <FileText className="w-16 h-16 text-primary-600 mx-auto mb-2" />
-                      <p className="text-sm font-medium text-gray-900 truncate">{file.name}</p>
-                      <p className="text-xs text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                      <FileText className="w-16 h-16 text-primary-600 dark:text-primary-400 mx-auto mb-2" />
+                      <p className="text-sm font-medium text-ink truncate">{file.name}</p>
+                      <p className="text-xs text-ink-muted">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                     </div>
                   )
                 ) : (
-                  <p className="text-gray-400">계약서 이미지</p>
+                  <p className="text-ink-subtle">계약서 이미지</p>
                 )}
               </div>
 
@@ -167,7 +167,7 @@ export default function ContractPage() {
                         setPreviewUrl(null);
                         setResult(null);
                       }}
-                      className="text-sm text-red-600 hover:text-red-700 font-medium"
+                      className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium"
                     >
                       파일 삭제
                     </button>
@@ -177,9 +177,9 @@ export default function ContractPage() {
               {/* 업로드 버튼 */}
               {!file && (
                 <div className="grid grid-cols-2 gap-3">
-                  <label className="flex flex-col items-center justify-center bg-primary-100 hover:bg-primary-200 rounded-2xl p-6 cursor-pointer transition-colors">
-                    <Upload className="w-8 h-8 text-primary-700 mb-2" />
-                    <span className="text-sm font-medium text-primary-900">파일 업로드</span>
+                  <label className="flex flex-col items-center justify-center bg-primary-100 dark:bg-primary-500/20 hover:bg-primary-200 dark:hover:bg-primary-500/30 rounded-2xl p-6 cursor-pointer transition-colors">
+                    <Upload className="w-8 h-8 text-primary-700 dark:text-primary-300 mb-2" />
+                    <span className="text-sm font-medium text-primary-900 dark:text-primary-200">파일 업로드</span>
                     <input
                       type="file"
                       className="hidden"
@@ -188,9 +188,9 @@ export default function ContractPage() {
                     />
                   </label>
 
-                  <label className="flex flex-col items-center justify-center bg-primary-100 hover:bg-primary-200 rounded-2xl p-6 cursor-pointer transition-colors">
-                    <Camera className="w-8 h-8 text-primary-700 mb-2" />
-                    <span className="text-sm font-medium text-primary-900">사진 촬영</span>
+                  <label className="flex flex-col items-center justify-center bg-primary-100 dark:bg-primary-500/20 hover:bg-primary-200 dark:hover:bg-primary-500/30 rounded-2xl p-6 cursor-pointer transition-colors">
+                    <Camera className="w-8 h-8 text-primary-700 dark:text-primary-300 mb-2" />
+                    <span className="text-sm font-medium text-primary-900 dark:text-primary-200">사진 촬영</span>
                     <input
                       type="file"
                       className="hidden"
@@ -206,7 +206,7 @@ export default function ContractPage() {
               {file && !isUploading && !isAnalyzing && (
                 <button
                   onClick={handleAnalyze}
-                  className="w-full mt-6 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-4 rounded-xl transition-colors"
+                  className="w-full mt-6 bg-primary-600 hover:bg-primary-hover text-white font-semibold py-4 rounded-xl transition-colors"
                 >
                   분석 시작
                 </button>
@@ -214,12 +214,12 @@ export default function ContractPage() {
 
               {/* 로딩 상태 */}
               {(isUploading || isAnalyzing) && (
-                <div className="mt-6 p-4 bg-primary-50 border border-primary-200 rounded-xl">
+                <div className="mt-6 p-4 bg-primary-50 dark:bg-primary-500/10 border border-primary-200 dark:border-primary-500/30 rounded-xl">
                   <div className="flex items-center gap-3">
-                    <Loader className="w-6 h-6 animate-spin text-primary-600" />
+                    <Loader className="w-6 h-6 animate-spin text-primary-600 dark:text-primary-400" />
                     <div>
-                      <p className="font-medium text-gray-900">로딩중</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="font-medium text-ink">로딩중</p>
+                      <p className="text-sm text-ink-muted">
                         {isUploading ? '파일을 업로드하고 있습니다' : '계약서를 분석하고 있습니다'}
                       </p>
                     </div>
@@ -231,13 +231,13 @@ export default function ContractPage() {
 
         ) : (
           <div>
-            <div className="bg-white rounded-3xl shadow-lg p-6 mb-6">
+            <div className="bg-surface rounded-3xl shadow-lg p-6 mb-6">
               <div className="flex items-center gap-2 mb-4">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-                <h2 className="text-lg font-bold text-gray-900">분석 결과</h2>
+                <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <h2 className="text-lg font-bold text-ink">분석 결과</h2>
               </div>
 
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-ink-muted mb-4">
                 분석 날짜: {new Date().toLocaleDateString('ko-KR')}
               </p>
 
@@ -249,7 +249,7 @@ export default function ContractPage() {
                   onClick={() => {
                     alert('PDF 내보내기 기능은 준비 중입니다.');
                   }}
-                  className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-2.5 sm:py-3 px-2 rounded-xl transition-colors text-xs sm:text-sm"
+                  className="bg-surface hover:bg-surface-muted text-ink-muted border border-line-strong font-medium py-2.5 sm:py-3 px-2 rounded-xl transition-colors text-xs sm:text-sm"
                   title="향후 업데이트 예정"
                 >
                   PDF 내보내기
@@ -270,7 +270,7 @@ export default function ContractPage() {
                     // 챗봇 페이지로 이동
                     navigate('/chat');
                   }}
-                  className="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 sm:py-3 px-2 rounded-xl transition-colors text-xs sm:text-sm"
+                  className="bg-primary-600 hover:bg-primary-hover text-white font-medium py-2.5 sm:py-3 px-2 rounded-xl transition-colors text-xs sm:text-sm"
                 >
                   추가 상담하기
                 </button>
@@ -278,7 +278,7 @@ export default function ContractPage() {
 
               <button
                 onClick={resetState}
-                className="w-full mt-2 sm:mt-3 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-2.5 sm:py-3 rounded-xl transition-colors text-xs sm:text-sm"
+                className="w-full mt-2 sm:mt-3 bg-surface hover:bg-surface-muted text-ink-muted border border-line-strong font-medium py-2.5 sm:py-3 rounded-xl transition-colors text-xs sm:text-sm"
               >
                 새로운 계약서 분석
               </button>

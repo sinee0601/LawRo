@@ -266,7 +266,7 @@ export default function WorkTimePage() {
         <MobileHeader title="근무 시간 기록" showBack={false} />
         <main className="max-w-md mx-auto px-4 pt-20 pb-8 flex items-center justify-center">
           <div className="animate-spin">
-            <div className="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full" />
+            <div className="w-8 h-8 border-4 border-primary-200 dark:border-primary-500/30 border-t-primary-600 rounded-full" />
           </div>
         </main>
         <BottomNav />
@@ -281,9 +281,9 @@ export default function WorkTimePage() {
       <main className="max-w-md mx-auto px-4 pt-20 pb-8 space-y-6">
         {/* 에러 메시지 */}
         {error && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-red-700">{error}</p>
+          <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-2xl flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
           </div>
         )}
 
@@ -294,7 +294,7 @@ export default function WorkTimePage() {
             {workplace && (
               <button
                 onClick={() => setShowWorkplaceModal(true)}
-                className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
               >
                 변경
               </button>
@@ -324,7 +324,7 @@ export default function WorkTimePage() {
         {currentLocation.latitude && (
           <Card>
             <div className="flex items-center gap-2 mb-4">
-              <Navigation className="w-5 h-5 text-primary-600" />
+              <Navigation className="w-5 h-5 text-primary-600 dark:text-primary-400" />
               <h3 className="font-semibold text-ink">내 위치</h3>
             </div>
 
@@ -336,27 +336,27 @@ export default function WorkTimePage() {
               {locationStatus && (
                 <div className={`p-4 rounded-2xl ${
                   locationStatus.is_within_workplace
-                    ? 'bg-green-50 border border-green-200'
-                    : 'bg-orange-50 border border-orange-200'
+                    ? 'bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30'
+                    : 'bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30'
                 }`}>
                   <div className="flex items-center gap-2 mb-2">
                     {locationStatus.is_within_workplace ? (
-                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                     ) : (
-                      <AlertCircle className="w-5 h-5 text-orange-600" />
+                      <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                     )}
                     <span className={`font-medium ${
                       locationStatus.is_within_workplace
-                        ? 'text-green-900'
-                        : 'text-orange-900'
+                        ? 'text-green-900 dark:text-green-200'
+                        : 'text-orange-900 dark:text-orange-200'
                     }`}>
                       {locationStatus.is_within_workplace ? '근무지 내' : '근무지 외'}
                     </span>
                   </div>
                   <p className={`text-sm ${
                     locationStatus.is_within_workplace
-                      ? 'text-green-700'
-                      : 'text-orange-700'
+                      ? 'text-green-700 dark:text-green-300'
+                      : 'text-orange-700 dark:text-orange-300'
                   }`}>
                     거리: {locationStatus.distance_meters.toFixed(0)}m
                   </p>
@@ -378,20 +378,20 @@ export default function WorkTimePage() {
 
             {/* 상태 표시 */}
             {!workplace && (
-              <div className="mb-6 p-3 bg-yellow-50 rounded-xl border border-yellow-200">
-                <p className="text-sm text-yellow-700">근무지를 먼저 등록해주세요</p>
+              <div className="mb-6 p-3 bg-yellow-50 dark:bg-yellow-500/10 rounded-xl border border-yellow-200 dark:border-yellow-500/30">
+                <p className="text-sm text-yellow-700 dark:text-yellow-300">근무지를 먼저 등록해주세요</p>
               </div>
             )}
 
             {workplace && !locationStatus?.is_within_workplace && (
-              <div className="mb-6 p-3 bg-orange-50 rounded-xl border border-orange-200">
-                <p className="text-sm text-orange-700">근무지 반경 내에 있어야 측정할 수 있습니다</p>
+              <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-500/10 rounded-xl border border-orange-200 dark:border-orange-500/30">
+                <p className="text-sm text-orange-700 dark:text-orange-300">근무지 반경 내에 있어야 측정할 수 있습니다</p>
               </div>
             )}
 
             {workplace && locationStatus?.is_within_workplace && (
-              <div className="mb-6 p-3 bg-green-50 rounded-xl border border-green-200">
-                <p className="text-sm text-green-700">✓ 근무시간 측정 가능합니다</p>
+              <div className="mb-6 p-3 bg-green-50 dark:bg-green-500/10 rounded-xl border border-green-200 dark:border-green-500/30">
+                <p className="text-sm text-green-700 dark:text-green-300">✓ 근무시간 측정 가능합니다</p>
               </div>
             )}
 
@@ -422,10 +422,10 @@ export default function WorkTimePage() {
         {/* 근무 기록 */}
         <Card>
           <div className="flex items-center gap-2 mb-4">
-            <Clock className="w-5 h-5 text-primary-600" />
+            <Clock className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             <h3 className="font-bold text-ink">근무 내역</h3>
             {workRecords.length > 0 && (
-              <span className="ml-auto text-sm font-medium text-primary-600">
+              <span className="ml-auto text-sm font-medium text-primary-600 dark:text-primary-400">
                 {workRecords.length}건
               </span>
             )}
@@ -448,7 +448,7 @@ export default function WorkTimePage() {
                       <p className="text-sm font-semibold text-ink">
                         {formatDate(record.start_time)}
                       </p>
-                      <p className="text-lg font-bold text-primary-600 mt-1">
+                      <p className="text-lg font-bold text-primary-600 dark:text-primary-400 mt-1">
                         {formatDuration(record.duration_seconds)}
                       </p>
                       {record.location?.address && (
@@ -459,7 +459,7 @@ export default function WorkTimePage() {
                     </div>
                     <button
                       onClick={() => handleDeleteRecord(record.id)}
-                      className="text-red-400 hover:text-red-600 transition-colors p-2"
+                      className="text-red-400 hover:text-red-600 dark:hover:text-red-400 transition-colors p-2"
                       title="삭제"
                     >
                       <Trash2 className="w-5 h-5" />
@@ -532,9 +532,9 @@ function WorkplaceModal({ onSave, onClose, mapLocation, setMapLocation }) {
 
           {/* 선택된 위치 정보 */}
           {mapLocation && (
-            <div className="p-4 bg-primary-50 border border-primary-200 rounded-xl">
-              <p className="text-sm font-semibold text-primary-900 mb-2">✓ 위치 선택됨</p>
-              <p className="text-xs text-primary-700 font-mono">
+            <div className="p-4 bg-primary-50 dark:bg-primary-500/10 border border-primary-200 dark:border-primary-500/30 rounded-xl">
+              <p className="text-sm font-semibold text-primary-900 dark:text-primary-200 mb-2">✓ 위치 선택됨</p>
+              <p className="text-xs text-primary-700 dark:text-primary-300 font-mono">
                 위도: {mapLocation.latitude.toFixed(6)}<br />
                 경도: {mapLocation.longitude.toFixed(6)}
               </p>
