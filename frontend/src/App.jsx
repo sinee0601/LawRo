@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import useAuthStore from './store/authStore';
 import NotificationHost from './components/feedback/NotificationHost';
+import { loginPath, safeNext } from './services/authRedirect';
 
 // Lazy-loaded Pages (Code Splitting for better performance)
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -31,16 +32,19 @@ function PageLoader() {
   );
 }
 
-// Protected Route Component
+// 로그인이 꼭 필요한 화면: 비로그인이면 로그인으로 보내고, 로그인 후 이 화면으로 돌아옵니다.
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuthStore();
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  const location = useLocation();
+  if (isAuthenticated) return children;
+  return <Navigate to={loginPath(`${location.pathname}${location.search}`)} replace />;
 }
 
-// Public Route Component (redirect to contract if already logged in)
-function PublicRoute({ children }) {
+// 로그인·회원가입 화면: 이미 로그인돼 있으면 돌아갈 화면(next)으로 보냅니다.
+function GuestOnlyRoute({ children }) {
   const { isAuthenticated } = useAuthStore();
-  return !isAuthenticated ? children : <Navigate to="/contract" />;
+  const [searchParams] = useSearchParams();
+  return !isAuthenticated ? children : <Navigate to={safeNext(searchParams.get('next'))} replace />;
 }
 
 function App() {
@@ -49,41 +53,27 @@ function App() {
       <NotificationHost />
       <Suspense fallback={<PageLoader />}>
         <Routes>
-        {/* Public Routes */}
+        {/* 로그인·회원가입 */}
         <Route
           path="/login"
           element={
-            <PublicRoute>
+            <GuestOnlyRoute>
               <LoginPage />
-            </PublicRoute>
+            </GuestOnlyRoute>
           }
         />
         <Route
           path="/signup"
           element={
-            <PublicRoute>
+            <GuestOnlyRoute>
               <SignupPage />
-            </PublicRoute>
+            </GuestOnlyRoute>
           }
         />
 
-        {/* Protected Routes */}
-        <Route
-          path="/chat"
-          element={
-            <ProtectedRoute>
-              <ChatPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/contract"
-          element={
-            <ProtectedRoute>
-              <AnalysisHistoryPage />
-            </ProtectedRoute>
-          }
-        />
+        {/* 로그인 없이 볼 수 있는 화면 (안에서 저장·전송 같은 기능을 쓸 때 로그인으로 보냅니다) */}
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/contract" element={<AnalysisHistoryPage />} />
         <Route
           path="/contract/new"
           element={
@@ -92,22 +82,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <SettingsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/analysis-history"
-          element={
-            <ProtectedRoute>
-              <AnalysisHistoryPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/analysis-history" element={<AnalysisHistoryPage />} />
         <Route
           path="/work-time"
           element={
@@ -116,16 +92,9 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/support-center"
-          element={
-            <ProtectedRoute>
-              <SupportCenterPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/support-center" element={<SupportCenterPage />} />
 
-        {/* Settings Sub Routes */}
+        {/* 설정 하위 화면 */}
         <Route
           path="/profile"
           element={
@@ -142,44 +111,16 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/language"
-          element={
-            <ProtectedRoute>
-              <LanguagePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/theme"
-          element={
-            <ProtectedRoute>
-              <ThemePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <ProtectedRoute>
-              <AboutPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/privacy"
-          element={
-            <ProtectedRoute>
-              <PrivacyPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/language" element={<LanguagePage />} />
+        <Route path="/theme" element={<ThemePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
 
         {/* Default Route */}
-        <Route path="/" element={<Navigate to="/contract" />} />
+        <Route path="/" element={<Navigate to="/contract" replace />} />
 
         {/* 404 Route */}
-        <Route path="*" element={<Navigate to="/contract" />} />
+        <Route path="*" element={<Navigate to="/contract" replace />} />
         </Routes>
       </Suspense>
     </Router>

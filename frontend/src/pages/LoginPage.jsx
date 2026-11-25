@@ -1,11 +1,17 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import { Info } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 import { Button, Input } from '../components/ui';
+import { safeNext, signupPath } from '../services/authRedirect';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login, isLoading, error, clearError, initializeLanguage } = useAuthStore();
+  const [searchParams] = useSearchParams();
+  // 로그인이 필요한 기능에서 넘어왔다면 로그인 후 그 화면으로 돌아갑니다.
+  const nextParam = searchParams.get('next');
+  const next = safeNext(nextParam);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -28,7 +34,7 @@ export default function LoginPage() {
       if (data.user) {
         initializeLanguage(data.user);
       }
-      navigate('/contract');
+      navigate(next, { replace: true });
     } catch (err) {
       console.error('Login failed:', err);
     }
@@ -48,6 +54,13 @@ export default function LoginPage() {
               외국인 노동자를 위한 AI 법률 상담 서비스
             </p>
           </div>
+
+          {nextParam && (
+            <div className="mb-5 flex items-start gap-2 p-3 bg-primary-soft text-primary-800 dark:text-primary-200 rounded-control text-sm">
+              <Info className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
+              <p>로그인이 필요한 기능이에요. 로그인하면 보던 화면으로 바로 돌아가요.</p>
+            </div>
+          )}
 
           {error && (
             <div
@@ -141,10 +154,15 @@ export default function LoginPage() {
           <p className="mt-10 text-center text-sm text-ink-muted">
             아직 계정이 없으신가요?{' '}
             <Link
-              to="/signup"
+              to={signupPath(nextParam)}
               className="font-semibold text-primary-700 hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200"
             >
               회원가입
+            </Link>
+          </p>
+          <p className="mt-3 text-center text-sm">
+            <Link to="/contract" className="text-ink-muted underline-offset-4 hover:text-ink hover:underline">
+              로그인 없이 둘러보기
             </Link>
           </p>
         </div>

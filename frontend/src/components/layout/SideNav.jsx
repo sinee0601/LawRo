@@ -1,14 +1,15 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
+import { LogIn, LogOut } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 import { cn } from '../ui';
 import { NAV_ITEMS, isNavActive } from './navItems';
+import { loginPath } from '../../services/authRedirect';
 
 /** PC(lg 이상)에서 왼쪽에 고정되는 메뉴. 모바일에서는 BottomNav 가 대신합니다. */
 export default function SideNav() {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user, isAuthenticated, logout } = useAuthStore();
 
   const handleLogout = () => {
     logout();
@@ -48,15 +49,32 @@ export default function SideNav() {
       </nav>
 
       <div className="p-3 border-t border-line">
-        {user?.email && <p className="px-3 pb-2 text-xs text-ink-subtle truncate">{user.email}</p>}
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-control text-sm font-medium text-ink-muted hover:bg-surface-muted hover:text-ink transition-colors"
-        >
-          <LogOut className="w-5 h-5 shrink-0" />
-          로그아웃
-        </button>
+        {isAuthenticated ? (
+          <>
+            {user?.email && <p className="px-3 pb-2 text-xs text-ink-subtle truncate">{user.email}</p>}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-control text-sm font-medium text-ink-muted hover:bg-surface-muted hover:text-ink transition-colors"
+            >
+              <LogOut className="w-5 h-5 shrink-0" />
+              로그아웃
+            </button>
+          </>
+        ) : (
+          <>
+            <p className="px-3 pb-3 text-xs text-ink-muted leading-relaxed">
+              로그인하면 분석 내역과 상담 기록이 저장돼요.
+            </p>
+            <NavLink
+              to={loginPath(`${pathname}${search}`)}
+              className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-control text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary-hover transition-colors"
+            >
+              <LogIn className="w-4 h-4 shrink-0" />
+              로그인
+            </NavLink>
+          </>
+        )}
       </div>
     </aside>
   );

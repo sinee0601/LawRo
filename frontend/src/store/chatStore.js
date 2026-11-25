@@ -350,7 +350,9 @@ const useChatStore = create((set, get) => ({
   // 전체 상태 초기화
   reset: () => set({
     sessions: {},
+    sessionList: [],
     currentSessionId: null,
+    isHistoryLoading: false,
     isLoading: false,
     error: null,
     retryCount: 0,

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { contractAPI } from '../services/api';
-import { Trash2, FileText, Calendar, AlertCircle, Plus } from 'lucide-react';
+import { Trash2, FileText, Calendar, AlertCircle, Plus, ShieldCheck, MessageCircle, ArrowRight } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
 import { Button, Card, Sheet } from '../components/ui';
 import { toast, confirm } from '../store/notifyStore';
@@ -10,16 +10,19 @@ import ContractAnalysisResult from '../components/ContractAnalysisResult';
 
 export default function AnalysisHistoryPage() {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
   const [analyses, setAnalyses] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(isAuthenticated);
   const [error, setError] = useState(null);
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
 
-  const userId = user?.uid || localStorage.getItem('userId') || 'default_user';
+  const userId = user?.uid || localStorage.getItem('userId');
 
   // Firestore에서 분석 히스토리 조회
   useEffect(() => {
+    // 비로그인 방문자는 불러올 내역이 없습니다 (아래에서 소개 화면을 보여줍니다).
+    if (!isAuthenticated || !userId) return;
+
     const loadAnalysisHistory = async () => {
       try {
         setIsLoading(true);
@@ -36,7 +39,7 @@ export default function AnalysisHistoryPage() {
     };
 
     loadAnalysisHistory();
-  }, [userId]);
+  }, [isAuthenticated, userId]);
 
   const handleDelete = async (analysisId) => {
     const ok = await confirm({
@@ -73,6 +76,10 @@ export default function AnalysisHistoryPage() {
     localStorage.setItem('contractAnalysisData', JSON.stringify(contractData));
     navigate('/chat');
   };
+
+  if (!isAuthenticated) {
+    return <GuestContractIntro onStart={() => navigate('/contract/new')} onAsk={() => navigate('/chat')} />;
+  }
 
   return (
     <AppLayout
@@ -256,6 +263,59 @@ export default function AnalysisHistoryPage() {
         </Button>
       )}
 
+    </AppLayout>
+  );
+}
+
+const GUEST_FEATURES = [
+  { icon: FileText, title: '사진이나 PDF로 올리기', body: '종이 계약서는 사진으로 찍어 올리면 돼요.' },
+  { icon: ShieldCheck, title: '위험한 조항 찾기', body: '근로기준법과 다르거나 빠진 내용을 쉬운 말로 알려드려요.' },
+  { icon: MessageCircle, title: '챗봇에게 이어서 묻기', body: '분석 결과를 바탕으로 궁금한 점을 바로 물어볼 수 있어요.' },
+];
+
+/** 비로그인 방문자가 계약서 분석 탭에 들어왔을 때 보여주는 소개 화면. 분석을 시작하면 로그인으로 넘어갑니다. */
+function GuestContractIntro({ onStart, onAsk }) {
+  return (
+    <AppLayout title="계약서 분석" subtitle="서명하기 전에 근로계약서를 확인해 보세요" width="default">
+      <Card padding="none" className="p-6 sm:p-10 max-w-2xl mx-auto">
+        <div className="w-14 h-14 rounded-2xl bg-primary-soft flex items-center justify-center mb-6">
+          <FileText className="w-7 h-7 text-primary-600 dark:text-primary-400" aria-hidden="true" />
+        </div>
+        <h2 className="text-2xl font-bold text-ink tracking-tight">근로계약서, 서명 전에 확인하세요</h2>
+        <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">
+          계약서를 올리면 AI가 내용을 읽고 문제가 될 수 있는 부분을 짚어 드려요.
+        </p>
+
+        <ul className="mt-8 space-y-5">
+          {GUEST_FEATURES.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <li key={feature.title} className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-surface-muted flex items-center justify-center shrink-0">
+                  <Icon className="w-5 h-5 text-ink-muted" aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="font-medium text-ink">{feature.title}</p>
+                  <p className="text-sm text-ink-muted mt-0.5">{feature.body}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="mt-10 flex flex-col sm:flex-row gap-3">
+          <Button size="lg" onClick={onStart} className="sm:flex-1">
+            계약서 분석 시작하기
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+          <Button size="lg" variant="outline" onClick={onAsk} className="sm:flex-1">
+            챗봇에게 먼저 물어보기
+          </Button>
+        </div>
+        <p className="mt-4 text-xs text-ink-subtle text-center sm:text-left">
+          분석 결과는 계정에 저장돼요. 분석을 시작하면 로그인 화면으로 이동해요.
+        </p>
+      </Card>
     </AppLayout>
   );
 }

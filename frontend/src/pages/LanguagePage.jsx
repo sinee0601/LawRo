@@ -10,7 +10,7 @@ import { toast } from '../store/notifyStore';
 
 export default function LanguagePage() {
   const navigate = useNavigate();
-  const { setLanguage } = useAuthStore();
+  const { setLanguage, isAuthenticated } = useAuthStore();
   const { t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState('korean');
   const [isSaving, setIsSaving] = useState(false);
@@ -36,8 +36,10 @@ export default function LanguagePage() {
       // Update Zustand store and i18next
       setLanguage(language);
 
-      // Backend API 호출로 Firestore user profile 업데이트
-      await settingsAPI.updateLanguage(language);
+      // 로그인했으면 계정 프로필에도 저장합니다. 비로그인이면 이 기기에만 저장돼요.
+      if (isAuthenticated) {
+        await settingsAPI.updateLanguage(language);
+      }
 
       setSelectedLanguage(language);
       setTimeout(() => {
