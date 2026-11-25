@@ -5,6 +5,8 @@ import { Camera, Upload, FileText, Loader, AlertCircle, CheckCircle } from 'luci
 import BottomNav from '../components/BottomNav';
 import MobileHeader from '../components/MobileHeader';
 import { toast } from '../store/notifyStore';
+import { Button, Card } from '../components/ui';
+import ContractAnalysisResult from '../components/ContractAnalysisResult';
 
 export default function ContractPage() {
   const navigate = useNavigate();
@@ -230,60 +232,49 @@ export default function ContractPage() {
           </div>
 
         ) : (
-          <div>
-            <div className="bg-surface rounded-3xl shadow-lg p-6 mb-6">
-              <div className="flex items-center gap-2 mb-4">
-                <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
-                <h2 className="text-lg font-bold text-ink">분석 결과</h2>
-              </div>
-
-              <p className="text-sm text-ink-muted mb-4">
-                분석 날짜: {new Date().toLocaleDateString('ko-KR')}
-              </p>
-
-              {/* ... (result display code remains the same) ... */}
-              
-              {/* 액션 버튼 */}
-              <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                <button
-                  onClick={() => {
-                    toast.info('PDF 내보내기 기능은 준비 중이에요.');
-                  }}
-                  className="bg-surface hover:bg-surface-muted text-ink-muted border border-line-strong font-medium py-2.5 sm:py-3 px-2 rounded-xl transition-colors text-xs sm:text-sm"
-                  title="향후 업데이트 예정"
-                >
-                  PDF 내보내기
-                </button>
-                <button
-                  onClick={() => {
-                    // 분석 결과를 챗봇으로 전달
-                    const contractData = {
-                      structuredResult: result.structured_result,
-                      chatbotAnalysis: result.chatbot_analysis?.analysis,
-                      sessionId: result.chatbot_analysis?.session_id,
-                      timestamp: new Date().toISOString()
-                    };
-
-                    // LocalStorage에 분석 결과 저장
-                    localStorage.setItem('contractAnalysisData', JSON.stringify(contractData));
-
-                    // 챗봇 페이지로 이동
-                    navigate('/chat');
-                  }}
-                  className="bg-primary-600 hover:bg-primary-hover text-white font-medium py-2.5 sm:py-3 px-2 rounded-xl transition-colors text-xs sm:text-sm"
-                >
-                  추가 상담하기
-                </button>
-              </div>
-
-              <button
-                onClick={resetState}
-                className="w-full mt-2 sm:mt-3 bg-surface hover:bg-surface-muted text-ink-muted border border-line-strong font-medium py-2.5 sm:py-3 rounded-xl transition-colors text-xs sm:text-sm"
-              >
-                새로운 계약서 분석
-              </button>
+          <Card>
+            <div className="flex items-center gap-2 mb-1">
+              <CheckCircle className="w-6 h-6 text-success" />
+              <h2 className="text-lg font-bold text-ink">분석 결과</h2>
             </div>
-          </div>
+            <p className="text-sm text-ink-muted mb-5">
+              분석 날짜: {new Date().toLocaleDateString('ko-KR')}
+            </p>
+
+            <ContractAnalysisResult
+              structured={result.structured_result}
+              chatbotText={result.chatbot_analysis?.analysis}
+            />
+
+            {/* 액션 버튼 */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-6">
+              <Button
+                variant="outline"
+                onClick={() => toast.info('PDF 내보내기 기능은 준비 중이에요.')}
+                title="향후 업데이트 예정"
+              >
+                PDF 내보내기
+              </Button>
+              <Button
+                onClick={() => {
+                  // 분석 결과를 챗봇으로 전달
+                  const contractData = {
+                    structuredResult: result.structured_result,
+                    chatbotAnalysis: result.chatbot_analysis?.analysis,
+                    sessionId: result.chatbot_analysis?.session_id,
+                    timestamp: new Date().toISOString()
+                  };
+                  localStorage.setItem('contractAnalysisData', JSON.stringify(contractData));
+                  navigate('/chat');
+                }}
+              >
+                추가 상담하기
+              </Button>
+            </div>
+            <Button variant="ghost" fullWidth onClick={resetState} className="mt-2">
+              새로운 계약서 분석
+            </Button>
+          </Card>
         )}
       </main>
 
