@@ -7,6 +7,9 @@ import MobileHeader from '../components/MobileHeader';
 import ChatHistorySidebar from '../components/ChatHistorySidebar';
 import { Button, Textarea } from '../components/ui';
 
+// 세션이 없을 때 매 렌더마다 새 배열이 생기지 않도록 고정된 빈 배열을 씁니다.
+const EMPTY_MESSAGES = [];
+
 export default function ChatPage() {
   const {
     sessions,
@@ -21,7 +24,7 @@ export default function ChatPage() {
   const messagesEndRef = useRef(null);
 
   const currentSession = currentSessionId ? sessions[currentSessionId] : null;
-  const messages = currentSession?.messages || [];
+  const messages = currentSession?.messages ?? EMPTY_MESSAGES;
 
   // Auto-scroll to the latest message
   useEffect(() => {

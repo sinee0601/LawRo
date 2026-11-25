@@ -9,7 +9,7 @@ import BottomNav from '../components/BottomNav';
 
 export default function LanguagePage() {
   const navigate = useNavigate();
-  const { user, setLanguage } = useAuthStore();
+  const { setLanguage } = useAuthStore();
   const { t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState('korean');
   const [isSaving, setIsSaving] = useState(false);
@@ -43,6 +43,7 @@ export default function LanguagePage() {
         navigate('/settings');
       }, 500);
     } catch (error) {
+      console.error('언어 설정 저장 실패:', error);
       alert(t('common.error'));
     } finally {
       setIsSaving(false);

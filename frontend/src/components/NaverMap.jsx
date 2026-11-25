@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MapPin } from 'lucide-react';
 
 export default function NaverMap({ latitude, longitude, onLocationChange }) {
@@ -42,6 +42,20 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
     };
   }, []);
 
+  // 지도 클릭 리스너는 한 번만 등록되므로, 부모가 넘긴 최신 콜백을 ref로 참조합니다.
+  const onLocationChangeRef = useRef(onLocationChange);
+  useEffect(() => {
+    onLocationChangeRef.current = onLocationChange;
+  }, [onLocationChange]);
+
+  // 마커 위치 업데이트 (ref만 사용하므로 렌더 간에 안정적입니다)
+  const updateMarkerPosition = useCallback((lat, lng) => {
+    if (markerInstance.current && mapInstance.current) {
+      markerInstance.current.setPosition(new window.naver.maps.LatLng(lat, lng));
+      mapInstance.current.setCenter(new window.naver.maps.LatLng(lat, lng));
+    }
+  }, []);
+
   // 2단계: API 로드 완료 후 지도 초기화
   useEffect(() => {
     // API가 아직 로드되지 않았으면 스킵
@@ -53,20 +67,10 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
     // window.naver.maps가 없으면 스킵
     if (!window.naver || !window.naver.maps) return;
 
-    // 이미 초기화되었으면 스킵
+    // 이미 초기화되었으면 스킵 (이후 좌표 변경으로 다시 초기화하지 않음)
     if (mapInstance.current) return;
 
-    initializeMap();
-  }, [isLoaded]);
-
-  // 지도 초기화
-  const initializeMap = () => {
     try {
-      if (!mapElement.current) {
-        console.error('❌ 지도 컨테이너를 찾을 수 없습니다');
-        return;
-      }
-
       const defaultLat = latitude || 37.3595704;
       const defaultLng = longitude || 127.1052062;
 
@@ -81,43 +85,24 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
       mapInstance.current = new window.naver.maps.Map(mapElement.current, mapOptions);
 
       // 마커 추가
-      addMarker(defaultLat, defaultLng);
+      markerInstance.current = new window.naver.maps.Marker({
+        position: new window.naver.maps.LatLng(defaultLat, defaultLng),
+        map: mapInstance.current,
+        title: '근무 위치',
+      });
 
       // 지도 클릭 이벤트 리스너
       window.naver.maps.Event.addListener(mapInstance.current, 'click', (e) => {
         const lat = e.coord.lat();
         const lng = e.coord.lng();
         updateMarkerPosition(lat, lng);
-        onLocationChange?.({ latitude: lat, longitude: lng });
+        onLocationChangeRef.current?.({ latitude: lat, longitude: lng });
       });
     } catch (err) {
       console.error('❌ 지도 초기화 오류:', err);
       setError(`지도 초기화 실패: ${err.message}`);
     }
-  };
-
-  // 마커 추가
-  const addMarker = (lat, lng) => {
-    if (!mapInstance.current) return;
-
-    if (markerInstance.current) {
-      markerInstance.current.setMap(null);
-    }
-
-    markerInstance.current = new window.naver.maps.Marker({
-      position: new window.naver.maps.LatLng(lat, lng),
-      map: mapInstance.current,
-      title: '근무 위치',
-    });
-  };
-
-  // 마커 위치 업데이트
-  const updateMarkerPosition = (lat, lng) => {
-    if (markerInstance.current && mapInstance.current) {
-      markerInstance.current.setPosition(new window.naver.maps.LatLng(lat, lng));
-      mapInstance.current.setCenter(new window.naver.maps.LatLng(lat, lng));
-    }
-  };
+  }, [isLoaded, latitude, longitude, updateMarkerPosition]);
 
   // 현재 위치로 이동
   const moveToCurrentLocation = () => {

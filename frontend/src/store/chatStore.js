@@ -70,7 +70,7 @@ const useChatStore = create((set, get) => ({
 
   // 메시지 전송 (enhanced with retry and error handling)
   sendMessage: async (message, customPrompt = null, userLanguage = 'korean') => {
-    const { currentSessionId, stats } = get();
+    const { currentSessionId } = get();
     if (!currentSessionId) {
       throw new Error('활성 세션이 없습니다.');
     }

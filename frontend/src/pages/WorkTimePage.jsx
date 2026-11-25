@@ -76,9 +76,19 @@ export default function WorkTimePage() {
 
   // ==================== 위치 상태 확인 ====================
   useEffect(() => {
-    if (currentLocation.latitude && workplace) {
-      checkLocationStatus();
-    }
+    const { latitude, longitude } = currentLocation;
+    if (!latitude || !workplace) return;
+
+    const checkLocationStatus = async () => {
+      try {
+        const status = await worktimeAPI.checkLocationStatus(latitude, longitude);
+        setLocationStatus(status);
+      } catch (err) {
+        console.error('위치 상태 확인 오류:', err);
+      }
+    };
+
+    checkLocationStatus();
   }, [currentLocation, workplace]);
 
   // ==================== 함수들 ====================
@@ -135,18 +145,6 @@ export default function WorkTimePage() {
       );
     } else {
       setError('이 브라우저는 위치 추적을 지원하지 않습니다.');
-    }
-  };
-
-  const checkLocationStatus = async () => {
-    try {
-      const status = await worktimeAPI.checkLocationStatus(
-        currentLocation.latitude,
-        currentLocation.longitude
-      );
-      setLocationStatus(status);
-    } catch (err) {
-      console.error('위치 상태 확인 오류:', err);
     }
   };
 
