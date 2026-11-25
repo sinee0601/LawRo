@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import useChatStore from '../store/chatStore';
 import { Plus, MessageSquareText, X, Trash2 } from 'lucide-react';
+import { confirm } from '../store/notifyStore';
 
 const ChatHistorySidebar = ({ onClose }) => {
   const {
@@ -30,9 +31,15 @@ const ChatHistorySidebar = ({ onClose }) => {
     onClose?.(); // Close sidebar on mobile after selecting session
   };
 
-  const handleDelete = (e, sessionId) => {
+  const handleDelete = async (e, sessionId) => {
     e.stopPropagation(); // Prevent session selection when clicking delete
-    if (window.confirm('이 채팅 기록을 정말로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+    const ok = await confirm({
+      title: '이 채팅 기록을 삭제할까요?',
+      message: '삭제한 기록은 되돌릴 수 없어요.',
+      confirmText: '삭제',
+      tone: 'danger',
+    });
+    if (ok) {
       deleteSession(sessionId);
     }
   };

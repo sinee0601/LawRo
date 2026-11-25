@@ -4,6 +4,7 @@ import { contractAPI } from '../services/api';
 import { Camera, Upload, FileText, Loader, AlertCircle, CheckCircle } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
 import MobileHeader from '../components/MobileHeader';
+import { toast } from '../store/notifyStore';
 
 export default function ContractPage() {
   const navigate = useNavigate();
@@ -246,7 +247,7 @@ export default function ContractPage() {
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <button
                   onClick={() => {
-                    alert('PDF 내보내기 기능은 준비 중입니다.');
+                    toast.info('PDF 내보내기 기능은 준비 중이에요.');
                   }}
                   className="bg-surface hover:bg-surface-muted text-ink-muted border border-line-strong font-medium py-2.5 sm:py-3 px-2 rounded-xl transition-colors text-xs sm:text-sm"
                   title="향후 업데이트 예정"

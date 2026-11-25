@@ -4,6 +4,7 @@ import { settingsAPI } from '../services/api';
 import { User, Mail } from 'lucide-react';
 import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
+import { toast } from '../store/notifyStore';
 
 export default function ProfilePage() {
   const { user } = useAuthStore();
@@ -17,7 +18,7 @@ export default function ProfilePage() {
     setError('');
     try {
       await settingsAPI.updateProfile(fullName);
-      alert('사용자 정보가 저장되었습니다.');
+      toast.success('사용자 정보를 저장했어요.');
       setEditName(false);
     } catch (err) {
       setError(err.response?.data?.detail || '저장에 실패했습니다.');

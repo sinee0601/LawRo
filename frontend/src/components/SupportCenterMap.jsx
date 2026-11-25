@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { MapPin, Navigation } from 'lucide-react';
+import { toast, alertDialog } from '../store/notifyStore';
 
 export default function SupportCenterMap({ centers, onCenterClick, userLocation }) {
   const mapElement = useRef(null);
@@ -162,19 +163,20 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
     const isSecureContext = window.isSecureContext;
 
     if (!isSecureContext && window.location.protocol === 'http:') {
-      alert(
-        '⚠️ 위치 정보 사용 불가\n\n' +
+      alertDialog({
+        title: '위치 정보를 사용할 수 없어요',
+        message:
         '현재 HTTP 연결을 사용 중입니다.\n' +
         '위치 정보를 사용하려면 HTTPS 연결이 필요합니다.\n\n' +
         '해결 방법:\n' +
         '1. localhost로 접속\n' +
-        '2. HTTPS 환경 사용 (ngrok 등)'
-      );
+        '2. HTTPS 환경 사용 (ngrok 등)',
+      });
       return;
     }
 
     if (!('geolocation' in navigator)) {
-      alert('❌ 이 브라우저는 위치 정보를 지원하지 않습니다.');
+      toast.error('이 브라우저는 위치 정보를 지원하지 않습니다.');
       return;
     }
 
@@ -188,7 +190,7 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
         }
       },
       (err) => {
-        let message = '현재 위치를 가져올 수 없습니다.\n\n';
+        let message = '';
 
         switch (err.code) {
           case 1: // PERMISSION_DENIED
@@ -204,7 +206,7 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
             message += `오류 코드: ${err.code}`;
         }
 
-        alert(message);
+        alertDialog({ title: '현재 위치를 가져올 수 없어요', message });
         console.error('Geolocation error:', err);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }

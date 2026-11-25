@@ -6,6 +6,7 @@ import { Trash2, FileText, Calendar, AlertCircle, CheckCircle, X, Plus } from 'l
 import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
 import { Button, Card } from '../components/ui';
+import { toast, confirm } from '../store/notifyStore';
 
 export default function AnalysisHistoryPage() {
   const navigate = useNavigate();
@@ -38,7 +39,13 @@ export default function AnalysisHistoryPage() {
   }, [userId]);
 
   const handleDelete = async (analysisId) => {
-    if (!window.confirm('이 분석 결과를 삭제하시겠습니까?')) return;
+    const ok = await confirm({
+      title: '이 분석 결과를 삭제할까요?',
+      message: '삭제한 결과는 되돌릴 수 없어요.',
+      confirmText: '삭제',
+      tone: 'danger',
+    });
+    if (!ok) return;
 
     try {
       // API로 삭제 요청
@@ -49,7 +56,7 @@ export default function AnalysisHistoryPage() {
         prev.filter((analysis) => analysis.id !== analysisId)
       );
     } catch (error) {
-      alert('삭제에 실패했습니다.');
+      toast.error('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.');
       console.error('Delete failed:', error);
     }
   };

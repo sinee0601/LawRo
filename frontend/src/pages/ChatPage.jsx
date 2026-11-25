@@ -118,7 +118,9 @@ export default function ChatPage() {
                           ? 'bg-primary text-primary-foreground rounded-br-lg'
                           : 'bg-surface text-ink shadow-card border border-line rounded-bl-lg'
                       }`}>
-                        <div className="prose prose-sm max-w-none text-inherit [&_p]:my-1">
+                        <div className={`prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-headings:mt-3 prose-headings:mb-1 prose-pre:my-2 ${
+                          msg.role === 'user' ? 'prose-invert' : ''
+                        }`}>
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
                         </div>
                       </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
+import { toast } from '../store/notifyStore';
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ export default function SignupPage() {
         full_name: formData.full_name,
         preferred_language: formData.preferred_language,
       });
-      alert('회원가입이 완료되었습니다. 로그인해주세요.');
+      toast.success('회원가입이 완료됐어요. 로그인해 주세요.');
       navigate('/login');
     } catch (err) {
       console.error('Signup failed:', err);

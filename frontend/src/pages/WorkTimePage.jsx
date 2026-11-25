@@ -11,6 +11,7 @@ import BottomNav from '../components/BottomNav';
 import MobileHeader from '../components/MobileHeader';
 import NaverMap from '../components/NaverMap';
 import { Button, Card, Input } from '../components/ui';
+import { toast, confirm } from '../store/notifyStore';
 
 export default function WorkTimePage() {
   // ==================== 상태 관리 ====================
@@ -213,7 +214,13 @@ export default function WorkTimePage() {
   };
 
   const handleDeleteRecord = async (recordId) => {
-    if (!window.confirm('이 근무 기록을 삭제하시겠습니까?')) return;
+    const ok = await confirm({
+      title: '이 근무 기록을 삭제할까요?',
+      message: '삭제한 기록은 되돌릴 수 없어요.',
+      confirmText: '삭제',
+      tone: 'danger',
+    });
+    if (!ok) return;
 
     try {
       await worktimeAPI.deleteWorkRecord(recordId);
@@ -493,7 +500,7 @@ function WorkplaceModal({ onSave, onClose, mapLocation, setMapLocation }) {
 
   const handleSave = async () => {
     if (!mapLocation) {
-      alert('지도에서 위치를 선택해주세요');
+      toast.warning('지도에서 위치를 선택해 주세요.');
       return;
     }
 

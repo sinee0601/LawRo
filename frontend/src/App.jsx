@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import useAuthStore from './store/authStore';
+import NotificationHost from './components/feedback/NotificationHost';
 
 // Lazy-loaded Pages (Code Splitting for better performance)
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -45,6 +46,7 @@ function PublicRoute({ children }) {
 function App() {
   return (
     <Router>
+      <NotificationHost />
       <Suspense fallback={<PageLoader />}>
         <Routes>
         {/* Public Routes */}

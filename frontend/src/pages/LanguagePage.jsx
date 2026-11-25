@@ -6,6 +6,7 @@ import { settingsAPI } from '../services/api';
 import { Check, Globe } from 'lucide-react';
 import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
+import { toast } from '../store/notifyStore';
 
 export default function LanguagePage() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function LanguagePage() {
       }, 500);
     } catch (error) {
       console.error('언어 설정 저장 실패:', error);
-      alert(t('common.error'));
+      toast.error(t('common.error'));
     } finally {
       setIsSaving(false);
     }
