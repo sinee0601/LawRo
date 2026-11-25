@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 import useAuthStore from './store/authStore';
 import NotificationHost from './components/feedback/NotificationHost';
 import { loginPath, safeNext } from './services/authRedirect';
+import useTranslation from './hooks/useTranslation';
 
 // Lazy-loaded Pages (Code Splitting for better performance)
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -22,11 +23,12 @@ const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 
 // Loading Fallback Component
 function PageLoader() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen flex items-center justify-center bg-canvas">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-        <p className="text-ink-muted">로딩 중...</p>
+        <p className="text-ink-muted">{t('common.loading')}</p>
       </div>
     </div>
   );

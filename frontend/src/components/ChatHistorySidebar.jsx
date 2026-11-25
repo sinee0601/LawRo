@@ -5,6 +5,7 @@ import useRequireLogin from '../hooks/useRequireLogin';
 import { Plus, MessageSquareText, X, Trash2, LogIn } from 'lucide-react';
 import { confirm } from '../store/notifyStore';
 import { Button } from './ui';
+import useTranslation from '../hooks/useTranslation';
 
 const ChatHistorySidebar = ({ onClose }) => {
   const {
@@ -17,6 +18,7 @@ const ChatHistorySidebar = ({ onClose }) => {
   } = useChatStore();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const requireLogin = useRequireLogin();
+  const { t, language } = useTranslation();
 
   // 대화 기록은 계정에 저장되므로 로그인했을 때만 불러옵니다.
   useEffect(() => {
@@ -40,9 +42,9 @@ const ChatHistorySidebar = ({ onClose }) => {
   const handleDelete = async (e, sessionId) => {
     e.stopPropagation(); // Prevent session selection when clicking delete
     const ok = await confirm({
-      title: '이 채팅 기록을 삭제할까요?',
-      message: '삭제한 기록은 되돌릴 수 없어요.',
-      confirmText: '삭제',
+      title: t('chat.deleteTitle'),
+      message: t('chat.deleteMessage'),
+      confirmText: t('common.delete'),
       tone: 'danger',
     });
     if (ok) {
@@ -53,10 +55,11 @@ const ChatHistorySidebar = ({ onClose }) => {
   return (
     <div className="w-64 bg-canvas border-r border-line flex flex-col h-full">
       <div className="h-14 px-4 border-b border-line flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-ink">채팅 기록</h2>
+        <h2 className="text-lg font-semibold text-ink">{t('chat.history')}</h2>
         {onClose && (
           <button
             onClick={onClose}
+            aria-label={t('chat.closeHistory')}
             className="md:hidden w-8 h-8 flex items-center justify-center text-ink-muted hover:bg-line rounded-lg"
           >
             <X className="w-5 h-5" />
@@ -68,11 +71,11 @@ const ChatHistorySidebar = ({ onClose }) => {
         <div className="flex-grow p-4">
           <div className="rounded-card bg-surface border border-line p-4 text-center">
             <MessageSquareText className="w-8 h-8 text-ink-subtle mx-auto mb-3" aria-hidden="true" />
-            <p className="text-sm font-medium text-ink">로그인하면 대화가 저장돼요</p>
-            <p className="mt-1 text-xs text-ink-muted">지난 상담 내용을 언제든 다시 볼 수 있어요.</p>
+            <p className="text-sm font-medium text-ink">{t('chat.guestSaveTitle')}</p>
+            <p className="mt-1 text-xs text-ink-muted">{t('chat.guestSaveBody')}</p>
             <Button size="sm" variant="outline" fullWidth className="mt-4" onClick={() => requireLogin('/chat')}>
               <LogIn size={16} />
-              로그인
+              {t('common.login')}
             </Button>
           </div>
         </div>
@@ -81,7 +84,7 @@ const ChatHistorySidebar = ({ onClose }) => {
           <div className="p-2">
             <Button size="sm" fullWidth onClick={handleNewChat}>
               <Plus size={16} />
-              새로운 채팅
+              {t('chat.newChat')}
             </Button>
           </div>
           <div className="flex-grow overflow-y-auto">
@@ -102,14 +105,14 @@ const ChatHistorySidebar = ({ onClose }) => {
                       <span className={`text-xs ${
                         currentSessionId === session.session_id ? 'text-primary-600 dark:text-primary-400' : 'text-ink-subtle'
                       }`}>
-                        {new Date(session.created_at).toLocaleDateString('ko-KR')}
+                        {new Date(session.created_at).toLocaleDateString(language)}
                       </span>
                     </div>
                   </button>
                   <button
                     onClick={(e) => handleDelete(e, session.session_id)}
                     className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-ink-subtle hover:text-ink hover:bg-line opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 transition-opacity"
-                    aria-label="Delete session"
+                    aria-label={t('chat.deleteLabel')}
                   >
                     <Trash2 size={14} />
                   </button>

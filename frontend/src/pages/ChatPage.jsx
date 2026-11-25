@@ -7,6 +7,8 @@ import ReactMarkdown from 'react-markdown';
 import AppLayout from '../components/layout/AppLayout';
 import ChatHistorySidebar from '../components/ChatHistorySidebar';
 import { Button, Textarea } from '../components/ui';
+import useTranslation from '../hooks/useTranslation';
+import { toServerCode } from '../i18n/languages';
 
 // 세션이 없을 때 매 렌더마다 새 배열이 생기지 않도록 고정된 빈 배열을 씁니다.
 const EMPTY_MESSAGES = [];
@@ -42,6 +44,7 @@ export default function ChatPage() {
 
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const requireLogin = useRequireLogin();
+  const { t, language } = useTranslation();
   const [input, setInput] = useState(readDraft);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const messagesEndRef = useRef(null);
@@ -74,7 +77,8 @@ export default function ChatPage() {
     setInput('');
 
     try {
-      await sendMessage(message);
+      // 챗봇도 지금 앱 언어로 답하도록 언어를 함께 보냅니다.
+      await sendMessage(message, null, toServerCode(language));
     } catch (error) {
       console.error('Failed to send message:', error);
     }
@@ -88,14 +92,14 @@ export default function ChatPage() {
 
   return (
     <AppLayout
-      title="상담 챗봇"
+      title={t('chat.title')}
       fill
       leading={
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setIsSidebarOpen(true)}
-          aria-label="대화 목록 열기"
+          aria-label={t('chat.openHistory')}
           className="md:hidden -ml-2"
         >
           <Menu className="w-6 h-6" />
@@ -127,18 +131,18 @@ export default function ChatPage() {
             <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
               {isHistoryLoading ? (
                  <div className="flex items-center justify-center h-full text-ink-muted">
-                   <p>대화 기록을 불러오는 중...</p>
+                   <p>{t('chat.loadingHistory')}</p>
                  </div>
               ) : messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center py-12">
                    <div className="w-16 h-16 bg-primary-50 dark:bg-primary-500/10 rounded-full flex items-center justify-center mb-4">
                      <Bot className="w-8 h-8 text-primary-600 dark:text-primary-400" />
                    </div>
-                   <p className="text-ink font-medium mb-2">안녕하세요, 법률/노동 상담 챗봇입니다.</p>
+                   <p className="text-ink font-medium mb-2">{t('chat.greeting')}</p>
                    <p className="text-sm text-ink-muted mb-6">
                      {isAuthenticated
-                       ? '새로운 채팅을 시작하거나, 왼쪽에서 이전 기록을 선택하세요.'
-                       : '근로계약, 임금, 근무시간처럼 궁금한 점을 적어 보세요. 메시지를 보내면 로그인 화면으로 이동해요.'}
+                       ? t('chat.emptyMember')
+                       : t('chat.emptyGuest')}
                    </p>
                  </div>
               ) : (
@@ -198,8 +202,8 @@ export default function ChatPage() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="메시지를 입력하세요..."
-                    aria-label="메시지 입력"
+                    placeholder={t('chat.placeholder')}
+                    aria-label={t('chat.inputLabel')}
                     className="block resize-none max-h-40"
                     rows="1"
                     disabled={isLoading || isHistoryLoading}
@@ -209,7 +213,7 @@ export default function ChatPage() {
                   type="submit"
                   size="icon"
                   pill
-                  aria-label="보내기"
+                  aria-label={t('chat.send')}
                   disabled={!input.trim() || isLoading || isHistoryLoading}
                   className="flex-shrink-0"
                 >

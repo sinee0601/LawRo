@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { chatAPI, performanceMetrics } from '../services/api';
+import i18next from '../i18n/config';
 
 const useChatStore = create((set, get) => ({
   sessions: {}, // Stores messages for loaded sessions: { [sessionId]: { messages: [...] } }
@@ -61,7 +62,7 @@ const useChatStore = create((set, get) => ({
       return sessionId;
     } catch (error) {
       set({
-        error: error.response?.data?.detail || '세션 생성에 실패했습니다.',
+        error: error.response?.data?.detail || i18next.t('chat.errors.createFailed'),
         isLoading: false,
       });
       throw error;
@@ -72,7 +73,7 @@ const useChatStore = create((set, get) => ({
   sendMessage: async (message, customPrompt = null, userLanguage = 'korean') => {
     const { currentSessionId } = get();
     if (!currentSessionId) {
-      throw new Error('활성 세션이 없습니다.');
+      throw new Error(i18next.t('chat.errors.noSession'));
     }
 
     set({ isLoading: true, error: null });
@@ -140,16 +141,16 @@ const useChatStore = create((set, get) => ({
 
       return data;
     } catch (error) {
-      const errorMessage = error.response?.data?.detail || '메시지 전송에 실패했습니다.';
+      const errorMessage = error.response?.data?.detail || i18next.t('chat.errors.sendFailed');
 
       // 특정 에러 메시지 처리
       let userFriendlyError = errorMessage;
       if (errorMessage.includes('credit') || errorMessage.includes('키')) {
-        userFriendlyError = 'API 크레딧이 부족합니다. 관리자에게 문의하세요.';
+        userFriendlyError = i18next.t('chat.errors.credit');
       } else if (errorMessage.includes('timeout')) {
-        userFriendlyError = '응답 시간이 초과되었습니다. 다시 시도해주세요.';
+        userFriendlyError = i18next.t('chat.errors.timeout');
       } else if (errorMessage.includes('rate limit')) {
-        userFriendlyError = '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.';
+        userFriendlyError = i18next.t('chat.errors.rateLimit');
       }
 
       // 에러 메시지를 채팅에 추가
@@ -186,7 +187,7 @@ const useChatStore = create((set, get) => ({
   sendBatchMessages: async (messages) => {
     const { currentSessionId } = get();
     if (!currentSessionId) {
-      throw new Error('활성 세션이 없습니다.');
+      throw new Error(i18next.t('chat.errors.noSession'));
     }
 
     set({ isLoading: true, error: null });
@@ -225,7 +226,7 @@ const useChatStore = create((set, get) => ({
       return responses;
     } catch (error) {
       set({
-        error: error.response?.data?.detail || '배치 메시지 전송에 실패했습니다.',
+        error: error.response?.data?.detail || i18next.t('chat.errors.sendFailed'),
         isLoading: false,
       });
       throw error;
@@ -253,7 +254,7 @@ const useChatStore = create((set, get) => ({
     } catch (error) {
       console.error('Failed to load history:', error);
       set({
-        error: '히스토리 로드에 실패했습니다.',
+        error: i18next.t('chat.errors.historyFailed'),
         isHistoryLoading: false,
       });
     }
@@ -298,7 +299,7 @@ const useChatStore = create((set, get) => ({
       });
     } catch (error) {
       console.error('Failed to delete session:', error);
-      set({ error: '세션 삭제에 실패했습니다.' });
+      set({ error: i18next.t('chat.errors.deleteFailed') });
     }
   },
 

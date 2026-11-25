@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { CheckCircle2, XCircle, Info, AlertTriangle, X } from 'lucide-react';
 import useNotifyStore from '../../store/notifyStore';
+import i18next from '../../i18n/config';
 import { Button, cn } from '../ui';
 
 const toastStyles = {
@@ -33,7 +34,7 @@ function ToastViewport() {
             <button
               type="button"
               onClick={() => dismiss(t.id)}
-              aria-label="알림 닫기"
+              aria-label={i18next.t('common.closeNotification')}
               className="-mr-1 shrink-0 rounded-full p-1 text-ink-subtle hover:bg-surface-muted hover:text-ink"
               style={{ minHeight: 0 }}
             >

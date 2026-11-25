@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { MapPin, Navigation } from 'lucide-react';
 import { toast, alertDialog } from '../store/notifyStore';
+import useTranslation from '../hooks/useTranslation';
+import i18next from '../i18n/config';
 
 export default function SupportCenterMap({ centers, onCenterClick, userLocation }) {
+  const { t } = useTranslation();
   const mapElement = useRef(null);
   const mapInstance = useRef(null);
   const markers = useRef([]);
@@ -49,7 +52,7 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
     const handleNaverMapLoaded = () => setIsLoaded(true);
     const handleNaverMapError = (event) => {
       console.error('❌ 네이버 지도 API 로드 실패:', event.detail?.error);
-      setError(event.detail?.error || '네이버 지도 API 인증에 실패했습니다.');
+      setError(event.detail?.error || i18next.t('map.authFailed'));
     };
 
     window.addEventListener('naverMapLoaded', handleNaverMapLoaded);
@@ -98,12 +101,12 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
             size: new window.naver.maps.Size(20, 20),
             anchor: new window.naver.maps.Point(10, 10),
           },
-          title: '현재 위치',
+          title: i18next.t('map.myLocation'),
         });
       }
     } catch (err) {
       console.error('❌ 지도 초기화 오류:', err);
-      setError(`지도 초기화 실패: ${err.message}`);
+      setError(i18next.t('map.initFailed', { message: err.message }));
     }
   }, [isLoaded, userLocation]);
 
@@ -164,19 +167,14 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
 
     if (!isSecureContext && window.location.protocol === 'http:') {
       alertDialog({
-        title: '위치 정보를 사용할 수 없어요',
-        message:
-        '현재 HTTP 연결을 사용 중입니다.\n' +
-        '위치 정보를 사용하려면 HTTPS 연결이 필요합니다.\n\n' +
-        '해결 방법:\n' +
-        '1. localhost로 접속\n' +
-        '2. HTTPS 환경 사용 (ngrok 등)',
+        title: t('map.httpTitle'),
+        message: t('map.httpMessage'),
       });
       return;
     }
 
     if (!('geolocation' in navigator)) {
-      toast.error('이 브라우저는 위치 정보를 지원하지 않습니다.');
+      toast.error(t('map.noGeolocation'));
       return;
     }
 
@@ -194,19 +192,19 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
 
         switch (err.code) {
           case 1: // PERMISSION_DENIED
-            message += '원인: 위치 권한이 거부되었습니다.\n\n해결: 브라우저 설정에서 위치 권한을 허용해주세요.';
+            message = t('map.permissionDenied');
             break;
           case 2: // POSITION_UNAVAILABLE
-            message += '원인: 위치 정보를 사용할 수 없습니다.\n\n해결: GPS가 켜져 있는지 확인하거나 잠시 후 다시 시도해주세요.';
+            message = t('map.positionUnavailable');
             break;
           case 3: // TIMEOUT
-            message += '원인: 위치 조회 시간이 초과되었습니다.\n\n해결: 네트워크 연결을 확인하고 다시 시도해주세요.';
+            message = t('map.timeout');
             break;
           default:
-            message += `오류 코드: ${err.code}`;
+            message = t('map.errorCode', { code: err.code });
         }
 
-        alertDialog({ title: '현재 위치를 가져올 수 없어요', message });
+        alertDialog({ title: t('map.locationErrorTitle'), message });
         console.error('Geolocation error:', err);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
@@ -229,7 +227,7 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
       <div className="bg-line rounded-card aspect-video flex items-center justify-center">
         <div className="text-center">
           <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-2 animate-pulse" />
-          <p className="text-sm text-ink-muted">지도 로드 중...</p>
+          <p className="text-sm text-ink-muted">{t('map.loading')}</p>
         </div>
       </div>
     );
@@ -247,7 +245,8 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
       <button
         onClick={moveToCurrentLocation}
         className="absolute bottom-4 right-4 bg-surface rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow"
-        title="현재 위치로 이동"
+        title={t('map.moveToMyLocation')}
+        aria-label={t('map.moveToMyLocation')}
       >
         <Navigation className="w-5 h-5 text-primary-600 dark:text-primary-400" />
       </button>
@@ -256,19 +255,19 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
       <div className="absolute top-4 left-4 bg-surface rounded-2xl p-3 shadow-lg text-xs">
         <div className="flex items-center gap-2 mb-1">
           <div className="w-3 h-3 rounded-full bg-[#1E40AF]"></div>
-          <span>노동청</span>
+          <span>{t('support.legend.labor_office')}</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
           <div className="w-3 h-3 rounded-full bg-[#059669]"></div>
-          <span>법률구조</span>
+          <span>{t('support.legend.legal_aid')}</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
           <div className="w-3 h-3 rounded-full bg-[#DC2626]"></div>
-          <span>외국인지원</span>
+          <span>{t('support.legend.foreign_support')}</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#7C3AED]"></div>
-          <span>근로복지</span>
+          <span>{t('support.legend.welfare')}</span>
         </div>
       </div>
     </div>

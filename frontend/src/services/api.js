@@ -88,7 +88,7 @@ api.interceptors.response.use(
       localStorage.removeItem('access_token');
       localStorage.removeItem('user');
       localStorage.removeItem('userId');
-      localStorage.removeItem('userLanguage');
+      // 언어·테마는 이 기기의 설정이라 로그아웃해도 유지합니다.
       const { pathname, search } = window.location;
       if (hadToken && pathname !== '/login') {
         window.location.href = loginPath(`${pathname}${search}`);
@@ -160,7 +160,6 @@ export const authAPI = {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
     localStorage.removeItem('userId');
-    localStorage.removeItem('userLanguage');
   },
 
   // 프로필 조회

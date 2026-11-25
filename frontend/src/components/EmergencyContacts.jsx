@@ -1,13 +1,15 @@
 import { Phone, Clock, Globe } from 'lucide-react';
+import useTranslation from '../hooks/useTranslation';
 
 export default function EmergencyContacts({ contacts }) {
+  const { t } = useTranslation();
   const handleCall = (phoneNumber) => {
     window.location.href = `tel:${phoneNumber}`;
   };
 
   return (
     <div>
-      <h3 className="text-lg font-bold text-ink mb-4">긴급 연락처</h3>
+      <h3 className="text-lg font-bold text-ink mb-4">{t('support.emergency')}</h3>
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
       {contacts.map((contact, index) => (
@@ -39,7 +41,8 @@ export default function EmergencyContacts({ contacts }) {
             <button
               onClick={() => handleCall(contact.phone)}
               className="flex-shrink-0 ml-3 bg-red-600 hover:bg-red-700 text-white rounded-full p-3 shadow-lg transition-colors"
-              title={`전화 걸기: ${contact.phone}`}
+              title={t('support.callNumber', { phone: contact.phone })}
+              aria-label={t('support.callNumber', { phone: contact.phone })}
             >
               <Phone className="w-5 h-5" />
             </button>

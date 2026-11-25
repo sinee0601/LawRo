@@ -5,10 +5,14 @@ import { settingsAPI } from '../services/api';
 import { Lock, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
 import { Card } from '../components/ui';
 import AppLayout from '../components/layout/AppLayout';
+import useTranslation from '../hooks/useTranslation';
+
+const MIN_PASSWORD_LENGTH = 8;
 
 export default function ChangePasswordPage() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { t } = useTranslation();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,23 +27,23 @@ export default function ChangePasswordPage() {
 
   const validatePassword = () => {
     if (!currentPassword) {
-      setError('현재 비밀번호를 입력해주세요.');
+      setError(t('password.currentRequired'));
       return false;
     }
     if (!newPassword) {
-      setError('새 비밀번호를 입력해주세요.');
+      setError(t('password.newRequired'));
       return false;
     }
-    if (newPassword.length < 8) {
-      setError('새 비밀번호는 8자 이상이어야 합니다.');
+    if (newPassword.length < MIN_PASSWORD_LENGTH) {
+      setError(t('password.tooShort', { min: MIN_PASSWORD_LENGTH }));
       return false;
     }
     if (newPassword !== confirmPassword) {
-      setError('새 비밀번호가 일치하지 않습니다.');
+      setError(t('password.mismatch'));
       return false;
     }
     if (currentPassword === newPassword) {
-      setError('새 비밀번호는 현재 비밀번호와 달라야 합니다.');
+      setError(t('password.sameAsCurrent'));
       return false;
     }
     return true;
@@ -57,7 +61,7 @@ export default function ChangePasswordPage() {
         navigate('/settings');
       }, 2000);
     } catch (err) {
-      setError(err.response?.data?.detail || '비밀번호 변경에 실패했습니다.');
+      setError(err.response?.data?.detail || t('password.failed'));
     } finally {
       setIsLoading(false);
     }
@@ -65,21 +69,21 @@ export default function ChangePasswordPage() {
 
   if (success) {
     return (
-      <AppLayout title="비밀번호 변경" showBack width="narrow">
+      <AppLayout title={t('password.title')} showBack width="narrow">
         <div className="flex flex-col items-center justify-center text-center py-20">
           <CheckCircle className="w-16 h-16 text-green-600 dark:text-green-400 mb-4" />
-          <p className="text-lg font-bold text-ink mb-2">비밀번호가 변경되었습니다</p>
-          <p className="text-sm text-ink-muted">잠시 후 설정 페이지로 이동합니다.</p>
+          <p className="text-lg font-bold text-ink mb-2">{t('password.successTitle')}</p>
+          <p className="text-sm text-ink-muted">{t('password.successBody')}</p>
         </div>
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout title="비밀번호 변경" showBack width="narrow">
+    <AppLayout title={t('password.title')} showBack width="narrow">
         <Card className="mb-6">
           <p className="text-sm text-ink-muted mb-6">
-            보안을 위해 강력한 비밀번호를 설정해주세요.
+            {t('password.intro')}
           </p>
 
           {/* 에러 메시지 */}
@@ -92,16 +96,18 @@ export default function ChangePasswordPage() {
 
           {/* 현재 비밀번호 */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-ink-muted mb-2">현재 비밀번호</label>
+            <label className="block text-sm font-medium text-ink-muted mb-2">{t('password.current')}</label>
             <div className="relative">
               <input
                 type={showPasswords.current ? 'text' : 'password'}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 className="w-full px-4 py-3 pr-10 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                placeholder="현재 비밀번호 입력"
+                placeholder={t('password.currentPlaceholder')}
               />
               <button
+                type="button"
+                aria-label={showPasswords.current ? t('password.hide') : t('password.show')}
                 onClick={() =>
                   setShowPasswords({ ...showPasswords, current: !showPasswords.current })
                 }
@@ -118,16 +124,18 @@ export default function ChangePasswordPage() {
 
           {/* 새 비밀번호 */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-ink-muted mb-2">새 비밀번호</label>
+            <label className="block text-sm font-medium text-ink-muted mb-2">{t('password.new')}</label>
             <div className="relative">
               <input
                 type={showPasswords.new ? 'text' : 'password'}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full px-4 py-3 pr-10 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                placeholder="새 비밀번호 입력 (8자 이상)"
+                placeholder={t('password.newPlaceholder', { min: MIN_PASSWORD_LENGTH })}
               />
               <button
+                type="button"
+                aria-label={showPasswords.new ? t('password.hide') : t('password.show')}
                 onClick={() =>
                   setShowPasswords({ ...showPasswords, new: !showPasswords.new })
                 }
@@ -145,7 +153,7 @@ export default function ChangePasswordPage() {
           {/* 비밀번호 확인 */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-ink-muted mb-2">
-              새 비밀번호 확인
+              {t('password.confirm')}
             </label>
             <div className="relative">
               <input
@@ -153,9 +161,11 @@ export default function ChangePasswordPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full px-4 py-3 pr-10 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                placeholder="새 비밀번호 다시 입력"
+                placeholder={t('password.confirmPlaceholder')}
               />
               <button
+                type="button"
+                aria-label={showPasswords.confirm ? t('password.hide') : t('password.show')}
                 onClick={() =>
                   setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })
                 }
@@ -176,7 +186,7 @@ export default function ChangePasswordPage() {
               onClick={() => navigate('/settings')}
               className="px-4 py-3 bg-surface border border-line-strong text-ink-muted rounded-xl font-medium hover:bg-surface-muted transition-colors"
             >
-              취소
+              {t('common.cancel')}
             </button>
             <button
               onClick={handleChangePassword}
@@ -184,7 +194,7 @@ export default function ChangePasswordPage() {
               className="px-4 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-hover disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
             >
               <Lock className="w-4 h-4" />
-              {isLoading ? '변경 중...' : '변경'}
+              {isLoading ? t('password.submitting') : t('password.submit')}
             </button>
           </div>
         </Card>

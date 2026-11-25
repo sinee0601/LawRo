@@ -6,9 +6,12 @@ import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
 import { Button, Card } from '../components/ui';
 import ContractAnalysisResult from '../components/ContractAnalysisResult';
+import useTranslation from '../hooks/useTranslation';
+import { toServerCode } from '../i18n/languages';
 
 export default function ContractPage() {
   const navigate = useNavigate();
+  const { t, language } = useTranslation();
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null); // For image preview
   const [isUploading, setIsUploading] = useState(false);
@@ -27,7 +30,8 @@ export default function ContractPage() {
 
   // 사용자 정보 가져오기
   const userId = localStorage.getItem('userId') || 'default_user';
-  const userLanguage = localStorage.getItem('userLanguage') || 'korean';
+  // 분석 결과도 지금 앱 언어로 받습니다 (서버는 'korean' 같은 코드를 씁니다).
+  const userLanguage = toServerCode(language);
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -52,14 +56,14 @@ export default function ContractPage() {
     }
 
     if (!allowedTypes.includes(selectedFile.type)) {
-      setError('JPG, PNG, PDF, DOC, DOCX 파일만 업로드 가능합니다.');
+      setError(t('contract.new.invalidType'));
       setFile(null);
       setPreviewUrl(null);
       return;
     }
 
     if (selectedFile.size > maxSize) {
-      setError('파일 크기는 10MB 이하여야 합니다.');
+      setError(t('contract.new.tooLarge'));
       setFile(null);
       setPreviewUrl(null);
       return;
@@ -108,7 +112,7 @@ export default function ContractPage() {
       setResult(analysisData);
       setIsAnalyzing(false);
     } catch (err) {
-      setError(err.response?.data?.detail || '분석 중 오류가 발생했습니다.');
+      setError(err.response?.data?.detail || t('contract.new.failed'));
       setIsUploading(false);
       setIsAnalyzing(false);
     }
@@ -122,15 +126,15 @@ export default function ContractPage() {
   };
 
   return (
-    <AppLayout title="새 계약서 분석" showBack>
+    <AppLayout title={t('contract.new.title')} showBack>
         {!result ? (
           <div>
             {/* 모바일: 안내 → 미리보기 → 버튼 순서. PC: 왼쪽 미리보기, 오른쪽 안내와 버튼 */}
             <Card padding="lg" className="lg:grid lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-x-10">
               <div className="lg:col-start-2 lg:row-start-1">
-              <h2 className="text-lg font-bold text-ink mb-2">근로계약서 분석</h2>
+              <h2 className="text-lg font-bold text-ink mb-2">{t('contract.new.heading')}</h2>
               <p className="text-sm text-ink-muted mb-6">
-                근로계약서의 사진을 찍거나, 파일을 업로드하여 계약조항이 법적으로 옳은지 확인해보세요!
+                {t('contract.new.description')}
               </p>
 
               {error && (
@@ -146,7 +150,7 @@ export default function ContractPage() {
               <div className="bg-surface-muted rounded-2xl aspect-[3/4] mb-6 lg:mb-0 lg:col-start-1 lg:row-start-1 lg:row-span-2 flex items-center justify-center overflow-hidden">
                 {file ? (
                   previewUrl ? (
-                    <img src={previewUrl} alt="Preview" className="w-full h-full object-contain" />
+                    <img src={previewUrl} alt={t('contract.new.previewAlt')} className="w-full h-full object-contain" />
                   ) : (
                     <div className="text-center p-4">
                       <FileText className="w-16 h-16 text-primary-600 dark:text-primary-400 mx-auto mb-2" />
@@ -155,7 +159,7 @@ export default function ContractPage() {
                     </div>
                   )
                 ) : (
-                  <p className="text-ink-subtle">계약서 이미지</p>
+                  <p className="text-ink-subtle">{t('contract.new.previewPlaceholder')}</p>
                 )}
               </div>
 
@@ -171,7 +175,7 @@ export default function ContractPage() {
                       }}
                       className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium"
                     >
-                      파일 삭제
+                      {t('contract.new.removeFile')}
                     </button>
                 </div>
               )}
@@ -181,7 +185,7 @@ export default function ContractPage() {
                 <div className="grid grid-cols-2 gap-3">
                   <label className="flex flex-col items-center justify-center bg-primary-100 dark:bg-primary-500/20 hover:bg-primary-200 dark:hover:bg-primary-500/30 rounded-2xl p-6 cursor-pointer transition-colors">
                     <Upload className="w-8 h-8 text-primary-700 dark:text-primary-300 mb-2" />
-                    <span className="text-sm font-medium text-primary-900 dark:text-primary-200">파일 업로드</span>
+                    <span className="text-sm font-medium text-primary-900 dark:text-primary-200">{t('contract.new.upload')}</span>
                     <input
                       type="file"
                       className="hidden"
@@ -192,7 +196,7 @@ export default function ContractPage() {
 
                   <label className="flex flex-col items-center justify-center bg-primary-100 dark:bg-primary-500/20 hover:bg-primary-200 dark:hover:bg-primary-500/30 rounded-2xl p-6 cursor-pointer transition-colors">
                     <Camera className="w-8 h-8 text-primary-700 dark:text-primary-300 mb-2" />
-                    <span className="text-sm font-medium text-primary-900 dark:text-primary-200">사진 촬영</span>
+                    <span className="text-sm font-medium text-primary-900 dark:text-primary-200">{t('contract.new.camera')}</span>
                     <input
                       type="file"
                       className="hidden"
@@ -205,13 +209,13 @@ export default function ContractPage() {
               )}
 
               <p className="mt-4 text-xs text-ink-subtle text-center lg:text-left">
-                JPG, PNG, PDF, DOC, DOCX 파일을 10MB까지 올릴 수 있어요.
+                {t('contract.new.fileHint')}
               </p>
 
               {/* 분석 버튼 */}
               {file && !isUploading && !isAnalyzing && (
                 <Button size="xl" fullWidth onClick={handleAnalyze} className="mt-6">
-                  분석 시작
+                  {t('contract.new.analyze')}
                 </Button>
               )}
 
@@ -221,9 +225,9 @@ export default function ContractPage() {
                   <div className="flex items-center gap-3">
                     <Loader className="w-6 h-6 animate-spin text-primary-600 dark:text-primary-400" />
                     <div>
-                      <p className="font-medium text-ink">로딩중</p>
+                      <p className="font-medium text-ink">{t('contract.new.working')}</p>
                       <p className="text-sm text-ink-muted">
-                        {isUploading ? '파일을 업로드하고 있습니다' : '계약서를 분석하고 있습니다'}
+                        {isUploading ? t('contract.new.uploading') : t('contract.new.analyzing')}
                       </p>
                     </div>
                   </div>
@@ -237,10 +241,10 @@ export default function ContractPage() {
           <Card className="max-w-4xl mx-auto">
             <div className="flex items-center gap-2 mb-1">
               <CheckCircle className="w-6 h-6 text-success" />
-              <h2 className="text-lg font-bold text-ink">분석 결과</h2>
+              <h2 className="text-lg font-bold text-ink">{t('contract.new.resultTitle')}</h2>
             </div>
             <p className="text-sm text-ink-muted mb-5">
-              분석 날짜: {new Date().toLocaleDateString('ko-KR')}
+              {t('contract.new.analyzedOn', { date: new Date().toLocaleDateString(language) })}
             </p>
 
             <ContractAnalysisResult
@@ -252,10 +256,9 @@ export default function ContractPage() {
             <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-6">
               <Button
                 variant="outline"
-                onClick={() => toast.info('PDF 내보내기 기능은 준비 중이에요.')}
-                title="향후 업데이트 예정"
+                onClick={() => toast.info(t('contract.new.exportPdfSoon'))}
               >
-                PDF 내보내기
+                {t('contract.new.exportPdf')}
               </Button>
               <Button
                 onClick={() => {
@@ -270,11 +273,11 @@ export default function ContractPage() {
                   navigate('/chat');
                 }}
               >
-                추가 상담하기
+                {t('contract.new.askMore')}
               </Button>
             </div>
             <Button variant="ghost" fullWidth onClick={resetState} className="mt-2">
-              새로운 계약서 분석
+              {t('contract.new.analyzeAnother')}
             </Button>
           </Card>
         )}

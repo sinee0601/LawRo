@@ -1,6 +1,8 @@
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '../ui';
+import useTranslation from '../../hooks/useTranslation';
+
 
 /**
  * 화면 상단 제목줄. 스크롤해도 위에 붙어 있습니다.
@@ -9,12 +11,13 @@ import { cn } from '../ui';
  */
 export default function AppHeader({ title, subtitle, showBack = false, leading, actions, containerClassName }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const left = leading ?? (showBack ? (
     <button
       type="button"
       onClick={() => navigate(-1)}
-      aria-label="뒤로 가기"
+      aria-label={t('common.back')}
       className="w-10 h-10 -ml-2 flex items-center justify-center rounded-full text-ink-muted hover:bg-surface-muted transition-colors"
     >
       <ArrowLeft className="w-6 h-6" />

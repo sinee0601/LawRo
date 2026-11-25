@@ -2,13 +2,14 @@ import { create } from 'zustand';
 import { authAPI } from '../services/api';
 import useChatStore from './chatStore';
 import i18next from '../i18n/config';
+import { toI18nCode } from '../i18n/languages';
 
 const useAuthStore = create((set) => ({
   user: JSON.parse(localStorage.getItem('user')) || null,
   isAuthenticated: !!localStorage.getItem('access_token'),
   isLoading: false,
   error: null,
-  language: localStorage.getItem('userLanguage') || 'ko', // Store language preference
+  language: i18next.language, // i18next 코드('ko', 'en' ...)
 
   // 로그인
   login: async (credentials) => {
@@ -23,7 +24,7 @@ const useAuthStore = create((set) => ({
       return data;
     } catch (error) {
       set({
-        error: error.response?.data?.detail || '로그인에 실패했습니다.',
+        error: error.response?.data?.detail || i18next.t('auth.login.failed'),
         isLoading: false
       });
       throw error;
@@ -43,7 +44,7 @@ const useAuthStore = create((set) => ({
       return data;
     } catch (error) {
       set({
-        error: error.response?.data?.detail || '회원가입에 실패했습니다.',
+        error: error.response?.data?.detail || i18next.t('auth.signup.failed'),
         isLoading: false
       });
       throw error;
@@ -73,46 +74,18 @@ const useAuthStore = create((set) => ({
     }
   },
 
-  // 언어 설정 변경
+  // 언어 설정 변경. 'korean' 같은 서버 코드나 'ko' 같은 i18next 코드 둘 다 받습니다.
   setLanguage: (languageCode) => {
-    // Map Firestore language code to i18next code (korean -> ko, etc.)
-    const codeMap = {
-      'korean': 'ko',
-      'english': 'en',
-      'chinese': 'zh',
-      'vietnamese': 'vi',
-      'japanese': 'ja',
-      'thai': 'th'
-    };
-
-    const i18nCode = codeMap[languageCode] || languageCode;
-
-    // Update i18next
+    const i18nCode = toI18nCode(languageCode);
     i18next.changeLanguage(i18nCode);
-
-    // Save to localStorage
     localStorage.setItem('userLanguage', i18nCode);
-
-    // Update store
     set({ language: i18nCode });
   },
 
   // 로그인 시 사용자 언어 설정
   initializeLanguage: (user) => {
     if (user?.preferred_language) {
-      const codeMap = {
-        'korean': 'ko',
-        'english': 'en',
-        'chinese': 'zh',
-        'vietnamese': 'vi',
-        'japanese': 'ja',
-        'thai': 'th'
-      };
-
-      const i18nCode = codeMap[user.preferred_language] || 'ko';
-      i18next.changeLanguage(i18nCode);
-      localStorage.setItem('userLanguage', i18nCode);
-      set({ language: i18nCode });
+      useAuthStore.getState().setLanguage(user.preferred_language);
     }
   },
 

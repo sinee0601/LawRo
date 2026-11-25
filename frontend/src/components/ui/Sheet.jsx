@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { cn } from './cn';
+import i18next from '../../i18n/config';
 
 const sizes = {
   md: 'sm:max-w-lg',
@@ -41,7 +42,7 @@ export default function Sheet({ title, onClose, footer, size = 'lg', children })
           <button
             type="button"
             onClick={onClose}
-            aria-label="닫기"
+            aria-label={i18next.t('common.close')}
             className="w-9 h-9 -mr-2 flex items-center justify-center rounded-full text-ink-subtle hover:bg-surface-muted hover:text-ink-muted"
           >
             <X className="w-6 h-6" />

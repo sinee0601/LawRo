@@ -7,10 +7,13 @@ import AppLayout from '../components/layout/AppLayout';
 import { Button, Card, Sheet } from '../components/ui';
 import { toast, confirm } from '../store/notifyStore';
 import ContractAnalysisResult from '../components/ContractAnalysisResult';
+import useTranslation from '../hooks/useTranslation';
+import i18next from '../i18n/config';
 
 export default function AnalysisHistoryPage() {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuthStore();
+  const { t, language } = useTranslation();
   const [analyses, setAnalyses] = useState([]);
   const [isLoading, setIsLoading] = useState(isAuthenticated);
   const [error, setError] = useState(null);
@@ -31,7 +34,7 @@ export default function AnalysisHistoryPage() {
         const data = await contractAPI.getAnalysisHistory(userId);
         setAnalyses(data.analyses || []);
       } catch (err) {
-        setError(err.message || '분석 히스토리를 불러오는 중 오류가 발생했습니다.');
+        setError(err.response?.data?.detail || i18next.t('contract.history.loadFailed'));
         console.error('Failed to load analysis history:', err);
       } finally {
         setIsLoading(false);
@@ -43,9 +46,9 @@ export default function AnalysisHistoryPage() {
 
   const handleDelete = async (analysisId) => {
     const ok = await confirm({
-      title: '이 분석 결과를 삭제할까요?',
-      message: '삭제한 결과는 되돌릴 수 없어요.',
-      confirmText: '삭제',
+      title: t('contract.history.deleteTitle'),
+      message: t('contract.history.deleteMessage'),
+      confirmText: t('common.delete'),
       tone: 'danger',
     });
     if (!ok) return;
@@ -59,7 +62,7 @@ export default function AnalysisHistoryPage() {
         prev.filter((analysis) => analysis.id !== analysisId)
       );
     } catch (error) {
-      toast.error('삭제에 실패했어요. 잠시 후 다시 시도해 주세요.');
+      toast.error(t('contract.history.deleteFailed'));
       console.error('Delete failed:', error);
     }
   };
@@ -83,14 +86,14 @@ export default function AnalysisHistoryPage() {
 
   return (
     <AppLayout
-      title="분석 내역"
-      subtitle="지금까지 분석한 근로계약서"
+      title={t('contract.history.title')}
+      subtitle={t('contract.history.subtitle')}
       width="wide"
       actions={
         analyses.length > 0 && (
           <Button size="sm" onClick={() => navigate('/contract/new')} className="hidden lg:inline-flex">
             <Plus className="w-4 h-4" />
-            새 계약서 분석
+            {t('contract.history.newAnalysis')}
           </Button>
         )
       }
@@ -109,12 +112,12 @@ export default function AnalysisHistoryPage() {
         ) : analyses.length === 0 ? (
           <Card padding="none" className="p-12 text-center max-w-xl mx-auto">
             <FileText className="w-16 h-16 text-line-strong mx-auto mb-4" />
-            <p className="text-ink font-medium mb-2">분석 내역이 없습니다</p>
+            <p className="text-ink font-medium mb-2">{t('contract.history.emptyTitle')}</p>
             <p className="text-sm text-ink-muted">
-              계약서를 분석하면 내역이 저장됩니다.
+              {t('contract.history.emptyBody')}
             </p>
             <Button onClick={() => navigate('/contract/new')} className="mt-6">
-              새 계약서 분석하기
+              {t('contract.history.emptyCta')}
             </Button>
           </Card>
         ) : (
@@ -128,18 +131,20 @@ export default function AnalysisHistoryPage() {
                     <div className="flex-1">
                       <p className="text-xs text-ink-muted flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        {new Date(analysis.created_at).toLocaleDateString('ko-KR', {
+                        {new Date(analysis.created_at).toLocaleString(language, {
                           year: 'numeric',
                           month: '2-digit',
                           day: '2-digit',
                           hour: '2-digit',
                           minute: '2-digit'
-                        }).replace(/\. /g, '.').replace(/\. /, ' ')}
+                        })}
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => handleDelete(analysis.id)}
+                    aria-label={t('contract.history.deleteLabel')}
+                    title={t('contract.history.deleteLabel')}
                     className="text-ink-subtle hover:text-red-600 dark:hover:text-red-400 transition-colors"
                   >
                     <Trash2 className="w-5 h-5" />
@@ -151,24 +156,24 @@ export default function AnalysisHistoryPage() {
                   {analysis.analysis_result?.parties && (
                     <>
                       <div className="flex justify-between">
-                        <span className="text-ink-muted">갑(사용자):</span>
+                        <span className="text-ink-muted">{t('analysis.partyA')}</span>
                         <span className="font-medium text-ink">
-                          {analysis.analysis_result.parties.party_a || '미명시'}
+                          {analysis.analysis_result.parties.party_a || t('common.notSpecified')}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-ink-muted">을(근로자):</span>
+                        <span className="text-ink-muted">{t('analysis.partyB')}</span>
                         <span className="font-medium text-ink">
-                          {analysis.analysis_result.parties.party_b || '미명시'}
+                          {analysis.analysis_result.parties.party_b || t('common.notSpecified')}
                         </span>
                       </div>
                     </>
                   )}
                   <div className="flex justify-between">
-                    <span className="text-ink-muted">계약 기간:</span>
+                    <span className="text-ink-muted">{t('analysis.period')}</span>
                     <span className="font-medium text-ink text-xs">
-                      {analysis.analysis_result?.effective_date || '미명시'} ~{' '}
-                      {analysis.analysis_result?.termination_date || '미명시'}
+                      {analysis.analysis_result?.effective_date || t('common.notSpecified')} ~{' '}
+                      {analysis.analysis_result?.termination_date || t('common.notSpecified')}
                     </span>
                   </div>
                 </div>
@@ -180,7 +185,7 @@ export default function AnalysisHistoryPage() {
                       <div className="flex items-center gap-2 mb-2">
                         <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
                         <span className="text-xs font-semibold text-ink">
-                          주의 사항 {analysis.analysis_result.risks.length}개
+                          {t('contract.history.risks', { count: analysis.analysis_result.risks.length })}
                         </span>
                       </div>
                       <div className="space-y-1">
@@ -201,10 +206,10 @@ export default function AnalysisHistoryPage() {
                 {/* 액션 버튼 */}
                 <div className="grid grid-cols-2 gap-3 mt-auto">
                   <Button variant="outline" size="sm" onClick={() => setSelectedAnalysis(analysis)}>
-                    상세 보기
+                    {t('contract.history.viewDetail')}
                   </Button>
                   <Button size="sm" onClick={() => handleRetouchAnalysis(analysis)}>
-                    상담하기
+                    {t('contract.history.consult')}
                   </Button>
                 </div>
               </Card>
@@ -215,7 +220,7 @@ export default function AnalysisHistoryPage() {
       {/* 분석 상세 보기 모달 */}
       {selectedAnalysis && (
         <Sheet
-          title="분석 상세 보기"
+          title={t('contract.history.detailTitle')}
           onClose={() => setSelectedAnalysis(null)}
           footer={
             <>
@@ -227,10 +232,10 @@ export default function AnalysisHistoryPage() {
                   setSelectedAnalysis(null);
                 }}
               >
-                이 분석으로 상담하기
+                {t('contract.history.consultWithThis')}
               </Button>
               <Button variant="outline" size="lg" fullWidth onClick={() => setSelectedAnalysis(null)}>
-                닫기
+                {t('common.close')}
               </Button>
             </>
           }
@@ -243,7 +248,7 @@ export default function AnalysisHistoryPage() {
 
             {/* 분석 일시 */}
             <div className="pt-4 border-t border-line text-xs text-ink-muted">
-              분석 일시: {new Date(selectedAnalysis.created_at).toLocaleString('ko-KR')}
+              {t('contract.history.analyzedAt', { date: new Date(selectedAnalysis.created_at).toLocaleString(language) })}
             </div>
           </div>
         </Sheet>
@@ -256,10 +261,10 @@ export default function AnalysisHistoryPage() {
           pill
           onClick={() => navigate('/contract/new')}
           className="lg:hidden fixed bottom-24 right-6 z-30 shadow-raised transition-transform hover:scale-105"
-          title="새 계약서 분석하기"
+          title={t('contract.history.emptyCta')}
         >
           <FileText className="w-5 h-5" />
-          <span>계약서 분석</span>
+          <span>{t('contract.history.fab')}</span>
         </Button>
       )}
 
@@ -268,35 +273,36 @@ export default function AnalysisHistoryPage() {
 }
 
 const GUEST_FEATURES = [
-  { icon: FileText, title: '사진이나 PDF로 올리기', body: '종이 계약서는 사진으로 찍어 올리면 돼요.' },
-  { icon: ShieldCheck, title: '위험한 조항 찾기', body: '근로기준법과 다르거나 빠진 내용을 쉬운 말로 알려드려요.' },
-  { icon: MessageCircle, title: '챗봇에게 이어서 묻기', body: '분석 결과를 바탕으로 궁금한 점을 바로 물어볼 수 있어요.' },
+  { icon: FileText, key: 'upload' },
+  { icon: ShieldCheck, key: 'risk' },
+  { icon: MessageCircle, key: 'ask' },
 ];
 
 /** 비로그인 방문자가 계약서 분석 탭에 들어왔을 때 보여주는 소개 화면. 분석을 시작하면 로그인으로 넘어갑니다. */
 function GuestContractIntro({ onStart, onAsk }) {
+  const { t } = useTranslation();
   return (
-    <AppLayout title="계약서 분석" subtitle="서명하기 전에 근로계약서를 확인해 보세요" width="default">
+    <AppLayout title={t('contract.intro.title')} subtitle={t('contract.intro.subtitle')} width="default">
       <Card padding="none" className="p-6 sm:p-10 max-w-2xl mx-auto">
         <div className="w-14 h-14 rounded-2xl bg-primary-soft flex items-center justify-center mb-6">
           <FileText className="w-7 h-7 text-primary-600 dark:text-primary-400" aria-hidden="true" />
         </div>
-        <h2 className="text-2xl font-bold text-ink tracking-tight">근로계약서, 서명 전에 확인하세요</h2>
+        <h2 className="text-2xl font-bold text-ink tracking-tight">{t('contract.intro.heading')}</h2>
         <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">
-          계약서를 올리면 AI가 내용을 읽고 문제가 될 수 있는 부분을 짚어 드려요.
+          {t('contract.intro.body')}
         </p>
 
         <ul className="mt-8 space-y-5">
           {GUEST_FEATURES.map((feature) => {
             const Icon = feature.icon;
             return (
-              <li key={feature.title} className="flex gap-4">
+              <li key={feature.key} className="flex gap-4">
                 <div className="w-10 h-10 rounded-full bg-surface-muted flex items-center justify-center shrink-0">
                   <Icon className="w-5 h-5 text-ink-muted" aria-hidden="true" />
                 </div>
                 <div>
-                  <p className="font-medium text-ink">{feature.title}</p>
-                  <p className="text-sm text-ink-muted mt-0.5">{feature.body}</p>
+                  <p className="font-medium text-ink">{t(`contract.intro.${feature.key}Title`)}</p>
+                  <p className="text-sm text-ink-muted mt-0.5">{t(`contract.intro.${feature.key}Body`)}</p>
                 </div>
               </li>
             );
@@ -305,15 +311,15 @@ function GuestContractIntro({ onStart, onAsk }) {
 
         <div className="mt-10 flex flex-col sm:flex-row gap-3">
           <Button size="lg" onClick={onStart} className="sm:flex-1">
-            계약서 분석 시작하기
+            {t('contract.intro.start')}
             <ArrowRight className="w-4 h-4" />
           </Button>
           <Button size="lg" variant="outline" onClick={onAsk} className="sm:flex-1">
-            챗봇에게 먼저 물어보기
+            {t('contract.intro.askFirst')}
           </Button>
         </div>
         <p className="mt-4 text-xs text-ink-subtle text-center sm:text-left">
-          분석 결과는 계정에 저장돼요. 분석을 시작하면 로그인 화면으로 이동해요.
+          {t('contract.intro.note')}
         </p>
       </Card>
     </AppLayout>

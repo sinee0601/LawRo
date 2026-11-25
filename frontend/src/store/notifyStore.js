@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import i18next from '../i18n/config';
 
 // 토스트와 확인 모달의 상태를 한곳에서 관리합니다.
 // 화면은 components/feedback/NotificationHost.jsx 가 그립니다.
@@ -54,15 +55,15 @@ export const toast = {
 export const confirm = ({
   title,
   message = '',
-  confirmText = '확인',
-  cancelText = '취소',
+  confirmText = i18next.t('common.confirm'),
+  cancelText = i18next.t('common.cancel'),
   tone = 'primary',
 }) => useNotifyStore.getState().openDialog({ title, message, confirmText, cancelText, tone });
 
 /**
  * 버튼 하나짜리 안내 모달. 사용자가 꼭 읽어야 하는 긴 안내에 씁니다.
  */
-export const alertDialog = ({ title, message = '', confirmText = '확인' }) =>
+export const alertDialog = ({ title, message = '', confirmText = i18next.t('common.confirm') }) =>
   useNotifyStore.getState().openDialog({ title, message, confirmText, cancelText: null, tone: 'primary' });
 
 export default useNotifyStore;

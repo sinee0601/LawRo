@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import useTranslation from '../hooks/useTranslation';
@@ -7,41 +7,25 @@ import { Check, Globe } from 'lucide-react';
 import { Card } from '../components/ui';
 import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
+import { LANGUAGES } from '../i18n/languages';
 
 export default function LanguagePage() {
   const navigate = useNavigate();
   const { setLanguage, isAuthenticated } = useAuthStore();
-  const { t } = useTranslation();
-  const [selectedLanguage, setSelectedLanguage] = useState('korean');
+  const { t, language: currentLanguage } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
-
-  const languages = [
-    { code: 'korean', name: '한국어', flag: '🇰🇷' },
-    { code: 'english', name: 'English', flag: '🇺🇸' },
-    { code: 'chinese', name: '中文', flag: '🇨🇳' },
-    { code: 'vietnamese', name: 'Tiếng Việt', flag: '🇻🇳' },
-    { code: 'japanese', name: '日本語', flag: '🇯🇵' },
-    { code: 'thai', name: 'ไทย', flag: '🇹🇭' },
-  ];
-
-  useEffect(() => {
-    // localStorage에서 선택된 언어 로드
-    const savedLanguage = localStorage.getItem('userLanguage') || 'korean';
-    setSelectedLanguage(savedLanguage);
-  }, []);
 
   const handleSaveLanguage = async (language) => {
     setIsSaving(true);
     try {
-      // Update Zustand store and i18next
+      // 화면 언어는 바로 바꿉니다 (이 기기에 저장).
       setLanguage(language);
 
-      // 로그인했으면 계정 프로필에도 저장합니다. 비로그인이면 이 기기에만 저장돼요.
+      // 로그인했으면 계정 프로필에도 저장합니다. 챗봇·계약서 분석 답변 언어에도 쓰여요.
       if (isAuthenticated) {
         await settingsAPI.updateLanguage(language);
       }
 
-      setSelectedLanguage(language);
       setTimeout(() => {
         navigate('/settings');
       }, 500);
@@ -54,17 +38,18 @@ export default function LanguagePage() {
   };
 
   return (
-    <AppLayout title="언어 선택" showBack width="narrow">
+    <AppLayout title={t('language.title')} showBack width="narrow">
         <Card padding="none" className="overflow-hidden">
-          {languages.map((lang, index) => (
+          {LANGUAGES.map((lang, index) => (
             <button
               key={lang.code}
               onClick={() => handleSaveLanguage(lang.code)}
               disabled={isSaving}
+              aria-pressed={currentLanguage === lang.i18n}
               className={`w-full flex items-center justify-between p-4 transition-colors ${
-                index !== languages.length - 1 ? 'border-b border-line' : ''
+                index !== LANGUAGES.length - 1 ? 'border-b border-line' : ''
               } ${
-                selectedLanguage === lang.code
+                currentLanguage === lang.i18n
                   ? 'bg-primary-50 dark:bg-primary-500/10 hover:bg-primary-100 dark:hover:bg-primary-500/20'
                   : 'hover:bg-surface-muted'
               } disabled:opacity-50`}
@@ -77,7 +62,7 @@ export default function LanguagePage() {
                 </div>
               </div>
 
-              {selectedLanguage === lang.code && (
+              {currentLanguage === lang.i18n && (
                 <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center">
                   <Check className="w-4 h-4 text-white" />
                 </div>
