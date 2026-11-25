@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { settingsAPI } from '../services/api';
 import { User, Mail } from 'lucide-react';
@@ -7,7 +6,6 @@ import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
 
 export default function ProfilePage() {
-  const navigate = useNavigate();
   const { user } = useAuthStore();
   const [editName, setEditName] = useState(false);
   const [fullName, setFullName] = useState(user?.full_name || '');
@@ -73,6 +71,12 @@ export default function ProfilePage() {
             )}
           </div>
 
+          {editName && error && (
+            <p role="alert" className="text-sm text-red-600 mb-3">
+              {error}
+            </p>
+          )}
+
           {/* 수정 버튼 */}
           {editName && (
             <div className="grid grid-cols-2 gap-3">
@@ -80,6 +84,7 @@ export default function ProfilePage() {
                 onClick={() => {
                   setEditName(false);
                   setFullName(user?.full_name || '');
+                  setError('');
                 }}
                 className="px-4 py-3 bg-surface border border-line-strong text-ink-muted rounded-xl font-medium hover:bg-surface-muted transition-colors"
               >

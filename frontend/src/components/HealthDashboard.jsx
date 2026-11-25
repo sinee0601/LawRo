@@ -10,30 +10,30 @@ const HealthDashboard = () => {
   const getStats = useChatStore(state => state.getStats);
 
   useEffect(() => {
+    const fetchHealthStatus = async () => {
+      try {
+        const [backendHealth, clientMetrics] = await Promise.all([
+          healthAPI.getDetailedStatus(),
+          Promise.resolve(getStats()),
+        ]);
+
+        setHealthStatus({
+          backend: backendHealth,
+          client: clientMetrics,
+        });
+        setLoading(false);
+        setError(null);
+      } catch (err) {
+        console.error('Failed to fetch health status:', err);
+        setError('헬스 체크를 가져오는데 실패했습니다');
+        setLoading(false);
+      }
+    };
+
     fetchHealthStatus();
     const interval = setInterval(fetchHealthStatus, 30000); // Update every 30 seconds
     return () => clearInterval(interval);
-  }, []);
-
-  const fetchHealthStatus = async () => {
-    try {
-      const [backendHealth, clientMetrics] = await Promise.all([
-        healthAPI.getDetailedStatus(),
-        Promise.resolve(getStats()),
-      ]);
-
-      setHealthStatus({
-        backend: backendHealth,
-        client: clientMetrics,
-      });
-      setLoading(false);
-      setError(null);
-    } catch (err) {
-      console.error('Failed to fetch health status:', err);
-      setError('헬스 체크를 가져오는데 실패했습니다');
-      setLoading(false);
-    }
-  };
+  }, [getStats]);
 
   if (loading) {
     return (

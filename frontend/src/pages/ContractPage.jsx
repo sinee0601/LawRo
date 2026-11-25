@@ -13,7 +13,6 @@ export default function ContractPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  const [showExtractedText, setShowExtractedText] = useState(false);
 
   // Clean up object URL on component unmount to prevent memory leaks
   useEffect(() => {
