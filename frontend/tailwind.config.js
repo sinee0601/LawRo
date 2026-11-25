@@ -1,4 +1,16 @@
 /** @type {import('tailwindcss').Config} */
+
+// 색상 값은 src/index.css 의 :root CSS 변수에 정의되어 있습니다.
+// 변수를 "R G B" 채널로 두었기 때문에 bg-primary-600/50 같은 투명도 문법도 그대로 동작합니다.
+const withAlpha = (name) => `rgb(var(--color-${name}) / <alpha-value>)`;
+
+const primaryScale = Object.fromEntries(
+  [50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map((step) => [
+    step,
+    withAlpha(`primary-${step}`),
+  ])
+);
+
 export default {
   content: [
     "./index.html",
@@ -8,17 +20,49 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#e3f2fd',
-          100: '#bbdefb',
-          200: '#90caf9',
-          300: '#64b5f6',
-          400: '#42a5f5',
-          500: '#2196f3',
-          600: '#1e88e5',
-          700: '#1976d2',
-          800: '#1565c0',
-          900: '#0d47a1',
+          ...primaryScale,
+          DEFAULT: withAlpha('primary-600'),
+          hover: withAlpha('primary-700'),
+          soft: withAlpha('primary-50'),
+          foreground: withAlpha('on-primary'),
         },
+        canvas: withAlpha('canvas'),
+        surface: {
+          DEFAULT: withAlpha('surface'),
+          muted: withAlpha('surface-muted'),
+        },
+        line: {
+          DEFAULT: withAlpha('line'),
+          strong: withAlpha('line-strong'),
+        },
+        ink: {
+          DEFAULT: withAlpha('ink'),
+          muted: withAlpha('ink-muted'),
+          subtle: withAlpha('ink-subtle'),
+        },
+        danger: {
+          DEFAULT: withAlpha('danger'),
+          hover: withAlpha('danger-hover'),
+          soft: withAlpha('danger-soft'),
+        },
+        success: {
+          DEFAULT: withAlpha('success'),
+          soft: withAlpha('success-soft'),
+        },
+        warning: {
+          DEFAULT: withAlpha('warning'),
+          soft: withAlpha('warning-soft'),
+        },
+      },
+      borderRadius: {
+        control: 'var(--radius-control)',
+        card: 'var(--radius-card)',
+        sheet: 'var(--radius-sheet)',
+      },
+      boxShadow: {
+        card: 'var(--shadow-card)',
+        raised: 'var(--shadow-raised)',
+        focus: 'var(--shadow-focus)',
       },
     },
   },

@@ -2,9 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * 디자인 토큰
+ * 색상은 "R G B" 채널로 적어 Tailwind 에서 투명도(/50 등)를 붙일 수 있게 했습니다.
+ * tailwind.config.js 가 이 변수들을 primary, surface, ink, line 등의 이름으로 노출합니다.
+ */
+@layer base {
+  :root {
+    /* 브랜드 */
+    --color-primary-50: 227 242 253;
+    --color-primary-100: 187 222 251;
+    --color-primary-200: 144 202 249;
+    --color-primary-300: 100 181 246;
+    --color-primary-400: 66 165 245;
+    --color-primary-500: 33 150 243;
+    --color-primary-600: 30 136 229;
+    --color-primary-700: 25 118 210;
+    --color-primary-800: 21 101 192;
+    --color-primary-900: 13 71 161;
+    --color-on-primary: 255 255 255;
+
+    /* 배경과 면 */
+    --color-canvas: 249 250 251;        /* gray-50 */
+    --color-surface: 255 255 255;
+    --color-surface-muted: 243 244 246; /* gray-100 */
+
+    /* 테두리 */
+    --color-line: 229 231 235;          /* gray-200 */
+    --color-line-strong: 209 213 219;   /* gray-300 */
+
+    /* 글자 */
+    --color-ink: 17 24 39;              /* gray-900 */
+    --color-ink-muted: 75 85 99;        /* gray-600 */
+    --color-ink-subtle: 156 163 175;    /* gray-400 */
+
+    /* 상태 */
+    --color-danger: 239 68 68;          /* red-500 */
+    --color-danger-hover: 220 38 38;    /* red-600 */
+    --color-danger-soft: 254 242 242;   /* red-50 */
+    --color-success: 22 163 74;         /* green-600 */
+    --color-success-soft: 240 253 244;  /* green-50 */
+    --color-warning: 234 88 12;         /* orange-600 */
+    --color-warning-soft: 255 247 237;  /* orange-50 */
+
+    /* 모서리 */
+    --radius-control: 0.75rem;  /* 버튼, 입력창 */
+    --radius-card: 1.5rem;      /* 카드 */
+    --radius-sheet: 1.5rem;     /* 바텀시트 상단 */
+
+    /* 그림자 */
+    --shadow-card: 0 1px 2px 0 rgb(16 24 40 / 0.04), 0 4px 16px -4px rgb(16 24 40 / 0.08);
+    --shadow-raised: 0 8px 24px -6px rgb(16 24 40 / 0.18), 0 2px 6px -2px rgb(16 24 40 / 0.08);
+    --shadow-focus: 0 0 0 3px rgb(var(--color-primary-500) / 0.35);
+  }
+}
+
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-canvas text-ink;
     /* 모바일 최적화: 텍스트 크기 자동 조절 방지 */
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
@@ -23,23 +78,5 @@
     button, a, input, textarea {
       min-height: 44px;
     }
-  }
-}
-
-@layer components {
-  .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors;
-  }
-
-  .btn-secondary {
-    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors;
-  }
-
-  .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none;
-  }
-
-  .card {
-    @apply bg-white rounded-lg shadow-md p-6;
   }
 }

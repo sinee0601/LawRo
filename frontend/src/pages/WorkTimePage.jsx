@@ -10,6 +10,7 @@ import { worktimeAPI } from '../services/api';
 import BottomNav from '../components/BottomNav';
 import MobileHeader from '../components/MobileHeader';
 import NaverMap from '../components/NaverMap';
+import { Button, Card, Input } from '../components/ui';
 
 export default function WorkTimePage() {
   // ==================== 상태 관리 ====================
@@ -151,7 +152,7 @@ export default function WorkTimePage() {
 
   const handleSaveWorkplace = async (latitude, longitude, address) => {
     try {
-      const result = await worktimeAPI.saveWorkplace(latitude, longitude, address, 500);
+      await worktimeAPI.saveWorkplace(latitude, longitude, address, 500);
       const workplaceData = await worktimeAPI.getWorkplace();
       setWorkplace(workplaceData.workplace);
       setShowWorkplaceModal(false);
@@ -261,7 +262,7 @@ export default function WorkTimePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="min-h-screen bg-canvas pb-20">
         <MobileHeader title="근무 시간 기록" showBack={false} />
         <main className="max-w-md mx-auto px-4 pt-20 pb-8 flex items-center justify-center">
           <div className="animate-spin">
@@ -274,7 +275,7 @@ export default function WorkTimePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-canvas pb-20">
       <MobileHeader title="근무 시간 기록" showBack={false} />
 
       <main className="max-w-md mx-auto px-4 pt-20 pb-8 space-y-6">
@@ -287,9 +288,9 @@ export default function WorkTimePage() {
         )}
 
         {/* 근무지 정보 카드 */}
-        <div className="bg-white rounded-3xl shadow-lg p-6">
+        <Card>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-gray-900">📍 근무지 정보</h3>
+            <h3 className="font-semibold text-ink">📍 근무지 정보</h3>
             {workplace && (
               <button
                 onClick={() => setShowWorkplaceModal(true)}
@@ -303,35 +304,32 @@ export default function WorkTimePage() {
           {workplace ? (
             <div className="space-y-3 text-sm">
               {workplace.address && (
-                <p className="text-gray-700">{workplace.address}</p>
+                <p className="text-ink">{workplace.address}</p>
               )}
-              <p className="text-xs text-gray-500 font-mono">
+              <p className="text-xs text-ink-muted font-mono">
                 📌 {workplace.latitude.toFixed(6)}, {workplace.longitude.toFixed(6)}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-ink-muted">
                 반경: {workplace.radius_meters}m
               </p>
             </div>
           ) : (
-            <button
-              onClick={() => setShowWorkplaceModal(true)}
-              className="w-full bg-primary-100 hover:bg-primary-200 text-primary-700 font-medium py-3 rounded-2xl transition-colors"
-            >
+            <Button variant="secondary" size="lg" fullWidth onClick={() => setShowWorkplaceModal(true)}>
               근무지 등록하기
-            </button>
+            </Button>
           )}
-        </div>
+        </Card>
 
         {/* 현재 위치 및 상태 */}
         {currentLocation.latitude && (
-          <div className="bg-white rounded-3xl shadow-lg p-6">
+          <Card>
             <div className="flex items-center gap-2 mb-4">
               <Navigation className="w-5 h-5 text-primary-600" />
-              <h3 className="font-semibold text-gray-900">내 위치</h3>
+              <h3 className="font-semibold text-ink">내 위치</h3>
             </div>
 
             <div className="space-y-3">
-              <p className="text-xs text-gray-500 font-mono">
+              <p className="text-xs text-ink-muted font-mono">
                 {currentLocation.latitude.toFixed(6)}, {currentLocation.longitude.toFixed(6)}
               </p>
 
@@ -365,16 +363,16 @@ export default function WorkTimePage() {
                 </div>
               )}
             </div>
-          </div>
+          </Card>
         )}
 
         {/* 근무시간 측정 카드 */}
-        <div className="bg-white rounded-3xl shadow-lg p-8">
+        <Card padding="lg">
           <div className="text-center mb-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">근무시간 측정</h2>
+            <h2 className="text-lg font-bold text-ink mb-4">근무시간 측정</h2>
 
             {/* 타이머 */}
-            <div className="text-6xl font-bold text-gray-900 mb-8 font-mono tracking-wider">
+            <div className="text-5xl sm:text-6xl font-bold text-ink mb-8 font-mono tabular-nums tracking-tight sm:tracking-wider whitespace-nowrap">
               {String(time.hours).padStart(2, '0')}:{String(time.minutes).padStart(2, '0')}:{String(time.seconds).padStart(2, '0')}
             </div>
 
@@ -399,36 +397,33 @@ export default function WorkTimePage() {
 
             {/* 측정 버튼 */}
             <div className="grid grid-cols-2 gap-3">
-              <button
+              <Button
+                size="xl"
+                variant={isTracking ? 'danger' : 'primary'}
                 onClick={handleToggleTracking}
                 disabled={!workplace || !locationStatus?.is_within_workplace}
-                className={`py-4 rounded-2xl font-semibold transition-all duration-200 ${
-                  isTracking
-                    ? 'bg-red-500 hover:bg-red-600 text-white shadow-lg'
-                    : workplace && locationStatus?.is_within_workplace
-                    ? 'bg-primary-600 hover:bg-primary-700 text-white shadow-lg'
-                    : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                }`}
+                className="shadow-raised"
               >
                 {isTracking ? '정지' : '시작'}
-              </button>
-              <button
+              </Button>
+              <Button
+                size="xl"
+                variant="outline"
                 onClick={handleSaveRecord}
                 disabled={!currentSessionStart || (time.hours === 0 && time.minutes === 0 && time.seconds === 0)}
-                className="bg-primary-600 hover:bg-primary-700 text-white disabled:bg-gray-200 disabled:text-gray-500 py-4 rounded-2xl font-semibold transition-colors disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <Save className="w-5 h-5" />
                 저장
-              </button>
+              </Button>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* 근무 기록 */}
-        <div className="bg-white rounded-3xl shadow-lg p-6">
+        <Card>
           <div className="flex items-center gap-2 mb-4">
             <Clock className="w-5 h-5 text-primary-600" />
-            <h3 className="font-bold text-gray-900">근무 내역</h3>
+            <h3 className="font-bold text-ink">근무 내역</h3>
             {workRecords.length > 0 && (
               <span className="ml-auto text-sm font-medium text-primary-600">
                 {workRecords.length}건
@@ -438,26 +433,26 @@ export default function WorkTimePage() {
 
           {workRecords.length === 0 ? (
             <div className="text-center py-8">
-              <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500 text-sm">아직 근무 기록이 없습니다</p>
-              <p className="text-xs text-gray-400 mt-2">
+              <Clock className="w-12 h-12 text-line-strong mx-auto mb-3" />
+              <p className="text-ink-muted text-sm">아직 근무 기록이 없습니다</p>
+              <p className="text-xs text-ink-subtle mt-2">
                 근무를 시작하면 기록이 저장됩니다
               </p>
             </div>
           ) : (
             <div className="space-y-3">
               {workRecords.map((record) => (
-                <div key={record.id} className="bg-gray-50 rounded-2xl p-4 border border-gray-200">
+                <div key={record.id} className="bg-canvas rounded-2xl p-4 border border-line">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-sm font-semibold text-ink">
                         {formatDate(record.start_time)}
                       </p>
                       <p className="text-lg font-bold text-primary-600 mt-1">
                         {formatDuration(record.duration_seconds)}
                       </p>
                       {record.location?.address && (
-                        <p className="text-xs text-gray-500 mt-2">
+                        <p className="text-xs text-ink-muted mt-2">
                           📍 {record.location.address}
                         </p>
                       )}
@@ -474,7 +469,7 @@ export default function WorkTimePage() {
               ))}
             </div>
           )}
-        </div>
+        </Card>
       </main>
 
       {/* 근무지 등록 모달 */}
@@ -513,14 +508,14 @@ function WorkplaceModal({ onSave, onClose, mapLocation, setMapLocation }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
-      <div className="bg-white w-full rounded-t-3xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
+      <div className="bg-surface w-full rounded-t-sheet max-h-[90vh] overflow-y-auto">
         {/* 헤더 */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-gray-900">근무지 등록</h2>
+        <div className="sticky top-0 bg-surface border-b border-line p-4 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-ink">근무지 등록</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-ink-subtle hover:text-ink-muted"
           >
             <X className="w-6 h-6" />
           </button>
@@ -547,39 +542,27 @@ function WorkplaceModal({ onSave, onClose, mapLocation, setMapLocation }) {
           )}
 
           {/* 주소 입력 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              근무지 주소 (선택사항)
-            </label>
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="예: 서울 강남구 테헤란로 123"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />
-          </div>
+          <Input
+            label="근무지 주소 (선택사항)"
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="예: 서울 강남구 테헤란로 123"
+          />
 
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-ink-muted">
             근무지로부터 500m 반경 내에서만 근무시간을 측정할 수 있습니다.
           </p>
         </div>
 
         {/* 하단 버튼 */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 space-y-3">
-          <button
-            onClick={handleSave}
-            disabled={!mapLocation || isSaving}
-            className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 rounded-xl transition-colors disabled:bg-gray-300"
-          >
+        <div className="sticky bottom-0 bg-surface border-t border-line p-4 space-y-3">
+          <Button size="lg" fullWidth onClick={handleSave} disabled={!mapLocation || isSaving}>
             {isSaving ? '저장 중...' : '근무지 등록'}
-          </button>
-          <button
-            onClick={onClose}
-            className="w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-3 rounded-xl transition-colors"
-          >
+          </Button>
+          <Button variant="outline" size="lg" fullWidth onClick={onClose}>
             취소
-          </button>
+          </Button>
         </div>
       </div>
     </div>
