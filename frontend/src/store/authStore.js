@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { authAPI } from '../services/api';
+import useChatStore from './chatStore';
 import i18next from '../i18n/config';
 
 const useAuthStore = create((set) => ({
@@ -52,6 +53,8 @@ const useAuthStore = create((set) => ({
   // 로그아웃
   logout: () => {
     authAPI.logout();
+    // 다음 사용자(또는 비로그인 방문자)에게 이전 계정의 대화가 보이지 않도록 비웁니다.
+    useChatStore.getState().reset();
     set({
       user: null,
       isAuthenticated: false,

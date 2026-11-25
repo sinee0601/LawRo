@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { settingsAPI } from '../services/api';
+import useAuthStore from '../store/authStore';
 import { Check, Sun, Moon, Info } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
 import { getTheme, setTheme } from '../theme';
 
 export default function ThemePage() {
   const navigate = useNavigate();
-    const [selectedTheme, setSelectedTheme] = useState(getTheme);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const [selectedTheme, setSelectedTheme] = useState(getTheme);
   const [isSaving, setIsSaving] = useState(false);
 
   const themes = [
@@ -36,14 +38,17 @@ export default function ThemePage() {
     // 화면에는 바로 적용하고, 계정 프로필 저장은 그 뒤에 시도합니다.
     setTheme(theme);
     setSelectedTheme(theme);
-    setIsSaving(true);
-    try {
-      await settingsAPI.updateTheme(theme);
-    } catch (error) {
-      // 서버 저장에 실패해도 이 기기에서는 선택한 테마가 유지됩니다.
-      console.warn('테마를 계정에 저장하지 못했습니다.', error);
-    } finally {
-      setIsSaving(false);
+    // 비로그인이면 이 기기에만 저장합니다.
+    if (isAuthenticated) {
+      setIsSaving(true);
+      try {
+        await settingsAPI.updateTheme(theme);
+      } catch (error) {
+        // 서버 저장에 실패해도 이 기기에서는 선택한 테마가 유지됩니다.
+        console.warn('테마를 계정에 저장하지 못했습니다.', error);
+      } finally {
+        setIsSaving(false);
+      }
     }
     setTimeout(() => navigate('/settings'), 500);
   };

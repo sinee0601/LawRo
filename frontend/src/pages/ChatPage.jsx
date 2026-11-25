@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import useChatStore from '../store/chatStore';
+import useAuthStore from '../store/authStore';
+import useRequireLogin from '../hooks/useRequireLogin';
 import { ArrowUp, Bot, User, Menu } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import AppLayout from '../components/layout/AppLayout';
@@ -8,6 +10,26 @@ import { Button, Textarea } from '../components/ui';
 
 // 세션이 없을 때 매 렌더마다 새 배열이 생기지 않도록 고정된 빈 배열을 씁니다.
 const EMPTY_MESSAGES = [];
+
+// 비로그인 상태에서 보내려던 메시지를 로그인하고 돌아올 때까지 잠시 보관합니다.
+const DRAFT_KEY = 'lawro:chat-draft';
+
+function readDraft() {
+  try {
+    return sessionStorage.getItem(DRAFT_KEY) ?? '';
+  } catch {
+    return '';
+  }
+}
+
+function writeDraft(value) {
+  try {
+    if (value) sessionStorage.setItem(DRAFT_KEY, value);
+    else sessionStorage.removeItem(DRAFT_KEY);
+  } catch {
+    // 저장소를 쓸 수 없는 환경이면 초안 보관만 건너뜁니다.
+  }
+}
 
 export default function ChatPage() {
   const {
@@ -18,12 +40,19 @@ export default function ChatPage() {
     isHistoryLoading,
   } = useChatStore();
 
-  const [input, setInput] = useState('');
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const requireLogin = useRequireLogin();
+  const [input, setInput] = useState(readDraft);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const messagesEndRef = useRef(null);
 
   const currentSession = currentSessionId ? sessions[currentSessionId] : null;
   const messages = currentSession?.messages ?? EMPTY_MESSAGES;
+
+  // 로그인 후 돌아왔다면 보관해 둔 초안을 입력창에 채웠으니 보관함은 비웁니다.
+  useEffect(() => {
+    if (isAuthenticated) writeDraft('');
+  }, [isAuthenticated]);
 
   // Auto-scroll to the latest message
   useEffect(() => {
@@ -33,6 +62,13 @@ export default function ChatPage() {
   const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
+
+    // 비로그인이면 쓰던 메시지를 보관하고 로그인으로 보냅니다. 로그인 후 이 화면으로 돌아와 입력창에 다시 채워져요.
+    if (!isAuthenticated) {
+      writeDraft(input);
+      requireLogin('/chat');
+      return;
+    }
 
     const message = input.trim();
     setInput('');
@@ -99,7 +135,11 @@ export default function ChatPage() {
                      <Bot className="w-8 h-8 text-primary-600 dark:text-primary-400" />
                    </div>
                    <p className="text-ink font-medium mb-2">안녕하세요, 법률/노동 상담 챗봇입니다.</p>
-                   <p className="text-sm text-ink-muted mb-6">새로운 채팅을 시작하거나, 왼쪽에서 이전 기록을 선택하세요.</p>
+                   <p className="text-sm text-ink-muted mb-6">
+                     {isAuthenticated
+                       ? '새로운 채팅을 시작하거나, 왼쪽에서 이전 기록을 선택하세요.'
+                       : '근로계약, 임금, 근무시간처럼 궁금한 점을 적어 보세요. 메시지를 보내면 로그인 화면으로 이동해요.'}
+                   </p>
                  </div>
               ) : (
                 <div className="space-y-6">

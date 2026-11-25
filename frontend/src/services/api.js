@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { loginPath } from './authRedirect';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
@@ -81,12 +82,17 @@ api.interceptors.response.use(
     }
 
     if (error.response?.status === 401) {
-      // 토큰 만료 시 로그아웃 처리
+      // 로그인했던 사용자의 토큰이 만료된 경우에만 로그인 화면으로 보내고, 로그인 후 보던 화면으로 돌아옵니다.
+      // 토큰 없이 보낸 요청(비로그인 둘러보기, 로그인 비밀번호 오류 등)은 화면을 옮기지 않고 에러만 넘깁니다.
+      const hadToken = !!localStorage.getItem('access_token');
       localStorage.removeItem('access_token');
       localStorage.removeItem('user');
       localStorage.removeItem('userId');
       localStorage.removeItem('userLanguage');
-      window.location.href = '/login';
+      const { pathname, search } = window.location;
+      if (hadToken && pathname !== '/login') {
+        window.location.href = loginPath(`${pathname}${search}`);
+      }
     }
     return Promise.reject(error);
   }

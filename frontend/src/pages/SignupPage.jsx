@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { toast } from '../store/notifyStore';
 import { ArrowLeft } from 'lucide-react';
 import { Button, Input, cn } from '../components/ui';
+import { loginPath, safeNext } from '../services/authRedirect';
 
 const EMAIL_DOMAINS = ['gmail.com', 'naver.com', 'kakao.com'];
 
@@ -12,7 +13,9 @@ const MIN_PASSWORD_LENGTH = 6;
 
 export default function SignupPage() {
   const navigate = useNavigate();
-  const { signup, isLoading, error, clearError } = useAuthStore();
+  const { signup, isLoading, error, clearError, initializeLanguage } = useAuthStore();
+  const [searchParams] = useSearchParams();
+  const nextParam = searchParams.get('next');
 
   const [formData, setFormData] = useState({
     email: '',
@@ -59,14 +62,16 @@ export default function SignupPage() {
     }
 
     try {
-      await signup({
+      const data = await signup({
         email: formData.email,
         password: formData.password,
         full_name: formData.full_name,
         preferred_language: formData.preferred_language,
       });
-      toast.success('회원가입이 완료됐어요. 로그인해 주세요.');
-      navigate('/login');
+      // 가입하면 바로 로그인된 상태가 되므로, 로그인이 필요해 넘어왔던 화면(없으면 첫 화면)으로 갑니다.
+      if (data?.user) initializeLanguage(data.user);
+      toast.success('회원가입이 완료됐어요.');
+      navigate(safeNext(nextParam), { replace: true });
     } catch (err) {
       console.error('Signup failed:', err);
     }
@@ -90,7 +95,7 @@ export default function SignupPage() {
       <main className="w-full max-w-sm mx-auto px-6 py-8 sm:max-w-md sm:px-0 sm:py-12">
         <div className="flex items-center gap-2 mb-8">
           <Link
-            to="/login"
+            to={loginPath(nextParam)}
             aria-label="로그인으로 돌아가기"
             className="w-10 h-10 -ml-2 flex items-center justify-center rounded-full text-ink-muted hover:bg-surface-muted hover:text-ink"
           >
@@ -256,7 +261,7 @@ export default function SignupPage() {
 
           <p className="text-center text-sm text-ink-muted">
             이미 계정이 있나요?{' '}
-            <Link to="/login" className="font-medium text-primary-600 dark:text-primary-400 hover:underline">
+            <Link to={loginPath(nextParam)} className="font-medium text-primary-600 dark:text-primary-400 hover:underline">
               로그인
             </Link>
           </p>
