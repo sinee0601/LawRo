@@ -3,6 +3,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { toast } from '../store/notifyStore';
 
+// 가입 시 실제로 검사하는 규칙 (Firebase Auth 최소 길이와 같음)
+const MIN_PASSWORD_LENGTH = 6;
+
 export default function SignupPage() {
   const navigate = useNavigate();
   const { signup, isLoading, error, clearError } = useAuthStore();
@@ -25,6 +28,7 @@ export default function SignupPage() {
   ];
 
   const [validationError, setValidationError] = useState('');
+  const passwordOk = formData.password.length >= MIN_PASSWORD_LENGTH;
 
   const handleChange = (e) => {
     setFormData({
@@ -45,8 +49,8 @@ export default function SignupPage() {
     }
 
     // 비밀번호 길이 확인
-    if (formData.password.length < 6) {
-      setValidationError('비밀번호는 최소 6자 이상이어야 합니다.');
+    if (!passwordOk) {
+      setValidationError(`비밀번호는 최소 ${MIN_PASSWORD_LENGTH}자 이상이어야 합니다.`);
       return;
     }
 
@@ -149,14 +153,20 @@ export default function SignupPage() {
                 </select>
               </div>
               {formData.email && !formData.email.includes('@') && (
-                <p className="text-sm text-orange-500 mt-1">올바른 이메일 형식이 아닙니다.</p>
+                <p className="text-sm text-warning mt-1">올바른 이메일 형식이 아닙니다.</p>
               )}
             </div>
 
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-ink-muted mb-2">
                 인증번호
-                <button type="button" className="float-right text-primary-600 dark:text-primary-400 text-sm">인증번호 전송</button>
+                <button
+                  type="button"
+                  onClick={() => toast.info('이메일 인증 기능은 준비 중이에요. 인증 없이 가입할 수 있어요.')}
+                  className="float-right text-primary-600 dark:text-primary-400 text-sm"
+                >
+                  인증번호 전송
+                </button>
               </label>
               <input
                 type="tel"
@@ -165,7 +175,8 @@ export default function SignupPage() {
                 className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                 placeholder="인증번호 6자리"
               />
-              <p className="text-sm text-orange-500 mt-1">인증완료되었습니다.</p>
+              {/* 인증 API 가 아직 없어서 '인증 완료' 상태를 보여주지 않는다. 연동되면 실제 결과로 표시할 것. */}
+              <p className="text-xs text-ink-muted mt-2">이메일 인증은 준비 중이에요. 지금은 인증 없이 가입할 수 있어요.</p>
             </div>
 
             <div>
@@ -179,11 +190,17 @@ export default function SignupPage() {
                 value={formData.password}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                placeholder="비밀번호"
+                placeholder={`비밀번호 (${MIN_PASSWORD_LENGTH}자 이상)`}
                 required
               />
-              {formData.password && formData.password.length < 6 && (
-                <p className="text-sm text-orange-500 mt-1">사용가능한 비밀번호입니다.</p>
+              {formData.password && (
+                passwordOk ? (
+                  <p className="text-sm text-success mt-1">사용 가능한 비밀번호예요.</p>
+                ) : (
+                  <p className="text-sm text-warning mt-1">
+                    비밀번호는 최소 {MIN_PASSWORD_LENGTH}자 이상이어야 해요. (지금 {formData.password.length}자)
+                  </p>
+                )
               )}
             </div>
 
@@ -201,11 +218,12 @@ export default function SignupPage() {
                 placeholder="비밀번호 확인"
                 required
               />
-              <p className="text-xs text-ink-muted mt-2">
-                8~20자/영문 대문자, 소문자, 숫자, 특수문자 중 2가지 이상 조합
-              </p>
-              {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
-                <p className="text-sm text-orange-500 mt-1">비밀번호가 일치하지 않습니다.</p>
+              {formData.confirmPassword && (
+                formData.password === formData.confirmPassword ? (
+                  <p className="text-sm text-success mt-1">비밀번호가 일치해요.</p>
+                ) : (
+                  <p className="text-sm text-warning mt-1">비밀번호가 일치하지 않습니다.</p>
+                )
               )}
             </div>
 
