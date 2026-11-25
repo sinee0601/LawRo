@@ -1,10 +1,11 @@
 import { Info, AlertCircle } from 'lucide-react';
 import MobileHeader from '../components/MobileHeader';
 import BottomNav from '../components/BottomNav';
+import { toast } from '../store/notifyStore';
 
 export default function AboutPage() {
   const handleComingSoon = () => {
-    alert('이 기능은 추후 업데이트 예정입니다. 기다려주세요!');
+    toast.info('이 기능은 추후 업데이트 예정이에요.');
   };
 
   return (

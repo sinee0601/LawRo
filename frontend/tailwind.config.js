@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import typography from '@tailwindcss/typography';
 
 // 색상 값은 src/index.css 의 :root CSS 변수에 정의되어 있습니다.
 // 변수를 "R G B" 채널로 두었기 때문에 bg-primary-600/50 같은 투명도 문법도 그대로 동작합니다.
@@ -61,6 +62,25 @@ export default {
         card: 'var(--radius-card)',
         sheet: 'var(--radius-sheet)',
       },
+      // 챗봇 답변의 마크다운(prose)이 디자인 토큰 색을 따르도록 맞춥니다.
+      typography: {
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': withAlpha('ink').replace('<alpha-value>', '1'),
+            '--tw-prose-headings': withAlpha('ink').replace('<alpha-value>', '1'),
+            '--tw-prose-bold': withAlpha('ink').replace('<alpha-value>', '1'),
+            '--tw-prose-links': withAlpha('primary-700').replace('<alpha-value>', '1'),
+            '--tw-prose-counters': withAlpha('ink-muted').replace('<alpha-value>', '1'),
+            '--tw-prose-bullets': withAlpha('ink-subtle').replace('<alpha-value>', '1'),
+            '--tw-prose-quotes': withAlpha('ink-muted').replace('<alpha-value>', '1'),
+            '--tw-prose-quote-borders': withAlpha('line-strong').replace('<alpha-value>', '1'),
+            '--tw-prose-hr': withAlpha('line').replace('<alpha-value>', '1'),
+            '--tw-prose-code': withAlpha('ink').replace('<alpha-value>', '1'),
+            '--tw-prose-th-borders': withAlpha('line-strong').replace('<alpha-value>', '1'),
+            '--tw-prose-td-borders': withAlpha('line').replace('<alpha-value>', '1'),
+          },
+        },
+      },
       boxShadow: {
         card: 'var(--shadow-card)',
         raised: 'var(--shadow-raised)',
@@ -68,5 +88,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [typography],
 }
