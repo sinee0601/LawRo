@@ -137,7 +137,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
 
   if (error) {
     return (
-      <div className="bg-surface-muted rounded-3xl aspect-video mb-6 flex items-center justify-center">
+      <div className="bg-surface-muted rounded-card aspect-video flex items-center justify-center">
         <div className="text-center">
           <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-2" />
           <p className="text-sm text-ink-muted">{error}</p>
@@ -148,7 +148,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
 
   if (!isLoaded) {
     return (
-      <div className="bg-line rounded-3xl aspect-video mb-6 flex items-center justify-center">
+      <div className="bg-line rounded-card aspect-video flex items-center justify-center">
         <div className="text-center">
           <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-2 animate-pulse" />
           <p className="text-sm text-ink-muted">지도 로드 중...</p>
@@ -162,7 +162,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
       {/* 지도 컨테이너 */}
       <div
         ref={mapElement}
-        className="bg-line rounded-3xl aspect-video w-full"
+        className="bg-line rounded-card aspect-video w-full"
         style={{ minHeight: '300px' }}
       />
 

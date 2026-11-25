@@ -1,18 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { Shield } from 'lucide-react';
-import MobileHeader from '../components/MobileHeader';
-import BottomNav from '../components/BottomNav';
+import { Card } from '../components/ui';
+import AppLayout from '../components/layout/AppLayout';
 
 export default function PrivacyPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="개인정보 처리 방침" showBack={true} />
-
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8">
+    <AppLayout title="개인정보 처리 방침" showBack width="narrow">
         {/* 헤더 */}
-        <div className="bg-surface rounded-3xl shadow-sm p-6 mb-6">
+        <Card className="mb-6">
           <div className="flex items-center gap-3 mb-4">
             <Shield className="w-6 h-6 text-primary-600 dark:text-primary-400" />
             <h1 className="text-lg font-bold text-ink">개인정보 처리 방침</h1>
@@ -20,10 +17,10 @@ export default function PrivacyPage() {
           <p className="text-sm text-ink-muted">
             최종 수정일: 2024년 11월 10일
           </p>
-        </div>
+        </Card>
 
         {/* 내용 */}
-        <div className="bg-surface rounded-3xl shadow-sm p-6 mb-6">
+        <Card className="mb-6">
           <div className="space-y-6 text-sm text-ink-muted">
             {/* 수집하는 정보 */}
             <section>
@@ -98,7 +95,7 @@ export default function PrivacyPage() {
               </p>
             </section>
           </div>
-        </div>
+        </Card>
 
         {/* 정보 안내 */}
         <div className="bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 rounded-2xl p-4 mb-6">
@@ -114,9 +111,6 @@ export default function PrivacyPage() {
         >
           확인하고 돌아가기
         </button>
-      </main>
-
-      <BottomNav />
-    </div>
+      </AppLayout>
   );
 }

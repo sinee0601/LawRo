@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import useChatStore from '../store/chatStore';
 import { Plus, MessageSquareText, X, Trash2 } from 'lucide-react';
 import { confirm } from '../store/notifyStore';
+import { Button } from './ui';
 
 const ChatHistorySidebar = ({ onClose }) => {
   const {
@@ -46,7 +47,7 @@ const ChatHistorySidebar = ({ onClose }) => {
 
   return (
     <div className="w-64 bg-canvas border-r border-line flex flex-col h-full">
-      <div className="p-4 border-b border-line flex items-center justify-between">
+      <div className="h-14 px-4 border-b border-line flex items-center justify-between">
         <h2 className="text-lg font-semibold text-ink">채팅 기록</h2>
         {onClose && (
           <button
@@ -58,13 +59,10 @@ const ChatHistorySidebar = ({ onClose }) => {
         )}
       </div>
       <div className="p-2">
-        <button
-          onClick={handleNewChat}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all"
-        >
+        <Button size="sm" fullWidth onClick={handleNewChat}>
           <Plus size={16} />
           새로운 채팅
-        </button>
+        </Button>
       </div>
       <div className="flex-grow overflow-y-auto">
         <ul className="space-y-1 p-2">
@@ -72,9 +70,9 @@ const ChatHistorySidebar = ({ onClose }) => {
             <li key={session.session_id} className="relative group">
               <button
                 onClick={() => handleSelectSession(session.session_id)}
-                className={`w-full text-left px-3 py-2.5 rounded-md text-sm transition-all flex items-start gap-3 ${
+                className={`w-full text-left px-3 py-2.5 rounded-control text-sm transition-all flex items-start gap-3 ${
                   currentSessionId === session.session_id
-                    ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-800 dark:text-blue-200'
+                    ? 'bg-primary-soft text-primary-800 dark:text-primary-200'
                     : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
                 }`}
               >
@@ -82,7 +80,7 @@ const ChatHistorySidebar = ({ onClose }) => {
                 <div className="flex flex-col overflow-hidden pr-6">
                   <span className="font-medium truncate">{session.title}</span>
                   <span className={`text-xs ${
-                    currentSessionId === session.session_id ? 'text-blue-600 dark:text-blue-400' : 'text-ink-subtle'
+                    currentSessionId === session.session_id ? 'text-primary-600 dark:text-primary-400' : 'text-ink-subtle'
                   }`}>
                     {new Date(session.created_at).toLocaleDateString('ko-KR')}
                   </span>
@@ -90,7 +88,7 @@ const ChatHistorySidebar = ({ onClose }) => {
               </button>
               <button
                 onClick={(e) => handleDelete(e, session.session_id)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-ink-subtle hover:text-ink hover:bg-line opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-ink-subtle hover:text-ink hover:bg-line opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 transition-opacity"
                 aria-label="Delete session"
               >
                 <Trash2 size={14} />

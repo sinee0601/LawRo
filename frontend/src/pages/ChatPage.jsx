@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import useChatStore from '../store/chatStore';
 import { ArrowUp, Bot, User, Menu } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import BottomNav from '../components/BottomNav';
-import MobileHeader from '../components/MobileHeader';
+import AppLayout from '../components/layout/AppLayout';
 import ChatHistorySidebar from '../components/ChatHistorySidebar';
 import { Button, Textarea } from '../components/ui';
 
@@ -52,23 +51,21 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-canvas">
-      {/* Mobile Header with Menu Button */}
-      <div className="fixed top-0 left-0 right-0 h-14 bg-surface border-b border-line z-50 flex items-center px-4">
+    <AppLayout
+      title="상담 챗봇"
+      fill
+      leading={
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setIsSidebarOpen(true)}
           aria-label="대화 목록 열기"
-          className="md:hidden"
+          className="md:hidden -ml-2"
         >
           <Menu className="w-6 h-6" />
         </Button>
-        <h1 className="flex-1 text-center font-semibold text-ink md:text-left md:ml-4">상담 챗봇</h1>
-        <div className="w-10 md:hidden"></div>
-      </div>
-
-      <div className="flex flex-1 overflow-hidden pt-14 pb-14 sm:pb-0">
+      }
+    >
         {/* Mobile Sidebar Overlay */}
         {isSidebarOpen && (
           <div className="fixed inset-0 z-50 md:hidden">
@@ -88,10 +85,10 @@ export default function ChatPage() {
         </div>
 
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col relative bg-surface">
+        <div className="flex-1 min-w-0 flex flex-col bg-surface">
           {/* Message List */}
-          <div className="flex-1 overflow-y-auto pb-32 md:pb-20">
-            <div className="max-w-2xl mx-auto px-4 py-6">
+          <div className="flex-1 min-h-0 overflow-y-auto">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
               {isHistoryLoading ? (
                  <div className="flex items-center justify-center h-full text-ink-muted">
                    <p>대화 기록을 불러오는 중...</p>
@@ -152,8 +149,8 @@ export default function ChatPage() {
           </div>
 
           {/* Input Form */}
-          <div className="fixed bottom-14 left-0 right-0 bg-surface/80 backdrop-blur-sm border-t border-line z-40 md:bottom-16">
-            <div className="max-w-2xl mx-auto px-4 py-3">
+          <div className="shrink-0 bg-surface border-t border-line">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 py-3">
               <form onSubmit={handleSend} className="flex items-end gap-2">
                 <div className="flex-1">
                   <Textarea
@@ -182,8 +179,6 @@ export default function ChatPage() {
             </div>
           </div>
         </div>
-      </div>
-      <BottomNav />
-    </div>
+    </AppLayout>
   );
 }

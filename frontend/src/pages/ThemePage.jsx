@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { settingsAPI } from '../services/api';
 import { Check, Sun, Moon, Info } from 'lucide-react';
-import MobileHeader from '../components/MobileHeader';
-import BottomNav from '../components/BottomNav';
+import AppLayout from '../components/layout/AppLayout';
 import { getTheme, setTheme } from '../theme';
 
 export default function ThemePage() {
@@ -50,12 +49,9 @@ export default function ThemePage() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="앱 색상 변경" showBack={true} />
-
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8">
+    <AppLayout title="앱 색상 변경" showBack width="narrow">
         {/* 테마 선택 카드 */}
-        <div className="space-y-3 mb-6">
+        <div className="grid gap-3 sm:grid-cols-2 mb-6">
           {themes.map((theme) => {
             const ThemeIcon = theme.icon;
             return (
@@ -115,9 +111,6 @@ export default function ThemePage() {
             </p>
           </div>
         </div>
-      </main>
-
-      <BottomNav />
-    </div>
+      </AppLayout>
   );
 }

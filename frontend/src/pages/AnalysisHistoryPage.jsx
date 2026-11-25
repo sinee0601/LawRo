@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { contractAPI } from '../services/api';
-import { Trash2, FileText, Calendar, AlertCircle, CheckCircle, X, Plus } from 'lucide-react';
-import MobileHeader from '../components/MobileHeader';
-import BottomNav from '../components/BottomNav';
-import { Button, Card } from '../components/ui';
+import { Trash2, FileText, Calendar, AlertCircle, Plus } from 'lucide-react';
+import AppLayout from '../components/layout/AppLayout';
+import { Button, Card, Sheet } from '../components/ui';
 import { toast, confirm } from '../store/notifyStore';
 import ContractAnalysisResult from '../components/ContractAnalysisResult';
 
@@ -76,10 +75,19 @@ export default function AnalysisHistoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="분석 내역" showBack={false} />
-
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8">
+    <AppLayout
+      title="분석 내역"
+      subtitle="지금까지 분석한 근로계약서"
+      width="wide"
+      actions={
+        analyses.length > 0 && (
+          <Button size="sm" onClick={() => navigate('/contract/new')} className="hidden lg:inline-flex">
+            <Plus className="w-4 h-4" />
+            새 계약서 분석
+          </Button>
+        )
+      }
+    >
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
             <div className="animate-spin">
@@ -92,7 +100,7 @@ export default function AnalysisHistoryPage() {
             {error}
           </div>
         ) : analyses.length === 0 ? (
-          <Card padding="none" className="p-12 text-center">
+          <Card padding="none" className="p-12 text-center max-w-xl mx-auto">
             <FileText className="w-16 h-16 text-line-strong mx-auto mb-4" />
             <p className="text-ink font-medium mb-2">분석 내역이 없습니다</p>
             <p className="text-sm text-ink-muted">
@@ -103,9 +111,9 @@ export default function AnalysisHistoryPage() {
             </Button>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {analyses.map((analysis) => (
-              <Card key={analysis.id}>
+              <Card key={analysis.id} className="flex flex-col">
                 {/* 헤더 */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-start gap-3 flex-1">
@@ -184,7 +192,7 @@ export default function AnalysisHistoryPage() {
                   )}
 
                 {/* 액션 버튼 */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3 mt-auto">
                   <Button variant="outline" size="sm" onClick={() => setSelectedAnalysis(analysis)}>
                     상세 보기
                   </Button>
@@ -196,39 +204,14 @@ export default function AnalysisHistoryPage() {
             ))}
           </div>
         )}
-      </main>
 
       {/* 분석 상세 보기 모달 */}
       {selectedAnalysis && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
-          <div className="bg-surface w-full rounded-t-sheet max-h-[90vh] overflow-y-auto">
-            {/* 모달 헤더 */}
-            <div className="sticky top-0 bg-surface border-b border-line p-4 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-ink">분석 상세 보기</h2>
-              <button
-                onClick={() => setSelectedAnalysis(null)}
-                className="text-ink-subtle hover:text-ink-muted"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            {/* 모달 콘텐츠 */}
-            <div className="p-6 space-y-6">
-              <ContractAnalysisResult
-                structured={selectedAnalysis.analysis_result}
-                chatbotText={selectedAnalysis.chatbot_analysis?.analysis}
-              />
-
-              {/* 분석 일시 */}
-              <div className="pt-4 border-t border-line text-xs text-ink-muted">
-                분석 일시:{' '}
-                {new Date(selectedAnalysis.created_at).toLocaleString('ko-KR')}
-              </div>
-            </div>
-
-            {/* 모달 하단 버튼 */}
-            <div className="sticky bottom-0 bg-surface border-t border-line p-4 space-y-3">
+        <Sheet
+          title="분석 상세 보기"
+          onClose={() => setSelectedAnalysis(null)}
+          footer={
+            <>
               <Button
                 size="lg"
                 fullWidth
@@ -242,18 +225,30 @@ export default function AnalysisHistoryPage() {
               <Button variant="outline" size="lg" fullWidth onClick={() => setSelectedAnalysis(null)}>
                 닫기
               </Button>
+            </>
+          }
+        >
+          <div className="space-y-6">
+            <ContractAnalysisResult
+              structured={selectedAnalysis.analysis_result}
+              chatbotText={selectedAnalysis.chatbot_analysis?.analysis}
+            />
+
+            {/* 분석 일시 */}
+            <div className="pt-4 border-t border-line text-xs text-ink-muted">
+              분석 일시: {new Date(selectedAnalysis.created_at).toLocaleString('ko-KR')}
             </div>
           </div>
-        </div>
+        </Sheet>
       )}
 
-      {/* 플로팅 버튼: 새 계약서 분석 */}
+      {/* 플로팅 버튼: 새 계약서 분석 (모바일·태블릿. PC 는 제목줄 버튼) */}
       {!isLoading && analyses.length > 0 && (
         <Button
           size="lg"
           pill
           onClick={() => navigate('/contract/new')}
-          className="fixed bottom-24 right-6 z-40 shadow-raised transition-transform hover:scale-105"
+          className="lg:hidden fixed bottom-24 right-6 z-30 shadow-raised transition-transform hover:scale-105"
           title="새 계약서 분석하기"
         >
           <FileText className="w-5 h-5" />
@@ -261,7 +256,6 @@ export default function AnalysisHistoryPage() {
         </Button>
       )}
 
-      <BottomNav />
-    </div>
+    </AppLayout>
   );
 }

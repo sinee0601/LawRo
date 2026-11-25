@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { contractAPI } from '../services/api';
 import { Camera, Upload, FileText, Loader, AlertCircle, CheckCircle } from 'lucide-react';
-import BottomNav from '../components/BottomNav';
-import MobileHeader from '../components/MobileHeader';
+import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
 import { Button, Card } from '../components/ui';
 import ContractAnalysisResult from '../components/ContractAnalysisResult';
@@ -123,14 +122,12 @@ export default function ContractPage() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="새 계약서 분석" showBack={true} />
-
-      {/* 메인 컨텐츠 */}
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8">
+    <AppLayout title="새 계약서 분석" showBack>
         {!result ? (
           <div>
-            <div className="bg-surface rounded-3xl shadow-lg p-8 mb-6">
+            {/* 모바일: 안내 → 미리보기 → 버튼 순서. PC: 왼쪽 미리보기, 오른쪽 안내와 버튼 */}
+            <Card padding="lg" className="lg:grid lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-x-10">
+              <div className="lg:col-start-2 lg:row-start-1">
               <h2 className="text-lg font-bold text-ink mb-2">근로계약서 분석</h2>
               <p className="text-sm text-ink-muted mb-6">
                 근로계약서의 사진을 찍거나, 파일을 업로드하여 계약조항이 법적으로 옳은지 확인해보세요!
@@ -143,8 +140,10 @@ export default function ContractPage() {
                 </div>
               )}
 
+              </div>
+
               {/* 계약서 미리보기 영역 */}
-              <div className="bg-surface-muted rounded-2xl aspect-[3/4] mb-6 flex items-center justify-center overflow-hidden">
+              <div className="bg-surface-muted rounded-2xl aspect-[3/4] mb-6 lg:mb-0 lg:col-start-1 lg:row-start-1 lg:row-span-2 flex items-center justify-center overflow-hidden">
                 {file ? (
                   previewUrl ? (
                     <img src={previewUrl} alt="Preview" className="w-full h-full object-contain" />
@@ -160,6 +159,7 @@ export default function ContractPage() {
                 )}
               </div>
 
+              <div className="lg:col-start-2 lg:row-start-2">
               {/* 파일이 선택되었을 때 삭제 버튼 표시 */}
               {file && (
                 <div className="text-center mb-4">
@@ -204,14 +204,15 @@ export default function ContractPage() {
                 </div>
               )}
 
+              <p className="mt-4 text-xs text-ink-subtle text-center lg:text-left">
+                JPG, PNG, PDF, DOC, DOCX 파일을 10MB까지 올릴 수 있어요.
+              </p>
+
               {/* 분석 버튼 */}
               {file && !isUploading && !isAnalyzing && (
-                <button
-                  onClick={handleAnalyze}
-                  className="w-full mt-6 bg-primary-600 hover:bg-primary-hover text-white font-semibold py-4 rounded-xl transition-colors"
-                >
+                <Button size="xl" fullWidth onClick={handleAnalyze} className="mt-6">
                   분석 시작
-                </button>
+                </Button>
               )}
 
               {/* 로딩 상태 */}
@@ -228,11 +229,12 @@ export default function ContractPage() {
                   </div>
                 </div>
               )}
-            </div>
+              </div>
+            </Card>
           </div>
 
         ) : (
-          <Card>
+          <Card className="max-w-4xl mx-auto">
             <div className="flex items-center gap-2 mb-1">
               <CheckCircle className="w-6 h-6 text-success" />
               <h2 className="text-lg font-bold text-ink">분석 결과</h2>
@@ -276,9 +278,6 @@ export default function ContractPage() {
             </Button>
           </Card>
         )}
-      </main>
-
-      <BottomNav />
-    </div>
+    </AppLayout>
   );
 }

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import useAuthStore from '../store/authStore';
 import { settingsAPI } from '../services/api';
 import { User, Mail } from 'lucide-react';
-import MobileHeader from '../components/MobileHeader';
-import BottomNav from '../components/BottomNav';
+import { Card } from '../components/ui';
+import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
 
 export default function ProfilePage() {
@@ -28,12 +28,9 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas pb-20">
-      <MobileHeader title="내정보" showBack={true} />
-
-      <main className="max-w-md mx-auto px-4 pt-20 pb-8">
+    <AppLayout title="내정보" showBack width="narrow">
         {/* 프로필 카드 */}
-        <div className="bg-surface rounded-3xl shadow-sm p-6 mb-6">
+        <Card className="mb-6">
           {/* 프로필 아이콘 */}
           <div className="flex justify-center mb-6">
             <div className="w-20 h-20 bg-primary-100 dark:bg-primary-500/20 rounded-full flex items-center justify-center">
@@ -100,10 +97,10 @@ export default function ProfilePage() {
               </button>
             </div>
           )}
-        </div>
+        </Card>
 
         {/* 계정 정보 */}
-        <div className="bg-surface rounded-3xl shadow-sm p-6">
+        <Card>
           <h3 className="font-bold text-ink mb-4">계정 정보</h3>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
@@ -122,10 +119,7 @@ export default function ProfilePage() {
               </span>
             </div>
           </div>
-        </div>
-      </main>
-
-      <BottomNav />
-    </div>
+        </Card>
+      </AppLayout>
   );
 }

@@ -215,7 +215,7 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
 
   if (error) {
     return (
-      <div className="bg-surface-muted rounded-3xl aspect-video mb-6 flex items-center justify-center">
+      <div className="bg-surface-muted rounded-card aspect-video flex items-center justify-center">
         <div className="text-center">
           <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-2" />
           <p className="text-sm text-ink-muted">{error}</p>
@@ -226,7 +226,7 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
 
   if (!isLoaded) {
     return (
-      <div className="bg-line rounded-3xl aspect-video mb-6 flex items-center justify-center">
+      <div className="bg-line rounded-card aspect-video flex items-center justify-center">
         <div className="text-center">
           <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-2 animate-pulse" />
           <p className="text-sm text-ink-muted">지도 로드 중...</p>
@@ -236,12 +236,11 @@ export default function SupportCenterMap({ centers, onCenterClick, userLocation 
   }
 
   return (
-    <div className="relative mb-6">
-      {/* 지도 컨테이너 */}
+    <div className="relative">
+      {/* 지도 컨테이너 (PC 에서는 목록 옆에 붙어 있도록 더 높게) */}
       <div
         ref={mapElement}
-        className="bg-line rounded-3xl w-full"
-        style={{ height: '400px' }}
+        className="bg-line rounded-card w-full h-[400px] lg:h-[560px]"
       />
 
       {/* 현재 위치 버튼 */}
