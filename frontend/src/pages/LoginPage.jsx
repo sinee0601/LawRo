@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
+import { Button, Input } from '../components/ui';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -34,112 +35,120 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-primary-900 px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-12">
-          <div className="inline-block bg-surface p-6 rounded-full shadow-lg mb-6">
-            <div className="w-20 h-20 flex items-center justify-center">
-              <svg viewBox="0 0 100 100" className="w-full h-full">
-                <rect x="20" y="20" width="60" height="70" rx="5" fill="#1976d2"/>
-                <ellipse cx="50" cy="30" rx="30" ry="8" fill="#64b5f6" opacity="0.5"/>
-                <text x="50" y="65" fontSize="40" fontWeight="bold" fill="white" textAnchor="middle">L</text>
-              </svg>
+    <div className="min-h-screen bg-surface sm:bg-canvas flex flex-col">
+      <main className="flex-1 flex flex-col justify-center w-full max-w-sm mx-auto px-6 py-12 sm:max-w-md sm:px-0">
+        <div className="sm:bg-surface sm:rounded-card sm:shadow-card sm:p-10">
+          {/* 브랜드 */}
+          <div className="mb-10">
+            <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center mb-6">
+              <span className="text-2xl font-bold text-primary-foreground leading-none">L</span>
             </div>
+            <h1 className="text-2xl font-bold text-ink tracking-tight">LawRo에 오신 것을 환영해요</h1>
+            <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">
+              외국인 노동자를 위한 AI 법률 상담 서비스
+            </p>
           </div>
-          <h1 className="text-4xl font-bold text-white mb-2">LAWRO</h1>
-        </div>
 
-        <div className="bg-surface rounded-3xl shadow-xl p-8 space-y-6">
           {error && (
-            <div className="p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-xl text-sm">
+            <div
+              role="alert"
+              className="mb-5 p-3 bg-danger-soft border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-control text-sm"
+            >
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-ink-muted mb-2">
-                ID
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                placeholder="your@email.com"
-                required
-              />
-              {!formData.email && (
-                <p className="text-sm text-orange-500 mt-1">가입된 이메일 정보가 없습니다.</p>
-              )}
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <Input
+              type="email"
+              id="email"
+              name="email"
+              label="이메일"
+              autoComplete="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="your@email.com"
+              required
+            />
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-ink-muted mb-2">
-                PASSWORD
-              </label>
-              <input
+              <Input
                 type="password"
                 id="password"
                 name="password"
+                label="비밀번호"
+                autoComplete="current-password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-line-strong rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                placeholder="••••••••"
+                placeholder="비밀번호를 입력하세요"
                 required
               />
-              {!formData.password && (
-                <p className="text-sm text-orange-500 mt-1">비밀번호가 일치하지 않습니다.</p>
-              )}
+              <div className="mt-2 text-right">
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-ink-muted hover:text-primary-700 dark:hover:text-primary-300"
+                >
+                  비밀번호를 잊으셨나요?
+                </Link>
+              </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-primary-600 hover:bg-primary-hover text-white font-semibold py-4 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
-            >
+            <Button type="submit" size="xl" fullWidth disabled={isLoading}>
               {isLoading ? '로그인 중...' : '로그인'}
-            </button>
+            </Button>
           </form>
 
-          <div className="text-center space-y-3">
-            <Link to="/signup" className="block text-sm text-ink-muted hover:text-ink-muted">
-              회원가입하기
-            </Link>
-            <Link to="/forgot-password" className="block text-sm text-ink-muted hover:text-ink-muted">
-              비밀번호 찾기
-            </Link>
-          </div>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-line"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-surface text-ink-muted">SNS로 로그인하기</span>
-            </div>
+          <div className="flex items-center gap-4 my-8">
+            <div className="flex-1 border-t border-line" />
+            <span className="text-sm text-ink-subtle">또는 간편 로그인</span>
+            <div className="flex-1 border-t border-line" />
           </div>
 
           <div className="flex justify-center gap-4">
-            <button className="w-14 h-14 rounded-full bg-yellow-400 flex items-center justify-center hover:bg-yellow-500 transition-colors shadow-md">
-              <span className="text-2xl">💬</span>
+            <button
+              type="button"
+              aria-label="카카오로 로그인"
+              className="w-12 h-12 rounded-full bg-[#FEE500] flex items-center justify-center hover:brightness-95 transition focus-visible:outline-none focus-visible:shadow-focus"
+            >
+              <svg className="w-6 h-6" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="#191919"
+                  d="M12 3.5c-5.25 0-9.5 3.33-9.5 7.44 0 2.66 1.78 4.99 4.46 6.31l-.91 3.33c-.08.3.26.54.52.37l3.96-2.62c.48.05.97.08 1.47.08 5.25 0 9.5-3.33 9.5-7.44S17.25 3.5 12 3.5z"
+                />
+              </svg>
             </button>
-            <button className="w-14 h-14 rounded-full bg-surface border border-line-strong flex items-center justify-center hover:bg-surface-muted transition-colors shadow-md">
-              <svg className="w-6 h-6" viewBox="0 0 24 24">
+            <button
+              type="button"
+              aria-label="Google로 로그인"
+              className="w-12 h-12 rounded-full bg-surface border border-line-strong flex items-center justify-center hover:bg-surface-muted transition-colors focus-visible:outline-none focus-visible:shadow-focus"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
             </button>
-            <button className="w-14 h-14 rounded-full bg-green-500 flex items-center justify-center hover:bg-green-600 transition-colors shadow-md">
-              <span className="text-2xl font-bold text-white">N</span>
+            <button
+              type="button"
+              aria-label="네이버로 로그인"
+              className="w-12 h-12 rounded-full bg-[#03C75A] flex items-center justify-center hover:brightness-95 transition focus-visible:outline-none focus-visible:shadow-focus"
+            >
+              <span className="text-lg font-extrabold text-white leading-none">N</span>
             </button>
           </div>
+
+          <p className="mt-10 text-center text-sm text-ink-muted">
+            아직 계정이 없으신가요?{' '}
+            <Link
+              to="/signup"
+              className="font-semibold text-primary-700 hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200"
+            >
+              회원가입
+            </Link>
+          </p>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
