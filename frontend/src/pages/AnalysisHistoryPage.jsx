@@ -4,7 +4,7 @@ import useAuthStore from '../store/authStore';
 import { contractAPI } from '../services/api';
 import { Trash2, FileText, Calendar, AlertCircle, Plus, ShieldCheck, MessageCircle, ArrowRight } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
-import { Button, Card, Sheet } from '../components/ui';
+import { Alert, Button, Card, EmptyState, LoadingState, Sheet } from '../components/ui';
 import { toast, confirm } from '../store/notifyStore';
 import ContractAnalysisResult from '../components/ContractAnalysisResult';
 import useTranslation from '../hooks/useTranslation';
@@ -15,11 +15,11 @@ export default function AnalysisHistoryPage() {
   const { user, isAuthenticated } = useAuthStore();
   const { t, language } = useTranslation();
   const [analyses, setAnalyses] = useState([]);
-  const [isLoading, setIsLoading] = useState(isAuthenticated);
+  const userId = user?.uid || localStorage.getItem('userId');
+  // 사용자 id 가 없으면 불러오지 않으므로 처음부터 로딩 상태로 두지 않습니다 (스피너가 계속 도는 문제 방지).
+  const [isLoading, setIsLoading] = useState(isAuthenticated && !!userId);
   const [error, setError] = useState(null);
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
-
-  const userId = user?.uid || localStorage.getItem('userId');
 
   // Firestore에서 분석 히스토리 조회
   useEffect(() => {
@@ -99,26 +99,21 @@ export default function AnalysisHistoryPage() {
       }
     >
         {isLoading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="animate-spin">
-              <div className="w-8 h-8 border-4 border-primary-200 dark:border-primary-500/30 border-t-primary-600 rounded-full" />
-            </div>
-          </div>
+          <LoadingState />
         ) : error ? (
-          <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-xl">
-            <AlertCircle className="w-5 h-5 mb-2" />
-            {error}
-          </div>
+          <Alert tone="danger">{error}</Alert>
         ) : analyses.length === 0 ? (
-          <Card padding="none" className="p-12 text-center max-w-xl mx-auto">
-            <FileText className="w-16 h-16 text-line-strong mx-auto mb-4" />
-            <p className="text-ink font-medium mb-2">{t('contract.history.emptyTitle')}</p>
-            <p className="text-sm text-ink-muted">
-              {t('contract.history.emptyBody')}
-            </p>
-            <Button onClick={() => navigate('/contract/new')} className="mt-6">
-              {t('contract.history.emptyCta')}
-            </Button>
+          <Card className="max-w-xl mx-auto">
+            <EmptyState
+              icon={FileText}
+              title={t('contract.history.emptyTitle')}
+              description={t('contract.history.emptyBody')}
+              action={
+                <Button onClick={() => navigate('/contract/new')}>
+                  {t('contract.history.emptyCta')}
+                </Button>
+              }
+            />
           </Card>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -145,7 +140,7 @@ export default function AnalysisHistoryPage() {
                     onClick={() => handleDelete(analysis.id)}
                     aria-label={t('contract.history.deleteLabel')}
                     title={t('contract.history.deleteLabel')}
-                    className="text-ink-subtle hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                    className="text-ink-subtle hover:text-danger transition-colors p-2 -m-2 rounded-control focus-visible:outline-none focus-visible:shadow-focus"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
@@ -183,7 +178,7 @@ export default function AnalysisHistoryPage() {
                   analysis.analysis_result.risks.length > 0 && (
                     <div className="mb-4">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
+                        <AlertCircle className="w-4 h-4 text-danger" aria-hidden="true" />
                         <span className="text-xs font-semibold text-ink">
                           {t('contract.history.risks', { count: analysis.analysis_result.risks.length })}
                         </span>

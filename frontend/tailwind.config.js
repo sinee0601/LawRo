@@ -47,14 +47,21 @@ export default {
           DEFAULT: withAlpha('danger'),
           hover: withAlpha('danger-hover'),
           soft: withAlpha('danger-soft'),
+          ink: withAlpha('danger-ink'),
         },
         success: {
           DEFAULT: withAlpha('success'),
           soft: withAlpha('success-soft'),
+          ink: withAlpha('success-ink'),
         },
         warning: {
           DEFAULT: withAlpha('warning'),
           soft: withAlpha('warning-soft'),
+          ink: withAlpha('warning-ink'),
+        },
+        info: {
+          soft: withAlpha('primary-soft'),
+          ink: withAlpha('info-ink'),
         },
       },
       borderRadius: {

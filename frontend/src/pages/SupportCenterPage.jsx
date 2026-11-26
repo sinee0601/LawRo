@@ -6,11 +6,9 @@ import {
   Navigation2,
   Filter,
   Building2,
-  AlertCircle,
-  Loader2,
 } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
-import { Card } from '../components/ui';
+import { Alert, Button, Card, LoadingState } from '../components/ui';
 import SupportCenterMap from '../components/SupportCenterMap';
 import EmergencyContacts from '../components/EmergencyContacts';
 import { supportCenterAPI } from '../services/api';
@@ -137,10 +135,7 @@ export default function SupportCenterPage() {
   if (loading) {
     return (
       <AppLayout title={t('support.title')} width="wide">
-        <div className="text-center py-20">
-          <Loader2 className="w-12 h-12 text-primary-600 dark:text-primary-400 animate-spin mx-auto mb-4" />
-          <p className="text-ink-muted">{t('support.loading')}</p>
-        </div>
+        <LoadingState label={t('support.loading')} />
       </AppLayout>
     );
   }
@@ -154,10 +149,7 @@ export default function SupportCenterPage() {
     >
         {/* 에러 메시지 */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-2xl p-4 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
-          </div>
+          <Alert tone="danger">{error}</Alert>
         )}
 
         {/* 필터 & 정렬 */}
@@ -316,20 +308,14 @@ export default function SupportCenterPage() {
 
                 {/* 액션 버튼 */}
                 <div className="flex gap-2 mt-4">
-                  <button
-                    onClick={() => handleCall(center.phone)}
-                    className="flex-1 bg-primary-600 hover:bg-primary-hover text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
-                  >
-                    <Phone className="w-4 h-4" />
+                  <Button className="flex-1" onClick={() => handleCall(center.phone)}>
+                    <Phone className="w-4 h-4" aria-hidden="true" />
                     {t('support.call')}
-                  </button>
-                  <button
-                    onClick={() => handleNavigate(center)}
-                    className="flex-1 bg-surface-muted hover:bg-line text-ink-muted font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
-                  >
-                    <Navigation2 className="w-4 h-4" />
+                  </Button>
+                  <Button variant="outline" className="flex-1" onClick={() => handleNavigate(center)}>
+                    <Navigation2 className="w-4 h-4" aria-hidden="true" />
                     {t('support.directions')}
-                  </button>
+                  </Button>
                 </div>
               </Card>
             ))

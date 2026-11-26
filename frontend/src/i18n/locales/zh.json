@@ -20,7 +20,8 @@
     "comingSoon": "该功能将在后续更新中推出。",
     "mainMenu": "主菜单",
     "closeNotification": "关闭通知",
-    "version": "版本 {{version}}"
+    "version": "版本 {{version}}",
+    "skipToContent": "跳到主要内容"
   },
   "nav": {
     "contract": "合同分析",

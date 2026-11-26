@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { settingsAPI } from '../services/api';
-import { Lock, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
-import { Card } from '../components/ui';
+import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Alert, Button, Card, Spinner } from '../components/ui';
 import AppLayout from '../components/layout/AppLayout';
 import useTranslation from '../hooks/useTranslation';
 
@@ -71,7 +71,7 @@ export default function ChangePasswordPage() {
     return (
       <AppLayout title={t('password.title')} showBack width="narrow">
         <div className="flex flex-col items-center justify-center text-center py-20">
-          <CheckCircle className="w-16 h-16 text-green-600 dark:text-green-400 mb-4" />
+          <CheckCircle className="w-16 h-16 text-success mb-4" />
           <p className="text-lg font-bold text-ink mb-2">{t('password.successTitle')}</p>
           <p className="text-sm text-ink-muted">{t('password.successBody')}</p>
         </div>
@@ -88,10 +88,7 @@ export default function ChangePasswordPage() {
 
           {/* 에러 메시지 */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-xl flex items-start gap-2">
-              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-              <span className="text-sm">{error}</span>
-            </div>
+            <Alert tone="danger" className="mb-4">{error}</Alert>
           )}
 
           {/* 현재 비밀번호 */}
@@ -182,20 +179,13 @@ export default function ChangePasswordPage() {
 
           {/* 버튼 */}
           <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={() => navigate('/settings')}
-              className="px-4 py-3 bg-surface border border-line-strong text-ink-muted rounded-xl font-medium hover:bg-surface-muted transition-colors"
-            >
+            <Button variant="outline" size="lg" onClick={() => navigate('/settings')}>
               {t('common.cancel')}
-            </button>
-            <button
-              onClick={handleChangePassword}
-              disabled={isLoading}
-              className="px-4 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-hover disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
-            >
-              <Lock className="w-4 h-4" />
+            </Button>
+            <Button size="lg" onClick={handleChangePassword} disabled={isLoading} aria-busy={isLoading}>
+              {isLoading ? <Spinner size="sm" /> : <Lock className="w-4 h-4" aria-hidden="true" />}
               {isLoading ? t('password.submitting') : t('password.submit')}
-            </button>
+            </Button>
           </div>
         </Card>
       </AppLayout>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useAuthStore from '../store/authStore';
 import { settingsAPI } from '../services/api';
 import { User, Mail } from 'lucide-react';
-import { Card } from '../components/ui';
+import { Button, Card, Spinner } from '../components/ui';
 import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
 import useTranslation from '../hooks/useTranslation';
@@ -73,7 +73,7 @@ export default function ProfilePage() {
           </div>
 
           {editName && error && (
-            <p role="alert" className="text-sm text-red-600 mb-3">
+            <p role="alert" className="text-sm text-danger mb-3">
               {error}
             </p>
           )}
@@ -81,23 +81,21 @@ export default function ProfilePage() {
           {/* 수정 버튼 */}
           {editName && (
             <div className="grid grid-cols-2 gap-3">
-              <button
+              <Button
                 onClick={() => {
                   setEditName(false);
                   setFullName(user?.full_name || '');
                   setError('');
                 }}
-                className="px-4 py-3 bg-surface border border-line-strong text-ink-muted rounded-xl font-medium hover:bg-surface-muted transition-colors"
+                variant="outline"
+                size="lg"
               >
                 {t('common.cancel')}
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="px-4 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-hover disabled:opacity-50 transition-colors"
-              >
+              </Button>
+              <Button size="lg" onClick={handleSave} disabled={isSaving} aria-busy={isSaving}>
+                {isSaving && <Spinner size="sm" />}
                 {isSaving ? t('common.saving') : t('common.save')}
-              </button>
+              </Button>
             </div>
           )}
         </Card>

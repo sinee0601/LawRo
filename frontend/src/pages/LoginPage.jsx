@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
-import { Info } from 'lucide-react';
 import useAuthStore from '../store/authStore';
-import { Button, Input } from '../components/ui';
+import { Alert, Button, Input } from '../components/ui';
 import { safeNext, signupPath } from '../services/authRedirect';
 import useTranslation from '../hooks/useTranslation';
 
@@ -58,19 +57,11 @@ export default function LoginPage() {
           </div>
 
           {nextParam && (
-            <div className="mb-5 flex items-start gap-2 p-3 bg-primary-soft text-primary-800 dark:text-primary-200 rounded-control text-sm">
-              <Info className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
-              <p>{t('auth.login.needLogin')}</p>
-            </div>
+            <Alert tone="info" className="mb-5">{t('auth.login.needLogin')}</Alert>
           )}
 
           {error && (
-            <div
-              role="alert"
-              className="mb-5 p-3 bg-danger-soft border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-control text-sm"
-            >
-              {error}
-            </div>
+            <Alert tone="danger" className="mb-5">{error}</Alert>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">

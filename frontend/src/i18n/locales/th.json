@@ -20,7 +20,8 @@
     "comingSoon": "ฟีเจอร์นี้จะมีในการอัปเดตครั้งถัดไป",
     "mainMenu": "เมนูหลัก",
     "closeNotification": "ปิดการแจ้งเตือน",
-    "version": "เวอร์ชัน {{version}}"
+    "version": "เวอร์ชัน {{version}}",
+    "skipToContent": "ข้ามไปยังเนื้อหาหลัก"
   },
   "nav": {
     "contract": "วิเคราะห์สัญญา",

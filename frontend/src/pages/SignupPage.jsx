@@ -3,7 +3,7 @@ import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import { toast } from '../store/notifyStore';
 import { ArrowLeft } from 'lucide-react';
-import { Button, Input, cn } from '../components/ui';
+import { Alert, Button, Input, cn } from '../components/ui';
 import { loginPath, safeNext } from '../services/authRedirect';
 import useTranslation from '../hooks/useTranslation';
 import { LANGUAGES, toServerCode } from '../i18n/languages';
@@ -101,12 +101,7 @@ export default function SignupPage() {
 
         <div className="sm:bg-surface sm:rounded-card sm:shadow-card sm:p-10 space-y-6">
           {(error || validationError) && (
-            <div
-              role="alert"
-              className="p-3 bg-danger-soft border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-control text-sm"
-            >
-              {error || validationError}
-            </div>
+            <Alert tone="danger">{error || validationError}</Alert>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">

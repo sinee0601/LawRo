@@ -20,7 +20,8 @@
     "comingSoon": "この機能は今後のアップデートで追加予定です。",
     "mainMenu": "メインメニュー",
     "closeNotification": "通知を閉じる",
-    "version": "バージョン {{version}}"
+    "version": "バージョン {{version}}",
+    "skipToContent": "本文へスキップ"
   },
   "nav": {
     "contract": "契約書分析",
