@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MapPin } from 'lucide-react';
+import useTranslation from '../hooks/useTranslation';
+import i18next from '../i18n/config';
 
 export default function NaverMap({ latitude, longitude, onLocationChange }) {
+  const { t } = useTranslation();
   const mapElement = useRef(null);
   const mapInstance = useRef(null);
   const markerInstance = useRef(null);
@@ -30,7 +33,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
     // 'naverMapError' 이벤트 리스너 추가 (인증 실패 시)
     const handleNaverMapError = (event) => {
       console.error('❌ 네이버 지도 API 로드 실패:', event.detail?.error);
-      setError(event.detail?.error || '네이버 지도 API 인증에 실패했습니다.');
+      setError(event.detail?.error || i18next.t('map.authFailed'));
     };
 
     window.addEventListener('naverMapLoaded', handleNaverMapLoaded);
@@ -88,7 +91,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
       markerInstance.current = new window.naver.maps.Marker({
         position: new window.naver.maps.LatLng(defaultLat, defaultLng),
         map: mapInstance.current,
-        title: '근무 위치',
+        title: i18next.t('map.workLocation'),
       });
 
       // 지도 클릭 이벤트 리스너
@@ -100,7 +103,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
       });
     } catch (err) {
       console.error('❌ 지도 초기화 오류:', err);
-      setError(`지도 초기화 실패: ${err.message}`);
+      setError(i18next.t('map.initFailed', { message: err.message }));
     }
   }, [isLoaded, latitude, longitude, updateMarkerPosition]);
 
@@ -117,11 +120,11 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
         (err) => {
           console.error('위치 조회 오류:', err);
           if (err.code === 3) {
-            setError('위치 조회 타임아웃. GPS를 켜거나 권한을 확인하세요.');
+            setError(t('map.timeoutShort'));
           } else if (err.code === 1) {
-            setError('위치 접근 권한이 필요합니다.');
+            setError(t('map.permissionNeeded'));
           } else {
-            setError('현재 위치를 가져올 수 없습니다');
+            setError(t('map.unavailable'));
           }
         },
         {
@@ -131,7 +134,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
         }
       );
     } else {
-      setError('이 브라우저는 위치 정보를 지원하지 않습니다');
+      setError(t('map.noGeolocation'));
     }
   };
 
@@ -151,7 +154,7 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
       <div className="bg-line rounded-card aspect-video flex items-center justify-center">
         <div className="text-center">
           <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-2 animate-pulse" />
-          <p className="text-sm text-ink-muted">지도 로드 중...</p>
+          <p className="text-sm text-ink-muted">{t('map.loading')}</p>
         </div>
       </div>
     );
@@ -170,7 +173,8 @@ export default function NaverMap({ latitude, longitude, onLocationChange }) {
       <button
         onClick={moveToCurrentLocation}
         className="absolute bottom-4 right-4 bg-surface rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
-        title="현재 위치로 이동"
+        title={t('map.moveToMyLocation')}
+        aria-label={t('map.moveToMyLocation')}
       >
         <MapPin className="w-6 h-6 text-primary-600 dark:text-primary-400" />
       </button>

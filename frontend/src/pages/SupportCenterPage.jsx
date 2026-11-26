@@ -14,14 +14,11 @@ import { Card } from '../components/ui';
 import SupportCenterMap from '../components/SupportCenterMap';
 import EmergencyContacts from '../components/EmergencyContacts';
 import { supportCenterAPI } from '../services/api';
+import useTranslation from '../hooks/useTranslation';
+import i18next from '../i18n/config';
 
-// 기관 유형 한글 매핑
-const centerTypeLabels = {
-  labor_office: '노동청',
-  legal_aid: '법률구조공단',
-  foreign_support: '외국인력지원센터',
-  welfare: '근로복지공단',
-};
+// 기관 유형 (이름은 support.types.* 번역 키)
+const CENTER_TYPES = ['labor_office', 'legal_aid', 'foreign_support', 'welfare'];
 
 // 기관 유형별 색상
 const centerTypeColors = {
@@ -32,6 +29,7 @@ const centerTypeColors = {
 };
 
 export default function SupportCenterPage() {
+  const { t } = useTranslation();
   const [centers, setCenters] = useState([]);
   const [emergencyContacts, setEmergencyContacts] = useState([]);
   const [filteredCenters, setFilteredCenters] = useState([]);
@@ -61,14 +59,14 @@ export default function SupportCenterPage() {
         (err) => {
           console.error('위치 조회 오류:', err);
           // 기본 위치 사용 안내
-          setError('위치 정보를 가져올 수 없어 서울 기준으로 표시합니다.');
+          setError(i18next.t('support.locationFallback'));
           fetchCenters(null);
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
       );
     } else {
       if (!isSecureContext && window.location.protocol === 'http:') {
-        setError('⚠️ HTTP 환경에서는 위치 정보를 사용할 수 없습니다. HTTPS 연결을 사용해주세요.');
+        setError(i18next.t('support.httpWarning'));
       }
       fetchCenters(null);
     }
@@ -100,7 +98,7 @@ export default function SupportCenterPage() {
       setEmergencyContacts(result.emergency_contacts || []);
     } catch (err) {
       console.error('지원 기관 조회 오류:', err);
-      setError('지원 기관 정보를 불러올 수 없습니다');
+      setError(i18next.t('support.loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -138,10 +136,10 @@ export default function SupportCenterPage() {
 
   if (loading) {
     return (
-      <AppLayout title="법률 지원 기관" width="wide">
+      <AppLayout title={t('support.title')} width="wide">
         <div className="text-center py-20">
           <Loader2 className="w-12 h-12 text-primary-600 dark:text-primary-400 animate-spin mx-auto mb-4" />
-          <p className="text-ink-muted">지원 기관 정보를 불러오는 중...</p>
+          <p className="text-ink-muted">{t('support.loading')}</p>
         </div>
       </AppLayout>
     );
@@ -149,8 +147,8 @@ export default function SupportCenterPage() {
 
   return (
     <AppLayout
-      title="법률 지원 기관"
-      subtitle="가까운 노동청, 법률구조공단 찾기"
+      title={t('support.title')}
+      subtitle={t('support.subtitle')}
       width="wide"
       className="space-y-6"
     >
@@ -168,7 +166,7 @@ export default function SupportCenterPage() {
           <div>
             <label className="text-sm font-semibold text-ink-muted mb-2 flex items-center gap-2">
               <Filter className="w-4 h-4" />
-              기관 유형
+              {t('support.filterType')}
             </label>
             <div className="flex flex-wrap gap-2">
               <button
@@ -179,9 +177,9 @@ export default function SupportCenterPage() {
                     : 'bg-surface-muted text-ink-muted hover:bg-line'
                 }`}
               >
-                전체
+                {t('support.all')}
               </button>
-              {Object.entries(centerTypeLabels).map(([type, label]) => (
+              {CENTER_TYPES.map((type) => (
                 <button
                   key={type}
                   onClick={() => setFilterType(type)}
@@ -191,7 +189,7 @@ export default function SupportCenterPage() {
                       : 'bg-surface-muted text-ink-muted hover:bg-line'
                   }`}
                 >
-                  {label}
+                  {t(`support.types.${type}`)}
                 </button>
               ))}
             </div>
@@ -199,7 +197,7 @@ export default function SupportCenterPage() {
 
           {/* 정렬 */}
           <div>
-            <label className="text-sm font-semibold text-ink-muted mb-2 block">정렬</label>
+            <label className="text-sm font-semibold text-ink-muted mb-2 block">{t('support.sort')}</label>
             <div className="flex gap-2 lg:w-64">
               <button
                 onClick={() => setSortBy('distance')}
@@ -210,7 +208,7 @@ export default function SupportCenterPage() {
                 }`}
                 disabled={!userLocation}
               >
-                거리순
+                {t('support.byDistance')}
               </button>
               <button
                 onClick={() => setSortBy('name')}
@@ -220,15 +218,14 @@ export default function SupportCenterPage() {
                     : 'bg-canvas text-ink-muted hover:bg-surface-muted'
                 }`}
               >
-                이름순
+                {t('support.byName')}
               </button>
             </div>
           </div>
 
           {/* 결과 수 */}
           <p className="text-sm text-ink-muted text-center pt-2 lg:pt-0 lg:ml-auto lg:pb-2">
-            총 <span className="font-bold text-primary-600 dark:text-primary-400">{filteredCenters.length}</span>개
-            기관
+            {t('support.total', { count: filteredCenters.length })}
           </p>
         </Card>
 
@@ -245,12 +242,12 @@ export default function SupportCenterPage() {
 
         {/* 지원 기관 리스트 */}
         <div className="space-y-4">
-          <h2 className="text-lg font-bold text-ink">지원 기관 목록</h2>
+          <h2 className="text-lg font-bold text-ink">{t('support.listTitle')}</h2>
 
           {filteredCenters.length === 0 ? (
             <Card padding="lg" className="text-center">
               <MapPin className="w-12 h-12 text-ink-subtle mx-auto mb-3" />
-              <p className="text-ink-muted">해당하는 지원 기관이 없습니다</p>
+              <p className="text-ink-muted">{t('support.empty')}</p>
             </Card>
           ) : (
             filteredCenters.map((center) => (
@@ -268,7 +265,7 @@ export default function SupportCenterPage() {
                       centerTypeColors[center.type]
                     }`}
                   >
-                    {centerTypeLabels[center.type]}
+                    {CENTER_TYPES.includes(center.type) ? t(`support.types.${center.type}`) : center.type}
                   </span>
                   {center.distance && (
                     <span className="text-sm text-ink-muted">
@@ -303,7 +300,7 @@ export default function SupportCenterPage() {
                 {/* 제공 서비스 */}
                 {center.services && center.services.length > 0 && (
                   <div className="mb-3">
-                    <p className="text-xs font-semibold text-ink-muted mb-1">제공 서비스:</p>
+                    <p className="text-xs font-semibold text-ink-muted mb-1">{t('support.services')}</p>
                     <div className="flex flex-wrap gap-1">
                       {center.services.map((service, idx) => (
                         <span
@@ -324,14 +321,14 @@ export default function SupportCenterPage() {
                     className="flex-1 bg-primary-600 hover:bg-primary-hover text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
                   >
                     <Phone className="w-4 h-4" />
-                    전화하기
+                    {t('support.call')}
                   </button>
                   <button
                     onClick={() => handleNavigate(center)}
                     className="flex-1 bg-surface-muted hover:bg-line text-ink-muted font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
                   >
                     <Navigation2 className="w-4 h-4" />
-                    길찾기
+                    {t('support.directions')}
                   </button>
                 </div>
               </Card>

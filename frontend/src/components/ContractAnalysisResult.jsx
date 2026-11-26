@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { cn } from './ui';
+import useTranslation from '../hooks/useTranslation';
 
 // 챗봇 분석(analysis)은 JSON 문자열로 오지만, 앞뒤에 설명문이나 ```json 코드블록이 붙을 수 있다.
 // 가장 바깥 { ... } 만 잘라 파싱하고, 실패하면 null 을 돌려 평문으로 보여준다.
@@ -30,17 +31,17 @@ function parseChatbotAnalysis(text) {
 // totalScore 는 높을수록 위험. 0~1 안전, 1~8 주의, 9 이상 위험.
 const LEVELS = {
   safe: {
-    label: '안전',
+    labelKey: 'analysis.levels.safe',
     className: 'bg-success-soft text-success border-success/30',
     Icon: ShieldCheck,
   },
   caution: {
-    label: '주의',
+    labelKey: 'analysis.levels.caution',
     className: 'bg-warning-soft text-warning border-warning/30',
     Icon: AlertTriangle,
   },
   danger: {
-    label: '위험',
+    labelKey: 'analysis.levels.danger',
     className: 'bg-danger-soft text-danger border-danger/30',
     Icon: AlertCircle,
   },
@@ -108,6 +109,7 @@ function InfoRow({ label, value }) {
 }
 
 function ScoreCard({ score, awareLabel }) {
+  const { t } = useTranslation();
   const level = LEVELS[levelFromScore(score)];
   const { Icon } = level;
   return (
@@ -115,28 +117,29 @@ function ScoreCard({ score, awareLabel }) {
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Gauge className="w-5 h-5" />
-          <span className="text-sm font-semibold text-ink">위험도 점수</span>
+          <span className="text-sm font-semibold text-ink">{t('analysis.score')}</span>
         </div>
         <span className="inline-flex items-center gap-1 rounded-full bg-surface/70 px-2.5 py-1 text-xs font-semibold">
           <Icon className="w-3.5 h-3.5" />
-          {awareLabel || level.label}
+          {awareLabel || t(level.labelKey)}
         </span>
       </div>
       <div className="mt-3 flex items-baseline gap-1">
         <span className="text-3xl font-bold">{Number.isInteger(score) ? score : score.toFixed(1)}</span>
-        <span className="text-xs text-ink-muted">점</span>
+        <span className="text-xs text-ink-muted">{t('analysis.points')}</span>
       </div>
-      <p className="mt-1 text-xs text-ink-muted">점수가 낮을수록 안전해요. 0~1점 안전, 1~8점 주의, 9점 이상 위험</p>
+      <p className="mt-1 text-xs text-ink-muted">{t('analysis.scoreGuide')}</p>
     </div>
   );
 }
 
 function ChatbotAnalysis({ text }) {
+  const { t } = useTranslation();
   const parsed = parseChatbotAnalysis(text);
 
   if (!parsed) {
     return (
-      <Section icon={Scale} title="법률 전문가 분석" tone="primary">
+      <Section icon={Scale} title={t('analysis.expert')} tone="primary">
         <p className="text-sm text-ink whitespace-pre-wrap leading-relaxed">{text}</p>
       </Section>
     );
@@ -162,25 +165,25 @@ function ChatbotAnalysis({ text }) {
       {hasScore && <ScoreCard score={score} awareLabel={awareLabel} />}
 
       {parsed.summary && (
-        <Section icon={FileText} title="요약" tone="primary">
+        <Section icon={FileText} title={t('analysis.summary')} tone="primary">
           <p className="text-sm text-ink leading-relaxed">{parsed.summary}</p>
         </Section>
       )}
 
       {awareNotes.length > 0 && (
-        <Section icon={AlertTriangle} title="주의 사항" tone="warning">
+        <Section icon={AlertTriangle} title={t('analysis.cautions')} tone="warning">
           <BulletList items={awareNotes} iconClassName="text-warning" />
         </Section>
       )}
 
       {highlights.length > 0 && (
-        <Section icon={Sparkles} title="핵심 포인트">
+        <Section icon={Sparkles} title={t('analysis.highlights')}>
           <BulletList items={highlights} icon={CheckCircle} iconClassName="text-primary-600 dark:text-primary-400" />
         </Section>
       )}
 
       {interpretations.length > 0 && (
-        <Section icon={Scale} title="법률 해석">
+        <Section icon={Scale} title={t('analysis.interpretation')}>
           <div className="space-y-3">
             {interpretations.map((item, idx) => (
               <div key={idx} className="border-l-2 border-primary-400 pl-3">
@@ -195,7 +198,7 @@ function ChatbotAnalysis({ text }) {
       )}
 
       {parsed.deepAnalysis && (
-        <Section icon={FileText} title="상세 분석">
+        <Section icon={FileText} title={t('analysis.deepAnalysis')}>
           <p className="text-sm text-ink whitespace-pre-wrap leading-relaxed">{parsed.deepAnalysis}</p>
         </Section>
       )}
@@ -209,6 +212,7 @@ function ChatbotAnalysis({ text }) {
  * chatbotText: 챗봇 법률 분석 원문 (보통 totalScore, summary 등을 담은 JSON 문자열)
  */
 export default function ContractAnalysisResult({ structured, chatbotText }) {
+  const { t } = useTranslation();
   const [showText, setShowText] = useState(false);
   const keyTerms = asList(structured?.key_terms);
   const risks = asList(structured?.risks);
@@ -217,7 +221,7 @@ export default function ContractAnalysisResult({ structured, chatbotText }) {
   if (!hasAnything) {
     return (
       <div className="rounded-2xl border border-line bg-canvas p-6 text-center text-sm text-ink-muted">
-        분석 결과를 불러오지 못했어요. 다시 시도해 주세요.
+        {t('analysis.loadFailed')}
       </div>
     );
   }
@@ -227,32 +231,32 @@ export default function ContractAnalysisResult({ structured, chatbotText }) {
       {chatbotText && <ChatbotAnalysis text={chatbotText} />}
 
       {structured && (
-        <Section icon={FileText} title="계약서 정보">
+        <Section icon={FileText} title={t('analysis.contractInfo')}>
           <dl className="space-y-2 text-sm">
-            <InfoRow label="계약 유형" value={structured.contract_type || '미확인'} />
+            <InfoRow label={t('analysis.contractType')} value={structured.contract_type || t('common.unknown')} />
             <InfoRow
-              label="계약 기간"
-              value={`${structured.effective_date || '미명시'} ~ ${structured.termination_date || '미명시'}`}
+              label={t('analysis.period')}
+              value={`${structured.effective_date || t('common.notSpecified')} ~ ${structured.termination_date || t('common.notSpecified')}`}
             />
             {structured.parties && (
               <>
-                <InfoRow label="갑(사용자)" value={structured.parties.party_a || '미명시'} />
-                <InfoRow label="을(근로자)" value={structured.parties.party_b || '미명시'} />
+                <InfoRow label={t('analysis.partyA')} value={structured.parties.party_a || t('common.notSpecified')} />
+                <InfoRow label={t('analysis.partyB')} value={structured.parties.party_b || t('common.notSpecified')} />
               </>
             )}
-            {structured.payment_terms && <InfoRow label="임금 지급" value={structured.payment_terms} />}
+            {structured.payment_terms && <InfoRow label={t('analysis.payment')} value={structured.payment_terms} />}
           </dl>
         </Section>
       )}
 
       {risks.length > 0 && (
-        <Section icon={AlertCircle} title={`법률적 위험 요소 ${risks.length}개`} tone="danger">
+        <Section icon={AlertCircle} title={t('analysis.risks', { count: risks.length })} tone="danger">
           <BulletList items={risks} icon={AlertCircle} iconClassName="text-danger" />
         </Section>
       )}
 
       {keyTerms.length > 0 && (
-        <Section icon={CheckCircle} title="주요 계약 조건">
+        <Section icon={CheckCircle} title={t('analysis.keyTerms')}>
           <BulletList items={keyTerms} icon={CheckCircle} iconClassName="text-primary-600 dark:text-primary-400" />
         </Section>
       )}
@@ -265,12 +269,12 @@ export default function ContractAnalysisResult({ structured, chatbotText }) {
             aria-expanded={showText}
             className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium text-ink-muted hover:text-ink"
           >
-            OCR 추출 원문 {showText ? '숨기기' : '보기'}
+            {showText ? t('analysis.ocrHide') : t('analysis.ocrShow')}
             <ChevronDown className={cn('w-4 h-4 transition-transform', showText && 'rotate-180')} />
           </button>
           {showText && (
             <div className="border-t border-line px-4 py-3 max-h-60 overflow-y-auto">
-              <p className="text-xs text-ink-muted mb-2">OCR로 추출한 원문이라 오탈자가 있을 수 있어요.</p>
+              <p className="text-xs text-ink-muted mb-2">{t('analysis.ocrNote')}</p>
               <pre className="text-xs text-ink whitespace-pre-wrap font-mono leading-relaxed">
                 {structured.extracted_text}
               </pre>

@@ -11,8 +11,14 @@ import AppLayout from '../components/layout/AppLayout';
 import NaverMap from '../components/NaverMap';
 import { Button, Card, Input, Sheet } from '../components/ui';
 import { toast, confirm } from '../store/notifyStore';
+import useTranslation from '../hooks/useTranslation';
+import i18next from '../i18n/config';
+
+// 근무지로 인정하는 반경 (m)
+const WORKPLACE_RADIUS = 500;
 
 export default function WorkTimePage() {
+  const { t, language } = useTranslation();
   // ==================== 상태 관리 ====================
   const [isTracking, setIsTracking] = useState(false);
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
@@ -114,7 +120,7 @@ export default function WorkTimePage() {
 
       setError(null);
     } catch (err) {
-      setError('데이터 로드 중 오류가 발생했습니다.');
+      setError(i18next.t('workTime.errors.load'));
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -135,7 +141,7 @@ export default function WorkTimePage() {
           if (error.code === 3) {
             console.warn('위치 조회 타임아웃. 권한을 확인하거나 GPS를 켜세요.');
           }
-          setError('위치 추적 권한이 필요합니다.');
+          setError(i18next.t('workTime.errors.trackingPermission'));
         },
         {
           enableHighAccuracy: true,
@@ -144,32 +150,32 @@ export default function WorkTimePage() {
         }
       );
     } else {
-      setError('이 브라우저는 위치 추적을 지원하지 않습니다.');
+      setError(i18next.t('workTime.errors.trackingUnsupported'));
     }
   };
 
   const handleSaveWorkplace = async (latitude, longitude, address) => {
     try {
-      await worktimeAPI.saveWorkplace(latitude, longitude, address, 500);
+      await worktimeAPI.saveWorkplace(latitude, longitude, address, WORKPLACE_RADIUS);
       const workplaceData = await worktimeAPI.getWorkplace();
       setWorkplace(workplaceData.workplace);
       setShowWorkplaceModal(false);
       setMapLocation(null);
       setError(null);
     } catch (err) {
-      setError('근무지 저장에 실패했습니다.');
+      setError(t('workTime.errors.saveWorkplace'));
       console.error(err);
     }
   };
 
   const handleToggleTracking = () => {
     if (!workplace) {
-      setError('먼저 근무지를 등록해주세요.');
+      setError(t('workTime.errors.registerFirst'));
       return;
     }
 
     if (!locationStatus?.is_within_workplace) {
-      setError('근무지 반경 내에 있어야 근무시간을 측정할 수 있습니다.');
+      setError(t('workTime.errors.mustBeInside'));
       return;
     }
 
@@ -184,7 +190,7 @@ export default function WorkTimePage() {
 
   const handleSaveRecord = async () => {
     if (!currentSessionStart || (time.hours === 0 && time.minutes === 0 && time.seconds === 0)) {
-      setError('저장할 기록이 없습니다.');
+      setError(t('workTime.errors.nothingToSave'));
       return;
     }
 
@@ -207,16 +213,16 @@ export default function WorkTimePage() {
       resetSession();
       setError(null);
     } catch (err) {
-      setError('근무 기록 저장에 실패했습니다.');
+      setError(t('workTime.errors.saveRecord'));
       console.error(err);
     }
   };
 
   const handleDeleteRecord = async (recordId) => {
     const ok = await confirm({
-      title: '이 근무 기록을 삭제할까요?',
-      message: '삭제한 기록은 되돌릴 수 없어요.',
-      confirmText: '삭제',
+      title: t('workTime.deleteTitle'),
+      message: t('workTime.deleteMessage'),
+      confirmText: t('common.delete'),
       tone: 'danger',
     });
     if (!ok) return;
@@ -230,7 +236,7 @@ export default function WorkTimePage() {
 
       setError(null);
     } catch (err) {
-      setError('근무 기록 삭제에 실패했습니다.');
+      setError(t('workTime.errors.deleteRecord'));
       console.error(err);
     }
   };
@@ -251,7 +257,7 @@ export default function WorkTimePage() {
   const formatDate = (dateString) => {
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('ko-KR', {
+      return date.toLocaleString(language, {
         month: 'short',
         day: 'numeric',
         hour: '2-digit',
@@ -266,7 +272,7 @@ export default function WorkTimePage() {
 
   if (isLoading) {
     return (
-      <AppLayout title="근무 시간 기록" width="wide" className="flex items-center justify-center py-20">
+      <AppLayout title={t('workTime.title')} width="wide" className="flex items-center justify-center py-20">
           <div className="animate-spin">
             <div className="w-8 h-8 border-4 border-primary-200 dark:border-primary-500/30 border-t-primary-600 rounded-full" />
           </div>
@@ -275,7 +281,7 @@ export default function WorkTimePage() {
   }
 
   return (
-    <AppLayout title="근무 시간 기록" subtitle="근무지 반경 안에서 근무 시간을 재고 기록해요" width="wide" className="space-y-6">
+    <AppLayout title={t('workTime.title')} subtitle={t('workTime.subtitle')} width="wide" className="space-y-6">
         {/* 에러 메시지 */}
         {error && (
           <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-2xl flex items-start gap-3">
@@ -290,13 +296,13 @@ export default function WorkTimePage() {
             {/* 근무지 정보 카드 */}
             <Card>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-ink">📍 근무지 정보</h3>
+                <h3 className="font-semibold text-ink">📍 {t('workTime.workplace')}</h3>
                 {workplace && (
                   <button
                     onClick={() => setShowWorkplaceModal(true)}
                     className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
                   >
-                    변경
+                    {t('common.change')}
                   </button>
                 )}
               </div>
@@ -310,12 +316,12 @@ export default function WorkTimePage() {
                     📌 {workplace.latitude.toFixed(6)}, {workplace.longitude.toFixed(6)}
                   </p>
                   <p className="text-xs text-ink-muted">
-                    반경: {workplace.radius_meters}m
+                    {t('workTime.radius', { radius: workplace.radius_meters })}
                   </p>
                 </div>
               ) : (
                 <Button variant="secondary" size="lg" fullWidth onClick={() => setShowWorkplaceModal(true)}>
-                  근무지 등록하기
+                  {t('workTime.register')}
                 </Button>
               )}
             </Card>
@@ -325,7 +331,7 @@ export default function WorkTimePage() {
               <Card>
                 <div className="flex items-center gap-2 mb-4">
                   <Navigation className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                  <h3 className="font-semibold text-ink">내 위치</h3>
+                  <h3 className="font-semibold text-ink">{t('workTime.myLocation')}</h3>
                 </div>
 
                 <div className="space-y-3">
@@ -350,7 +356,7 @@ export default function WorkTimePage() {
                             ? 'text-green-900 dark:text-green-200'
                             : 'text-orange-900 dark:text-orange-200'
                         }`}>
-                          {locationStatus.is_within_workplace ? '근무지 내' : '근무지 외'}
+                          {locationStatus.is_within_workplace ? t('workTime.inside') : t('workTime.outside')}
                         </span>
                       </div>
                       <p className={`text-sm ${
@@ -358,7 +364,7 @@ export default function WorkTimePage() {
                           ? 'text-green-700 dark:text-green-300'
                           : 'text-orange-700 dark:text-orange-300'
                       }`}>
-                        거리: {locationStatus.distance_meters.toFixed(0)}m
+                        {t('workTime.distance', { distance: locationStatus.distance_meters.toFixed(0) })}
                       </p>
                     </div>
                   )}
@@ -371,7 +377,7 @@ export default function WorkTimePage() {
             {/* 근무시간 측정 카드 */}
             <Card padding="lg">
               <div className="text-center mb-6">
-                <h2 className="text-lg font-bold text-ink mb-4">근무시간 측정</h2>
+                <h2 className="text-lg font-bold text-ink mb-4">{t('workTime.measure')}</h2>
 
                 {/* 타이머 */}
                 <div className="text-5xl sm:text-6xl font-bold text-ink mb-8 font-mono tabular-nums tracking-tight sm:tracking-wider whitespace-nowrap">
@@ -381,19 +387,19 @@ export default function WorkTimePage() {
                 {/* 상태 표시 */}
                 {!workplace && (
                   <div className="mb-6 p-3 bg-yellow-50 dark:bg-yellow-500/10 rounded-xl border border-yellow-200 dark:border-yellow-500/30">
-                    <p className="text-sm text-yellow-700 dark:text-yellow-300">근무지를 먼저 등록해주세요</p>
+                    <p className="text-sm text-yellow-700 dark:text-yellow-300">{t('workTime.needWorkplace')}</p>
                   </div>
                 )}
 
                 {workplace && !locationStatus?.is_within_workplace && (
                   <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-500/10 rounded-xl border border-orange-200 dark:border-orange-500/30">
-                    <p className="text-sm text-orange-700 dark:text-orange-300">근무지 반경 내에 있어야 측정할 수 있습니다</p>
+                    <p className="text-sm text-orange-700 dark:text-orange-300">{t('workTime.needInside')}</p>
                   </div>
                 )}
 
                 {workplace && locationStatus?.is_within_workplace && (
                   <div className="mb-6 p-3 bg-green-50 dark:bg-green-500/10 rounded-xl border border-green-200 dark:border-green-500/30">
-                    <p className="text-sm text-green-700 dark:text-green-300">✓ 근무시간 측정 가능합니다</p>
+                    <p className="text-sm text-green-700 dark:text-green-300">✓ {t('workTime.ready')}</p>
                   </div>
                 )}
 
@@ -406,7 +412,7 @@ export default function WorkTimePage() {
                     disabled={!workplace || !locationStatus?.is_within_workplace}
                     className="shadow-raised"
                   >
-                    {isTracking ? '정지' : '시작'}
+                    {isTracking ? t('workTime.stop') : t('workTime.start')}
                   </Button>
                   <Button
                     size="xl"
@@ -415,7 +421,7 @@ export default function WorkTimePage() {
                     disabled={!currentSessionStart || (time.hours === 0 && time.minutes === 0 && time.seconds === 0)}
                   >
                     <Save className="w-5 h-5" />
-                    저장
+                    {t('common.save')}
                   </Button>
                 </div>
               </div>
@@ -425,10 +431,10 @@ export default function WorkTimePage() {
             <Card>
               <div className="flex items-center gap-2 mb-4">
                 <Clock className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                <h3 className="font-bold text-ink">근무 내역</h3>
+                <h3 className="font-bold text-ink">{t('workTime.records')}</h3>
                 {workRecords.length > 0 && (
                   <span className="ml-auto text-sm font-medium text-primary-600 dark:text-primary-400">
-                    {workRecords.length}건
+                    {t('workTime.recordCount', { count: workRecords.length })}
                   </span>
                 )}
               </div>
@@ -436,9 +442,9 @@ export default function WorkTimePage() {
               {workRecords.length === 0 ? (
                 <div className="text-center py-8">
                   <Clock className="w-12 h-12 text-line-strong mx-auto mb-3" />
-                  <p className="text-ink-muted text-sm">아직 근무 기록이 없습니다</p>
+                  <p className="text-ink-muted text-sm">{t('workTime.empty')}</p>
                   <p className="text-xs text-ink-subtle mt-2">
-                    근무를 시작하면 기록이 저장됩니다
+                    {t('workTime.emptyHint')}
                   </p>
                 </div>
               ) : (
@@ -462,7 +468,8 @@ export default function WorkTimePage() {
                         <button
                           onClick={() => handleDeleteRecord(record.id)}
                           className="text-red-400 hover:text-red-600 dark:hover:text-red-400 transition-colors p-2"
-                          title="삭제"
+                          title={t('common.delete')}
+                          aria-label={t('common.delete')}
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
@@ -492,12 +499,13 @@ export default function WorkTimePage() {
 // ==================== 근무지 등록 모달 컴포넌트 ====================
 
 function WorkplaceModal({ onSave, onClose, mapLocation, setMapLocation }) {
+  const { t } = useTranslation();
   const [address, setAddress] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
     if (!mapLocation) {
-      toast.warning('지도에서 위치를 선택해 주세요.');
+      toast.warning(t('workTime.modal.selectOnMap'));
       return;
     }
 
@@ -511,15 +519,15 @@ function WorkplaceModal({ onSave, onClose, mapLocation, setMapLocation }) {
 
   return (
     <Sheet
-      title="근무지 등록"
+      title={t('workTime.modal.title')}
       onClose={onClose}
       footer={
         <>
           <Button size="lg" fullWidth onClick={handleSave} disabled={!mapLocation || isSaving}>
-            {isSaving ? '저장 중...' : '근무지 등록'}
+            {isSaving ? t('common.saving') : t('workTime.modal.submit')}
           </Button>
           <Button variant="outline" size="lg" fullWidth onClick={onClose}>
-            취소
+            {t('common.cancel')}
           </Button>
         </>
       }
@@ -535,25 +543,25 @@ function WorkplaceModal({ onSave, onClose, mapLocation, setMapLocation }) {
           {/* 선택된 위치 정보 */}
           {mapLocation && (
             <div className="p-4 bg-primary-50 dark:bg-primary-500/10 border border-primary-200 dark:border-primary-500/30 rounded-xl">
-              <p className="text-sm font-semibold text-primary-900 dark:text-primary-200 mb-2">✓ 위치 선택됨</p>
+              <p className="text-sm font-semibold text-primary-900 dark:text-primary-200 mb-2">✓ {t('workTime.modal.selected')}</p>
               <p className="text-xs text-primary-700 dark:text-primary-300 font-mono">
-                위도: {mapLocation.latitude.toFixed(6)}<br />
-                경도: {mapLocation.longitude.toFixed(6)}
+                {t('workTime.modal.latitude', { value: mapLocation.latitude.toFixed(6) })}<br />
+                {t('workTime.modal.longitude', { value: mapLocation.longitude.toFixed(6) })}
               </p>
             </div>
           )}
 
           {/* 주소 입력 */}
           <Input
-            label="근무지 주소 (선택사항)"
+            label={t('workTime.modal.address')}
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            placeholder="예: 서울 강남구 테헤란로 123"
+            placeholder={t('workTime.modal.addressPlaceholder')}
           />
 
           <p className="text-xs text-ink-muted">
-            근무지로부터 500m 반경 내에서만 근무시간을 측정할 수 있습니다.
+            {t('workTime.modal.radiusNote', { radius: WORKPLACE_RADIUS })}
           </p>
         </div>
     </Sheet>

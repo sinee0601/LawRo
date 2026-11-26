@@ -1,6 +1,6 @@
 import i18next from 'i18next';
+import { toI18nCode } from './languages';
 
-// Import all language locale files
 import ko from './locales/ko.json';
 import en from './locales/en.json';
 import zh from './locales/zh.json';
@@ -17,25 +17,22 @@ const resources = {
   th: { translation: th },
 };
 
-// Get initial language from localStorage
-// Map Firestore language codes to i18next codes if needed
+// 예전 버전은 'korean' 처럼 서버 코드로 저장했으므로 둘 다 받아 줍니다.
 const getSavedLanguage = () => {
-  const saved = localStorage.getItem('userLanguage');
-  if (!saved) return 'ko'; // Default to Korean
-
-  const codeMap = {
-    'korean': 'ko',
-    'english': 'en',
-    'chinese': 'zh',
-    'vietnamese': 'vi',
-    'japanese': 'ja',
-    'thai': 'th'
-  };
-
-  return codeMap[saved] || saved;
+  try {
+    return toI18nCode(localStorage.getItem('userLanguage'));
+  } catch {
+    return toI18nCode(null);
+  }
 };
 
-// Initialize i18next
+// 화면 읽기 프로그램과 브라우저 번역·글꼴 선택이 올바른 언어를 쓰도록 <html lang> 을 맞춥니다.
+const syncHtmlLang = (lng) => {
+  if (typeof document !== 'undefined') document.documentElement.lang = lng;
+};
+
+i18next.on('languageChanged', syncHtmlLang);
+
 i18next.init({
   resources,
   lng: getSavedLanguage(),
@@ -43,8 +40,10 @@ i18next.init({
   ns: ['translation'],
   defaultNS: 'translation',
   interpolation: {
-    escapeValue: false, // React already escapes values
+    escapeValue: false, // React 가 이미 이스케이프합니다
   },
 });
+
+syncHtmlLang(i18next.language);
 
 export default i18next;

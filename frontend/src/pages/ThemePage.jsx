@@ -5,18 +5,22 @@ import useAuthStore from '../store/authStore';
 import { Check, Sun, Moon, Info } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
 import { getTheme, setTheme } from '../theme';
+import useTranslation from '../hooks/useTranslation';
+
 
 export default function ThemePage() {
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { t } = useTranslation();
   const [selectedTheme, setSelectedTheme] = useState(getTheme);
   const [isSaving, setIsSaving] = useState(false);
 
   const themes = [
     {
       code: 'light',
-      name: 'Light Mode (Light)',
-      description: '밝은 테마',
+      name: t('theme.light'),
+      description: t('theme.lightDesc'),
+      preview: t('theme.lightPreview'),
       icon: Sun,
       // 미리보기는 현재 테마와 상관없이 고정 색으로 보여 줍니다.
       bgColor: 'bg-white',
@@ -25,8 +29,9 @@ export default function ThemePage() {
     },
     {
       code: 'dark',
-      name: 'Dark Mode (Dark)',
-      description: '어두운 테마',
+      name: t('theme.dark'),
+      description: t('theme.darkDesc'),
+      preview: t('theme.darkPreview'),
       icon: Moon,
       bgColor: 'bg-gray-900',
       textColor: 'text-white',
@@ -54,7 +59,7 @@ export default function ThemePage() {
   };
 
   return (
-    <AppLayout title="앱 색상 변경" showBack width="narrow">
+    <AppLayout title={t('theme.title')} showBack width="narrow">
         {/* 테마 선택 카드 */}
         <div className="grid gap-3 sm:grid-cols-2 mb-6">
           {themes.map((theme) => {
@@ -94,9 +99,9 @@ export default function ThemePage() {
                     className={`flex-1 h-20 rounded-lg border ${theme.borderColor} ${theme.bgColor} flex items-center justify-center`}
                   >
                     <div className="text-center">
-                      <p className={`text-xs font-medium ${theme.textColor}`}>미리보기</p>
+                      <p className={`text-xs font-medium ${theme.textColor}`}>{t('theme.preview')}</p>
                       <p className={`text-xs ${theme.textColor} opacity-70`}>
-                        {theme.code === 'light' ? '밝은 화면' : '어두운 화면'}
+                        {theme.preview}
                       </p>
                     </div>
                   </div>
@@ -110,9 +115,9 @@ export default function ThemePage() {
         <div className="p-4 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-start gap-3">
           <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-1">테마 설정</p>
+            <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-1">{t('theme.infoTitle')}</p>
             <p className="text-xs text-blue-800 dark:text-blue-200">
-              선택한 테마가 즉시 적용됩니다. 아직은 라이트 모드와 다크 모드 2가지를 지원합니다.
+              {t('theme.infoBody')}
             </p>
           </div>
         </div>

@@ -4,11 +4,13 @@ import { Info } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 import { Button, Input } from '../components/ui';
 import { safeNext, signupPath } from '../services/authRedirect';
+import useTranslation from '../hooks/useTranslation';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login, isLoading, error, clearError, initializeLanguage } = useAuthStore();
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
   // 로그인이 필요한 기능에서 넘어왔다면 로그인 후 그 화면으로 돌아갑니다.
   const nextParam = searchParams.get('next');
   const next = safeNext(nextParam);
@@ -49,16 +51,16 @@ export default function LoginPage() {
             <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center mb-6">
               <span className="text-2xl font-bold text-primary-foreground leading-none">L</span>
             </div>
-            <h1 className="text-2xl font-bold text-ink tracking-tight">LawRo에 오신 것을 환영해요</h1>
+            <h1 className="text-2xl font-bold text-ink tracking-tight">{t('auth.login.welcome')}</h1>
             <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">
-              외국인 노동자를 위한 AI 법률 상담 서비스
+              {t('auth.login.tagline')}
             </p>
           </div>
 
           {nextParam && (
             <div className="mb-5 flex items-start gap-2 p-3 bg-primary-soft text-primary-800 dark:text-primary-200 rounded-control text-sm">
               <Info className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
-              <p>로그인이 필요한 기능이에요. 로그인하면 보던 화면으로 바로 돌아가요.</p>
+              <p>{t('auth.login.needLogin')}</p>
             </div>
           )}
 
@@ -76,7 +78,7 @@ export default function LoginPage() {
               type="email"
               id="email"
               name="email"
-              label="이메일"
+              label={t('auth.login.email')}
               autoComplete="email"
               value={formData.email}
               onChange={handleChange}
@@ -89,11 +91,11 @@ export default function LoginPage() {
                 type="password"
                 id="password"
                 name="password"
-                label="비밀번호"
+                label={t('auth.login.password')}
                 autoComplete="current-password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="비밀번호를 입력하세요"
+                placeholder={t('auth.login.passwordPlaceholder')}
                 required
               />
               <div className="mt-2 text-right">
@@ -101,26 +103,26 @@ export default function LoginPage() {
                   to="/forgot-password"
                   className="text-sm text-ink-muted hover:text-primary-700 dark:hover:text-primary-300"
                 >
-                  비밀번호를 잊으셨나요?
+                  {t('auth.login.forgot')}
                 </Link>
               </div>
             </div>
 
             <Button type="submit" size="xl" fullWidth disabled={isLoading}>
-              {isLoading ? '로그인 중...' : '로그인'}
+              {isLoading ? t('auth.login.submitting') : t('auth.login.submit')}
             </Button>
           </form>
 
           <div className="flex items-center gap-4 my-8">
             <div className="flex-1 border-t border-line" />
-            <span className="text-sm text-ink-subtle">또는 간편 로그인</span>
+            <span className="text-sm text-ink-subtle">{t('auth.login.orSocial')}</span>
             <div className="flex-1 border-t border-line" />
           </div>
 
           <div className="flex justify-center gap-4">
             <button
               type="button"
-              aria-label="카카오로 로그인"
+              aria-label={t('auth.login.kakao')}
               className="w-12 h-12 rounded-full bg-[#FEE500] flex items-center justify-center hover:brightness-95 transition focus-visible:outline-none focus-visible:shadow-focus"
             >
               <svg className="w-6 h-6" viewBox="0 0 24 24" aria-hidden="true">
@@ -132,7 +134,7 @@ export default function LoginPage() {
             </button>
             <button
               type="button"
-              aria-label="Google로 로그인"
+              aria-label={t('auth.login.google')}
               className="w-12 h-12 rounded-full bg-surface border border-line-strong flex items-center justify-center hover:bg-surface-muted transition-colors focus-visible:outline-none focus-visible:shadow-focus"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
@@ -144,7 +146,7 @@ export default function LoginPage() {
             </button>
             <button
               type="button"
-              aria-label="네이버로 로그인"
+              aria-label={t('auth.login.naver')}
               className="w-12 h-12 rounded-full bg-[#03C75A] flex items-center justify-center hover:brightness-95 transition focus-visible:outline-none focus-visible:shadow-focus"
             >
               <span className="text-lg font-extrabold text-white leading-none">N</span>
@@ -152,17 +154,17 @@ export default function LoginPage() {
           </div>
 
           <p className="mt-10 text-center text-sm text-ink-muted">
-            아직 계정이 없으신가요?{' '}
+            {t('auth.login.noAccount')}{' '}
             <Link
               to={signupPath(nextParam)}
               className="font-semibold text-primary-700 hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200"
             >
-              회원가입
+              {t('auth.login.signupLink')}
             </Link>
           </p>
           <p className="mt-3 text-center text-sm">
             <Link to="/contract" className="text-ink-muted underline-offset-4 hover:text-ink hover:underline">
-              로그인 없이 둘러보기
+              {t('auth.login.browseAsGuest')}
             </Link>
           </p>
         </div>

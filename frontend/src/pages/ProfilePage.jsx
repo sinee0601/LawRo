@@ -5,9 +5,12 @@ import { User, Mail } from 'lucide-react';
 import { Card } from '../components/ui';
 import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
+import useTranslation from '../hooks/useTranslation';
+
 
 export default function ProfilePage() {
   const { user } = useAuthStore();
+  const { t, language } = useTranslation();
   const [editName, setEditName] = useState(false);
   const [fullName, setFullName] = useState(user?.full_name || '');
   const [isSaving, setIsSaving] = useState(false);
@@ -18,17 +21,17 @@ export default function ProfilePage() {
     setError('');
     try {
       await settingsAPI.updateProfile(fullName);
-      toast.success('사용자 정보를 저장했어요.');
+      toast.success(t('profile.saved'));
       setEditName(false);
     } catch (err) {
-      setError(err.response?.data?.detail || '저장에 실패했습니다.');
+      setError(err.response?.data?.detail || t('profile.saveFailed'));
     } finally {
       setIsSaving(false);
     }
   };
 
   return (
-    <AppLayout title="내정보" showBack width="narrow">
+    <AppLayout title={t('profile.title')} showBack width="narrow">
         {/* 프로필 카드 */}
         <Card className="mb-6">
           {/* 프로필 아이콘 */}
@@ -40,7 +43,7 @@ export default function ProfilePage() {
 
           {/* 이메일 (읽기 전용) */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-ink-muted mb-2">이메일</label>
+            <label className="block text-sm font-medium text-ink-muted mb-2">{t('profile.email')}</label>
             <div className="flex items-center gap-3 p-3 bg-canvas rounded-xl border border-line">
               <Mail className="w-5 h-5 text-ink-subtle" />
               <p className="text-ink">{user?.email}</p>
@@ -49,14 +52,14 @@ export default function ProfilePage() {
 
           {/* 이름 */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-ink-muted mb-2">이름</label>
+            <label className="block text-sm font-medium text-ink-muted mb-2">{t('profile.name')}</label>
             {!editName ? (
               <div
                 onClick={() => setEditName(true)}
                 className="flex items-center justify-between p-3 bg-canvas rounded-xl border border-line cursor-pointer hover:bg-surface-muted transition-colors"
               >
-                <p className="text-ink">{fullName || '이름 미등록'}</p>
-                <span className="text-sm text-primary-600 dark:text-primary-400 font-medium">수정</span>
+                <p className="text-ink">{fullName || t('profile.noName')}</p>
+                <span className="text-sm text-primary-600 dark:text-primary-400 font-medium">{t('common.edit')}</span>
               </div>
             ) : (
               <input
@@ -64,7 +67,7 @@ export default function ProfilePage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 className="w-full px-4 py-3 border border-primary-300 dark:border-primary-500/40 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-                placeholder="이름을 입력하세요"
+                placeholder={t('profile.namePlaceholder')}
               />
             )}
           </div>
@@ -86,14 +89,14 @@ export default function ProfilePage() {
                 }}
                 className="px-4 py-3 bg-surface border border-line-strong text-ink-muted rounded-xl font-medium hover:bg-surface-muted transition-colors"
               >
-                취소
+                {t('common.cancel')}
               </button>
               <button
                 onClick={handleSave}
                 disabled={isSaving}
                 className="px-4 py-3 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-hover disabled:opacity-50 transition-colors"
               >
-                {isSaving ? '저장 중...' : '저장'}
+                {isSaving ? t('common.saving') : t('common.save')}
               </button>
             </div>
           )}
@@ -101,21 +104,21 @@ export default function ProfilePage() {
 
         {/* 계정 정보 */}
         <Card>
-          <h3 className="font-bold text-ink mb-4">계정 정보</h3>
+          <h3 className="font-bold text-ink mb-4">{t('profile.accountInfo')}</h3>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-ink-muted">가입 유형</span>
+              <span className="text-ink-muted">{t('profile.signupType')}</span>
               <span className="text-ink font-medium">
                 {user?.provider === 'google' ? 'Google' :
                  user?.provider === 'kakao' ? 'Kakao' :
                  user?.provider === 'naver' ? 'Naver' :
-                 'Email'}
+                 t('profile.emailProvider')}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-ink-muted">가입일</span>
+              <span className="text-ink-muted">{t('profile.joinedAt')}</span>
               <span className="text-ink font-medium">
-                {user?.created_at ? new Date(user.created_at).toLocaleDateString('ko-KR') : '-'}
+                {user?.created_at ? new Date(user.created_at).toLocaleDateString(language) : '-'}
               </span>
             </div>
           </div>

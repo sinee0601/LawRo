@@ -4,10 +4,13 @@ import { ChevronRight, User, Lock, Globe, Palette, HelpCircle, Shield, LogIn } f
 import { Button, Card } from '../components/ui';
 import { loginPath, signupPath } from '../services/authRedirect';
 import AppLayout from '../components/layout/AppLayout';
+import useTranslation from '../hooks/useTranslation';
+
 
 export default function SettingsPage() {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuthStore();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -18,21 +21,21 @@ export default function SettingsPage() {
   const accountSettings = [
     ...(isAuthenticated
       ? [
-          { icon: User, label: '내정보', path: '/profile' },
-          { icon: Lock, label: '비밀번호 변경', path: '/change-password' },
+          { icon: User, label: t('settings.profile'), path: '/profile' },
+          { icon: Lock, label: t('settings.changePassword'), path: '/change-password' },
         ]
       : []),
-    { icon: Globe, label: '언어 번역', path: '/language' },
-    { icon: Palette, label: '앱 색상 변경', path: '/theme' },
+    { icon: Globe, label: t('settings.language'), path: '/language' },
+    { icon: Palette, label: t('settings.theme'), path: '/theme' },
   ];
 
   const infoSettings = [
-    { icon: HelpCircle, label: '앱 설명', path: '/about' },
-    { icon: Shield, label: '개인정보 처리 방침', path: '/privacy' },
+    { icon: HelpCircle, label: t('settings.about'), path: '/about' },
+    { icon: Shield, label: t('settings.privacy'), path: '/privacy' },
   ];
 
   return (
-    <AppLayout title="설정" width="narrow">
+    <AppLayout title={t('settings.title')} width="narrow">
         {/* 비로그인: 로그인 안내 */}
         {!isAuthenticated && (
           <Card className="mb-6">
@@ -41,16 +44,16 @@ export default function SettingsPage() {
                 <LogIn className="w-5 h-5 text-primary-600 dark:text-primary-400" />
               </div>
               <div>
-                <p className="font-semibold text-ink">로그인하고 더 많은 기능을 써 보세요</p>
-                <p className="mt-1 text-sm text-ink-muted">계약서 분석 내역, 상담 기록, 근무시간이 계정에 저장돼요.</p>
+                <p className="font-semibold text-ink">{t('settings.guestTitle')}</p>
+                <p className="mt-1 text-sm text-ink-muted">{t('settings.guestBody')}</p>
               </div>
             </div>
             <div className="mt-4 flex gap-2">
               <Button className="flex-1" onClick={() => navigate(loginPath('/settings'))}>
-                로그인
+                {t('common.login')}
               </Button>
               <Button variant="outline" className="flex-1" onClick={() => navigate(signupPath('/settings'))}>
-                회원가입
+                {t('common.signup')}
               </Button>
             </div>
           </Card>
@@ -58,7 +61,7 @@ export default function SettingsPage() {
 
         {/* 계정 섹션 */}
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-ink mb-3 px-2">{isAuthenticated ? '계정' : '앱 설정'}</h2>
+          <h2 className="text-lg font-bold text-ink mb-3 px-2">{isAuthenticated ? t('settings.account') : t('settings.app')}</h2>
           <Card padding="none" className="overflow-hidden">
             {accountSettings.map((item, index) => {
               const Icon = item.icon;
@@ -85,7 +88,7 @@ export default function SettingsPage() {
 
         {/* 정보 섹션 */}
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-ink mb-3 px-2">정보</h2>
+          <h2 className="text-lg font-bold text-ink mb-3 px-2">{t('settings.info')}</h2>
           <Card padding="none" className="overflow-hidden">
             {infoSettings.map((item, index) => {
               const Icon = item.icon;
@@ -116,7 +119,7 @@ export default function SettingsPage() {
             onClick={handleLogout}
             className="w-full bg-surface hover:bg-surface-muted text-red-600 dark:text-red-400 font-medium py-4 rounded-card shadow-card transition-colors"
           >
-            로그아웃
+            {t('common.logout')}
           </button>
         )}
 
