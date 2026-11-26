@@ -45,6 +45,11 @@
     --color-success-soft: 240 253 244;  /* green-50 */
     --color-warning: 234 88 12;         /* orange-600 */
     --color-warning-soft: 255 247 237;  /* orange-50 */
+    /* 옅은 상태 배경 위에 쓰는 글자색 (작은 글씨도 대비 4.5:1 이상) */
+    --color-danger-ink: 185 28 28;      /* red-700 */
+    --color-success-ink: 21 128 61;     /* green-700 */
+    --color-warning-ink: 194 65 12;     /* orange-700 */
+    --color-info-ink: 21 101 192;       /* primary-800 */
 
     /* 모서리 */
     --radius-control: 0.75rem;  /* 버튼, 입력창 */
@@ -83,6 +88,10 @@
     --color-success-soft: 20 46 32;
     --color-warning: 251 146 60;
     --color-warning-soft: 58 36 18;
+    --color-danger-ink: 254 202 202;    /* red-200 */
+    --color-success-ink: 187 247 208;   /* green-200 */
+    --color-warning-ink: 254 215 170;   /* orange-200 */
+    --color-info-ink: 187 222 251;      /* primary-100 */
 
     --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.04);
     --shadow-raised: 0 8px 24px -6px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.06);

@@ -20,7 +20,8 @@
     "comingSoon": "이 기능은 추후 업데이트 예정이에요.",
     "mainMenu": "주 메뉴",
     "closeNotification": "알림 닫기",
-    "version": "버전 {{version}}"
+    "version": "버전 {{version}}",
+    "skipToContent": "본문으로 건너뛰기"
   },
   "nav": {
     "contract": "계약서 분석",

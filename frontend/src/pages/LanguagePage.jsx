@@ -4,7 +4,7 @@ import useAuthStore from '../store/authStore';
 import useTranslation from '../hooks/useTranslation';
 import { settingsAPI } from '../services/api';
 import { Check, Globe } from 'lucide-react';
-import { Card } from '../components/ui';
+import { Alert, Card } from '../components/ui';
 import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
 import { LANGUAGES } from '../i18n/languages';
@@ -72,12 +72,9 @@ export default function LanguagePage() {
         </Card>
 
         {/* 정보 메시지 */}
-        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-start gap-3">
-          <Globe className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-blue-900 dark:text-blue-200">
-            {t('settings.languageDescription')}
-          </p>
-        </div>
+        <Alert tone="info" icon={Globe} className="mt-6">
+          {t('settings.languageDescription')}
+        </Alert>
       </AppLayout>
   );
 }

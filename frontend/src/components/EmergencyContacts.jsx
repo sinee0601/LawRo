@@ -15,7 +15,7 @@ export default function EmergencyContacts({ contacts }) {
       {contacts.map((contact, index) => (
         <div
           key={index}
-          className="bg-gradient-to-br from-red-50 dark:from-red-500/10 to-orange-50 dark:to-orange-500/10 rounded-2xl p-4 border border-red-100 dark:border-red-500/20"
+          className="bg-danger-soft rounded-card p-4 border border-danger/20"
         >
           <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
@@ -40,7 +40,7 @@ export default function EmergencyContacts({ contacts }) {
             {/* 전화 버튼 */}
             <button
               onClick={() => handleCall(contact.phone)}
-              className="flex-shrink-0 ml-3 bg-red-600 hover:bg-red-700 text-white rounded-full p-3 shadow-lg transition-colors"
+              className="flex-shrink-0 ml-3 bg-danger hover:bg-danger-hover text-white rounded-full p-3 shadow-raised transition-colors focus-visible:outline-none focus-visible:shadow-focus"
               title={t('support.callNumber', { phone: contact.phone })}
               aria-label={t('support.callNumber', { phone: contact.phone })}
             >
@@ -49,10 +49,10 @@ export default function EmergencyContacts({ contacts }) {
           </div>
 
           {/* 전화번호 표시 */}
-          <div className="mt-3 pt-3 border-t border-red-200 dark:border-red-500/30">
+          <div className="mt-3 pt-3 border-t border-danger/20">
             <a
               href={`tel:${contact.phone}`}
-              className="text-2xl font-bold text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
+              className="text-2xl font-bold text-danger-ink hover:underline"
             >
               {contact.phone}
             </a>

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { contractAPI } from '../services/api';
-import { Camera, Upload, FileText, Loader, AlertCircle, CheckCircle } from 'lucide-react';
+import { Camera, Upload, FileText, CheckCircle } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
 import { toast } from '../store/notifyStore';
-import { Button, Card } from '../components/ui';
+import { Alert, Button, Card, Spinner } from '../components/ui';
 import ContractAnalysisResult from '../components/ContractAnalysisResult';
 import useTranslation from '../hooks/useTranslation';
 import { toServerCode } from '../i18n/languages';
@@ -138,10 +138,7 @@ export default function ContractPage() {
               </p>
 
               {error && (
-                <div className="mb-4 p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 rounded-xl flex items-start gap-2">
-                  <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">{error}</span>
-                </div>
+                <Alert tone="danger" className="mb-4">{error}</Alert>
               )}
 
               </div>
@@ -173,7 +170,7 @@ export default function ContractPage() {
                         setPreviewUrl(null);
                         setResult(null);
                       }}
-                      className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium"
+                      className="text-sm text-danger hover:text-danger-hover font-medium"
                     >
                       {t('contract.new.removeFile')}
                     </button>
@@ -221,9 +218,9 @@ export default function ContractPage() {
 
               {/* 로딩 상태 */}
               {(isUploading || isAnalyzing) && (
-                <div className="mt-6 p-4 bg-primary-50 dark:bg-primary-500/10 border border-primary-200 dark:border-primary-500/30 rounded-xl">
+                <div className="mt-6 p-4 bg-primary-soft border border-primary-200 dark:border-primary-500/30 rounded-control" aria-live="polite">
                   <div className="flex items-center gap-3">
-                    <Loader className="w-6 h-6 animate-spin text-primary-600 dark:text-primary-400" />
+                    <Spinner size="md" label={t('contract.new.working')} />
                     <div>
                       <p className="font-medium text-ink">{t('contract.new.working')}</p>
                       <p className="text-sm text-ink-muted">

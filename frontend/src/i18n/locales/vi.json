@@ -20,7 +20,8 @@
     "comingSoon": "Tính năng này sẽ có trong bản cập nhật sau.",
     "mainMenu": "Menu chính",
     "closeNotification": "Đóng thông báo",
-    "version": "Phiên bản {{version}}"
+    "version": "Phiên bản {{version}}",
+    "skipToContent": "Chuyển đến nội dung chính"
   },
   "nav": {
     "contract": "Phân tích HĐ",

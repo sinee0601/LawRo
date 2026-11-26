@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { settingsAPI } from '../services/api';
 import useAuthStore from '../store/authStore';
-import { Check, Sun, Moon, Info } from 'lucide-react';
+import { Check, Sun, Moon } from 'lucide-react';
+import { Alert } from '../components/ui';
 import AppLayout from '../components/layout/AppLayout';
 import { getTheme, setTheme } from '../theme';
 import useTranslation from '../hooks/useTranslation';
@@ -112,15 +113,9 @@ export default function ThemePage() {
         </div>
 
         {/* 정보 메시지 */}
-        <div className="p-4 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-start gap-3">
-          <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-1">{t('theme.infoTitle')}</p>
-            <p className="text-xs text-blue-800 dark:text-blue-200">
-              {t('theme.infoBody')}
-            </p>
-          </div>
-        </div>
+        <Alert tone="info" title={t('theme.infoTitle')}>
+          {t('theme.infoBody')}
+        </Alert>
       </AppLayout>
   );
 }

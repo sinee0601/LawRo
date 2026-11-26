@@ -20,7 +20,8 @@
     "comingSoon": "This feature is coming in a future update.",
     "mainMenu": "Main menu",
     "closeNotification": "Close notification",
-    "version": "Version {{version}}"
+    "version": "Version {{version}}",
+    "skipToContent": "Skip to main content"
   },
   "nav": {
     "contract": "Contract check",

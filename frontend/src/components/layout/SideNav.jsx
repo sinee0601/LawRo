@@ -38,13 +38,16 @@ export default function SideNav() {
               to={item.path}
               aria-current={active ? 'page' : undefined}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-control text-sm font-medium transition-colors',
+                'relative flex items-center gap-3 px-3 py-2.5 rounded-control text-sm font-medium transition-colors',
+                'focus-visible:outline-none focus-visible:shadow-focus',
+                // 선택된 메뉴: 옅은 배경 + 왼쪽 끝 강조 막대
                 active
-                  ? 'bg-primary-soft text-primary-700 dark:text-primary-300'
+                  ? 'bg-primary-soft text-primary-700 dark:text-primary-300 font-semibold ' +
+                    "before:content-[''] before:absolute before:-left-3 before:inset-y-1.5 before:w-1 before:rounded-r-full before:bg-primary"
                   : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
               )}
             >
-              <Icon className="w-5 h-5 shrink-0" />
+              <Icon className="w-5 h-5 shrink-0" aria-hidden="true" />
               {t(item.label)}
             </NavLink>
           );

@@ -117,7 +117,7 @@ export default function SettingsPage() {
         {isAuthenticated && (
           <button
             onClick={handleLogout}
-            className="w-full bg-surface hover:bg-surface-muted text-red-600 dark:text-red-400 font-medium py-4 rounded-card shadow-card transition-colors"
+            className="w-full bg-surface hover:bg-surface-muted text-danger font-medium py-4 rounded-card shadow-card transition-colors"
           >
             {t('common.logout')}
           </button>

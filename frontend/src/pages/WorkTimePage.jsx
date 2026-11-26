@@ -5,11 +5,11 @@
 
 
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Clock, Save, Trash2, AlertCircle, CheckCircle, Navigation } from 'lucide-react';
+import { MapPin, Clock, Save, Trash2, Navigation } from 'lucide-react';
 import { worktimeAPI } from '../services/api';
 import AppLayout from '../components/layout/AppLayout';
 import NaverMap from '../components/NaverMap';
-import { Button, Card, Input, Sheet } from '../components/ui';
+import { Alert, Button, Card, EmptyState, Input, LoadingState, Sheet } from '../components/ui';
 import { toast, confirm } from '../store/notifyStore';
 import useTranslation from '../hooks/useTranslation';
 import i18next from '../i18n/config';
@@ -272,11 +272,9 @@ export default function WorkTimePage() {
 
   if (isLoading) {
     return (
-      <AppLayout title={t('workTime.title')} width="wide" className="flex items-center justify-center py-20">
-          <div className="animate-spin">
-            <div className="w-8 h-8 border-4 border-primary-200 dark:border-primary-500/30 border-t-primary-600 rounded-full" />
-          </div>
-        </AppLayout>
+      <AppLayout title={t('workTime.title')} width="wide">
+        <LoadingState />
+      </AppLayout>
     );
   }
 
@@ -284,10 +282,7 @@ export default function WorkTimePage() {
     <AppLayout title={t('workTime.title')} subtitle={t('workTime.subtitle')} width="wide" className="space-y-6">
         {/* 에러 메시지 */}
         {error && (
-          <div className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-2xl flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
-          </div>
+          <Alert tone="danger">{error}</Alert>
         )}
 
         <div className="grid gap-6 lg:grid-cols-5 lg:items-start">
@@ -340,33 +335,12 @@ export default function WorkTimePage() {
                   </p>
 
                   {locationStatus && (
-                    <div className={`p-4 rounded-2xl ${
-                      locationStatus.is_within_workplace
-                        ? 'bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30'
-                        : 'bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30'
-                    }`}>
-                      <div className="flex items-center gap-2 mb-2">
-                        {locationStatus.is_within_workplace ? (
-                          <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                        ) : (
-                          <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                        )}
-                        <span className={`font-medium ${
-                          locationStatus.is_within_workplace
-                            ? 'text-green-900 dark:text-green-200'
-                            : 'text-orange-900 dark:text-orange-200'
-                        }`}>
-                          {locationStatus.is_within_workplace ? t('workTime.inside') : t('workTime.outside')}
-                        </span>
-                      </div>
-                      <p className={`text-sm ${
-                        locationStatus.is_within_workplace
-                          ? 'text-green-700 dark:text-green-300'
-                          : 'text-orange-700 dark:text-orange-300'
-                      }`}>
-                        {t('workTime.distance', { distance: locationStatus.distance_meters.toFixed(0) })}
-                      </p>
-                    </div>
+                    <Alert
+                      tone={locationStatus.is_within_workplace ? 'success' : 'warning'}
+                      title={locationStatus.is_within_workplace ? t('workTime.inside') : t('workTime.outside')}
+                    >
+                      {t('workTime.distance', { distance: locationStatus.distance_meters.toFixed(0) })}
+                    </Alert>
                   )}
                 </div>
               </Card>
@@ -386,21 +360,15 @@ export default function WorkTimePage() {
 
                 {/* 상태 표시 */}
                 {!workplace && (
-                  <div className="mb-6 p-3 bg-yellow-50 dark:bg-yellow-500/10 rounded-xl border border-yellow-200 dark:border-yellow-500/30">
-                    <p className="text-sm text-yellow-700 dark:text-yellow-300">{t('workTime.needWorkplace')}</p>
-                  </div>
+                  <Alert tone="warning" className="mb-6 text-left">{t('workTime.needWorkplace')}</Alert>
                 )}
 
                 {workplace && !locationStatus?.is_within_workplace && (
-                  <div className="mb-6 p-3 bg-orange-50 dark:bg-orange-500/10 rounded-xl border border-orange-200 dark:border-orange-500/30">
-                    <p className="text-sm text-orange-700 dark:text-orange-300">{t('workTime.needInside')}</p>
-                  </div>
+                  <Alert tone="warning" className="mb-6 text-left">{t('workTime.needInside')}</Alert>
                 )}
 
                 {workplace && locationStatus?.is_within_workplace && (
-                  <div className="mb-6 p-3 bg-green-50 dark:bg-green-500/10 rounded-xl border border-green-200 dark:border-green-500/30">
-                    <p className="text-sm text-green-700 dark:text-green-300">✓ {t('workTime.ready')}</p>
-                  </div>
+                  <Alert tone="success" className="mb-6 text-left">{t('workTime.ready')}</Alert>
                 )}
 
                 {/* 측정 버튼 */}
@@ -440,13 +408,7 @@ export default function WorkTimePage() {
               </div>
 
               {workRecords.length === 0 ? (
-                <div className="text-center py-8">
-                  <Clock className="w-12 h-12 text-line-strong mx-auto mb-3" />
-                  <p className="text-ink-muted text-sm">{t('workTime.empty')}</p>
-                  <p className="text-xs text-ink-subtle mt-2">
-                    {t('workTime.emptyHint')}
-                  </p>
-                </div>
+                <EmptyState icon={Clock} title={t('workTime.empty')} description={t('workTime.emptyHint')} />
               ) : (
                 <div className="grid gap-3 sm:grid-cols-2">
                   {workRecords.map((record) => (
@@ -467,7 +429,7 @@ export default function WorkTimePage() {
                         </div>
                         <button
                           onClick={() => handleDeleteRecord(record.id)}
-                          className="text-red-400 hover:text-red-600 dark:hover:text-red-400 transition-colors p-2"
+                          className="text-ink-subtle hover:text-danger transition-colors p-2 rounded-control focus-visible:outline-none focus-visible:shadow-focus"
                           title={t('common.delete')}
                           aria-label={t('common.delete')}
                         >

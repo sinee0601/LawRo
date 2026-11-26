@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Shield } from 'lucide-react';
-import { Card } from '../components/ui';
+import { Alert, Button, Card } from '../components/ui';
 import AppLayout from '../components/layout/AppLayout';
 import useTranslation from '../hooks/useTranslation';
 
@@ -58,17 +58,12 @@ export default function PrivacyPage() {
         </Card>
 
         {/* 정보 안내 */}
-        <div className="bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 rounded-2xl p-4 mb-6">
-          <p className="text-xs text-blue-900 dark:text-blue-200">{t('privacy.notice')}</p>
-        </div>
+        <Alert tone="info" className="mb-6">{t('privacy.notice')}</Alert>
 
         {/* 동의 버튼 */}
-        <button
-          onClick={() => navigate('/settings')}
-          className="w-full bg-primary-600 hover:bg-primary-hover text-white font-medium py-3 rounded-xl transition-colors"
-        >
+        <Button size="lg" fullWidth onClick={() => navigate('/settings')}>
           {t('privacy.done')}
-        </button>
+        </Button>
       </AppLayout>
   );
 }
